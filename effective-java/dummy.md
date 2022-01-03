@@ -1,3 +1,0 @@
-# Dummy
-
-This is dummy.
