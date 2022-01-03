@@ -11,7 +11,7 @@
 - 파일명은 `{chap #}`-`{item #...}`-`{user id}`.md 형태로 작성
   ```
   02-item01-wrallee.md
-  02-item11~12-wrallee.md
+  03-item11~12-wrallee.md
   ```
 - 아이템 타이틀을 `##(H2)`로 작성 후 내용 작성
   ```
