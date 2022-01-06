@@ -2,9 +2,10 @@
 
 *원서제목: Prefer dependency injection to hardwiring resources*
 
+<br>
 
-
-**SpellChecker(맞춤법 검사기)** 내부에 **dictionary(사전)**라는 필드가 있을 때 아래와 같이 SpellChecker의 여러 메소드들은 dictionary 객체에 의존하여 동작한다.
+**SpellChecker(맞춤법 검사기)** 내부에 **dictionary(사전)** 라는 필드가 있을 때  
+아래와 같이 SpellChecker의 여러 메소드들은 dictionary 객체에 의존하여 동작한다.
 
 아래 hardwiring-resource가 존재하는 정적 유틸리티 클래스 예시에서는 SpellChecker로 영어 이외의 언어 맞춤법을 검사할 수 없다. 만약 한글 맞춤법을 검사하고자 한다면 dictionary를 교체하는 메소드를 별도로 추가해야 하는데 이 방식은 불변을 보장하지 않아 오류를 만들어내기 쉬우며, 멀티스레드 환경에서도 사용이 불가하다.
 
@@ -27,7 +28,7 @@ class Test {
 }
 ```
 
-
+<br>
 
 따라서 이 경우에는 정적 유틸리티 클래스나 싱글턴으로 만드는 것 보다는 Dependency Injection을 적용한 유연한 클래스로 구현하는것이 좋다. 아래와 같이 생성자에 dictionary를 넘기며 생성한다면 여러 언어의 SpellChecker를 만들 수 있다.
 
@@ -55,19 +56,18 @@ class Test {
 }
 ```
 
+<br>
 
-
-이 패턴의 변형으로, 생성자에 자원 팩터리를 넘겨주는 방식도 있다. 아래는 팩터리가 생성한 **Tile**들로 구성된 **Mosaic** 객체를 만드는 메소드이다.
+이 패턴의 변형으로, 생성자에 자원 팩터리를 넘겨주는 방식도 있다.  
+아래는 팩터리가 생성한 **Tile**들로 구성된 **Mosaic** 객체를 만드는 메소드이다.
 
 ```java
 Mosaic create(Supplier<? extends Tile> tileFactory) { ... }
 ```
 
-
+<br>
 
 Dependency Injection은 유연성과 테스트 용이성을 개선해주지만 의존성이 수천개나 되는 큰 프로젝트에서는 코드를 어지럽게 만들기도 한다. 이는 스프링같은 DI 프레임워크를 사용하면 해소할 수 있다.
-
-
 
 #### 요약
 
