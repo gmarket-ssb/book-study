@@ -1,4 +1,4 @@
-## [Item07] 다 쓴 객체 참조를 해체하라.
+## [Item07] 다 쓴 객체 참조를 해제하라. ( ing )
 > 1. 자기 메모리를 직접관리하는 클래스라면 반드시 누수를 주의
 > 2. 객체를 유효범위 밖으로 밀어내는 것이 기본 : 객체참조를 null 처리하는 것은 예외적인 경우로 한다.
 > 3. WeakHashMap을 사용 고려 : 객체 참조가 필요하여 캐시를 사용하는 경우 WeakHashMap을 사용하여 캐시를 즉시 삭제한다.( Strong References, Soft References, Weak References )
