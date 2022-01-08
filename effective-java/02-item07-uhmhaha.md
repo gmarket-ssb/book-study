@@ -83,4 +83,9 @@ public class Stack {
     > await().atMost(10, TimeUnit.SECONDS).until(map::isEmpty);
   ```
  
+ 
+## References
+
+- [Guide to WeakHashMap in Java]( https://www.baeldung.com/java-weakhashmap )
+- [java variable scope](https://www.geeksforgeeks.org/variable-scope-in-java/)
 
