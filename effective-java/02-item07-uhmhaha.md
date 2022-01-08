@@ -6,7 +6,7 @@
 
 ## **상세설명**
 
-### 1. 메모리 누수 예**
+### 1. 메모리 누수 예
 ``` java
 public class Stack {
     private Object[] elements;
