@@ -69,19 +69,19 @@ public class Stack {
       ```
 > WeakHashMap 활용 : 캐시의 키에 대한 레퍼런스가 캐시 밖에서 필요 없어지면 해당 엔트리를 캐시에서 자동으로 비워줌
 
-	  ``` java   
-	    WeakHashMap<UniqueImageName, BigImage> map = new WeakHashMap<>();
-	    BigImage bigImage = new BigImage("image_id");
-	    UniqueImageName imageName = new UniqueImageName("name_of_big_image");
+    ``` java   
+    WeakHashMap<UniqueImageName, BigImage> map = new WeakHashMap<>();
+    BigImage bigImage = new BigImage("image_id");
+    UniqueImageName imageName = new UniqueImageName("name_of_big_image");
 
-	    map.put(imageName, bigImage);
-	    assertTrue(map.containsKey(imageName));
+    map.put(imageName, bigImage);
+    assertTrue(map.containsKey(imageName));
 
-	    mageName = null;
-	    System.gc();
+    mageName = null;
+    System.gc();
 
-	    await().atMost(10, TimeUnit.SECONDS).until(map::isEmpty);
-	  ```
+    await().atMost(10, TimeUnit.SECONDS).until(map::isEmpty);
+    ```
   - key 레퍼런스가 쓸모 없어졌다면, (key - value) 엔트리를 GC의 대상이 되도록해 캐시에서 자동으로 비워준다
 	  ``` java  
 			Object key = new Object();
