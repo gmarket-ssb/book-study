@@ -50,39 +50,51 @@ public class Stack {
 ### 3. 캐시를 사용를 사용하여 객체 참조하는 경우
 > GC vs non-GC
 - GC 하지 않는 경우 : GC의 기준 **'힙 영역의 객체들 중에서 스택에서 도달 불가능한(Unreachable)한 객체'**
-  - Strong References
+  - Strong References( non-GC )
       ``` java
-      > Integer prime = 1;
+      Integer prime = 1;
       ```
-  - Soft References
+  - Soft References( in GC time )
       ``` java
-      > Integer prime = 1;  
-      > SoftReference<Integer> soft = new SoftReference<Integer>(prime); 
-      > prime = null;
+      Integer prime = 1;  
+      SoftReference<Integer> soft = new SoftReference<Integer>(prime); 
+      prime = null;
       ```
 - GC 하는 경우
-  - Weak References
+  - Weak References( Immediately )
       ``` java
-      > Integer prime = 1;  
-      > WeakReference<Integer> soft = new WeakReference<Integer>(prime); 
-      > prime = null;
+      Integer prime = 1;  
+      WeakReference<Integer> soft = new WeakReference<Integer>(prime); 
+      prime = null;
       ```
 - WeakHashMap 활용의 예
   - 기능 : 캐시의 키에 대한 레퍼런스가 캐시 밖에서 필요 없어지면 해당 엔트리를 캐시에서 자동으로 비워줌   
   ``` java   
-    > WeakHashMap<UniqueImageName, BigImage> map = new WeakHashMap<>();
-    > BigImage bigImage = new BigImage("image_id");
-    > UniqueImageName imageName = new UniqueImageName("name_of_big_image");
-    > 
-    > map.put(imageName, bigImage);
-    > assertTrue(map.containsKey(imageName));
-    > 
-    > imageName = null;
-    > System.gc();
-    > 
-    > await().atMost(10, TimeUnit.SECONDS).until(map::isEmpty);
+    WeakHashMap<UniqueImageName, BigImage> map = new WeakHashMap<>();
+    BigImage bigImage = new BigImage("image_id");
+    UniqueImageName imageName = new UniqueImageName("name_of_big_image");
+    
+    map.put(imageName, bigImage);
+    assertTrue(map.containsKey(imageName));
+    
+    mageName = null;
+    System.gc();
+    
+    await().atMost(10, TimeUnit.SECONDS).until(map::isEmpty);
   ```
- 
+  - key 레퍼런스가 쓸모 없어졌다면, (key - value) 엔트리를 GC의 대상이 되도록해 캐시에서 자동으로 비워준다
+  ``` java  
+  		Object key = new Object();
+		Object value = new Object();
+
+		Map<Object, List> cache = new WeakHashMap<>();
+		cache.put(key, value);
+  ```
+  - 참고 내용
+   -  WeakReference
+      > WeakReference weakWidget = new WeakReference(widget);
+      Strong 레퍼런스를 Weak 레퍼런스로 감싸면 Weak 레퍼런스가 된다.:
+
  
 ## References
 
