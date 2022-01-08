@@ -68,7 +68,7 @@ public class Stack {
       prime = null;
       ```
 > WeakHashMap 활용 : 캐시의 키에 대한 레퍼런스가 캐시 밖에서 필요 없어지면 해당 엔트리를 캐시에서 자동으로 비워줌
-- 예시코드
+- 예시코드1
     ``` java
 	    WeakHashMap<UniqueImageName, BigImage> map = new WeakHashMap<>();
 	    BigImage bigImage = new BigImage("image_id");
@@ -83,19 +83,19 @@ public class Stack {
 	    await().atMost(10, TimeUnit.SECONDS).until(map::isEmpty);
     ``` 
  
-  - key 레퍼런스가 쓸모 없어졌다면, (key - value) 엔트리를 GC의 대상이 되도록해 캐시에서 자동으로 비워준다
+	- key 레퍼런스가 쓸모 없어졌다면, (key - value) 엔트리를 GC의 대상이 되도록해 캐시에서 자동으로 비워준다
 	  ``` java  
-			Object key = new Object();
-			Object value = new Object();
+		Object key = new Object();
+		Object value = new Object();
 
-			Map<Object, List> cache = new WeakHashMap<>();
-			cache.put(key, value);
+		Map<Object, List> cache = new WeakHashMap<>();
+		cache.put(key, value);
 	  ```
-  - 참고 : WeakReference
-   -  WeakReference : Strong 레퍼런스를 Weak 레퍼런스로 감싸면 Weak 레퍼런스가 된다.:
-	   ``` java
-	       WeakReference weakWidget = new WeakReference(widget);
-	   ``` 
+- 참고 : WeakReference
+  -  WeakReference : Strong 레퍼런스를 Weak 레퍼런스로 감싸면 Weak 레퍼런스가 된다.:
+	``` java
+		WeakReference weakWidget = new WeakReference(widget);
+	``` 
 
 ## References
 
