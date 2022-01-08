@@ -49,7 +49,7 @@ public class Stack {
 
 ### 3. 캐시를 사용를 사용하여 객체 참조하는 경우
 > GC vs non-GC
-- GC 하지 않는 경우
+- GC 하지 않는 경우 : GC의 기준 **'힙 영역의 객체들 중에서 스택에서 도달 불가능한(Unreachable)한 객체'**
   - Strong References
       ``` java
       > Integer prime = 1;
@@ -68,6 +68,7 @@ public class Stack {
       > prime = null;
       ```
 - WeakHashMap 활용의 예
+  - 기능 : 캐시의 키에 대한 레퍼런스가 캐시 밖에서 필요 없어지면 해당 엔트리를 캐시에서 자동으로 비워줌   
   ``` java   
     > WeakHashMap<UniqueImageName, BigImage> map = new WeakHashMap<>();
     > BigImage bigImage = new BigImage("image_id");
