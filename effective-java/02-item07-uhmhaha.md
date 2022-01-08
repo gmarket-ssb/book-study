@@ -1,12 +1,12 @@
 ## [Item07] 다 쓴 객체 참조를 해제하라. ( ing )
 > 1. 자기 메모리를 직접관리하는 클래스라면 반드시 누수를 주의
 > 2. 객체를 유효범위 밖으로 밀어내는 것이 기본 : 객체참조를 null 처리하는 것은 예외적인 경우로 한다.
-> 3. WeakHashMap을 사용 고려 : 객체 참조가 필요하여 캐시를 사용하는 경우 WeakHashMap을 사용하여 캐시를 즉시 삭제한다.( Strong References, Soft References, Weak References )
+> 3. 캐시를 사용를 사용하여 객체 참조하는 경우 : WeakHashMap을 사용 고려 ( Strong References, Soft References, Weak References )
 </br></br>
 
-## **Examples **
+### **Details**
 
-- **메모리 누수의 예**
+### 1. 메모리 누수 예**
 ``` java
 public class Stack {
     private Object[] elements;
@@ -38,8 +38,16 @@ public class Stack {
     }
 }
 ```
+- ensureCapacity() 는 어느순간 outofmemory를 일으킨다.
+</br></br>
 
-3. WeakHashMap을 사용 고려
+### 2. 객체를 유효범위 밖으로 밀어내기
+
+- 지역변수를 선언할 때, 해당 scope에서만 선언하도록 만들어라.
+- for문 내부에, 사용하는 변수는 그 외부에 선언을 해놓으면 GC가 자동으로 정리해주지 못한다.
+</br></br>
+
+### 3. 캐시를 사용를 사용하여 객체 참조하는 경우
 > GC vs non-GC
 - GC 하지 않는 경우
   - Strong References
