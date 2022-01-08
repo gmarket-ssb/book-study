@@ -68,6 +68,7 @@ public class Stack {
       prime = null;
       ```
 > WeakHashMap 활용 : 캐시의 키에 대한 레퍼런스가 캐시 밖에서 필요 없어지면 해당 엔트리를 캐시에서 자동으로 비워줌
+
 	  ``` java   
 	    WeakHashMap<UniqueImageName, BigImage> map = new WeakHashMap<>();
 	    BigImage bigImage = new BigImage("image_id");
