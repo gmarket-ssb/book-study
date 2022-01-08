@@ -90,11 +90,11 @@ public class Stack {
 		cache.put(key, value);
   ```
   - 참고 내용
-   -  WeakReference
-      > WeakReference weakWidget = new WeakReference(widget);
-      Strong 레퍼런스를 Weak 레퍼런스로 감싸면 Weak 레퍼런스가 된다.:
+   -  WeakReference : Strong 레퍼런스를 Weak 레퍼런스로 감싸면 Weak 레퍼런스가 된다.:
+   ``` java
+       WeakReference weakWidget = new WeakReference(widget);
+   ``` 
 
- 
 ## References
 
 - [Guide to WeakHashMap in Java]( https://www.baeldung.com/java-weakhashmap )
