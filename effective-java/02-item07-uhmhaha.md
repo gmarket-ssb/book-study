@@ -4,7 +4,7 @@
 > 3. 캐시를 사용를 사용하여 객체 참조하는 경우 : WeakHashMap을 사용 고려 ( Strong References, Soft References, Weak References )
 
 
-## **Details**
+## **상세설명**
 
 ### 1. 메모리 누수 예**
 ``` java
