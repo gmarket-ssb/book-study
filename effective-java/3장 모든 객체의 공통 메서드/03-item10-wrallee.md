@@ -32,7 +32,7 @@
 이 클래스의 `equals`를 아래와 같이 구현한다면 <ins>**대칭성**</ins>을 위배하게 된다.
 
 ```java
-@Override
+@Override // CaseInsensitiveString의 equals 재정의
 public boolean equals(Object o) {
     if (o instanceof CaseInsensitiveString)
         return s.equalsIgnoreCase(((CaseInsensitiveString) o).str);
@@ -50,7 +50,7 @@ CaseInsensitiveString caseInsensitive = new CaseInsensitiveString("Polish");
 `Point` 클래스를 상속받는 `ColorPoint`라는 클래스가 있다고 할 때, 아래 예시는 <ins>**대칭성**</ins>을 위배하였다.
 
 ```java
-@Override
+@Override // ColorPoint의 equals 재정의
 public boolean equals(Object o) {
     if (!(o instanceof ColorPoint)) // 대칭성 위배 요소
         return false;
@@ -66,7 +66,7 @@ ColorPoint colorPoint = new ColorPoint(1, 2, Color.RED);
 그리고 아래 예시는 <ins>**추이성**</ins>을 위배한다.
 
 ```java
-@Override
+@Override // ColorPoint의 equals 재정의
 public boolean equals(Object o) {
     if (!(o instanceof Point))
         return o.equals(this);
@@ -86,7 +86,7 @@ Point bridgePoint = new Point(1, 2);
 또한 다음 예시는 `getClass()`를 활용해서 규약은 지켰으나 <ins>**리스코프 치환 원칙**</ins>(*상위 타입의 객체를 하위 타입으로 치환해도 정상적으로 동작해야 한다*)을 위배하였기 때문에 기능이 올바르게 동작하지 않는다.
 
 ```java
-@Override
+@Override // Point의 equals 재정의
 public boolean equals(Object o) {
     if (o == null || o.getClass() != getClass())
         return false;
@@ -96,8 +96,8 @@ public boolean equals(Object o) {
 
 class UnitCircle {
     private static final Set<Point> unitCircle = Set.of(
-			new Point( 1, 0), new Point(0, 1),
-    		new Point(-1, 0), new Point(0,-1));
+            new Point( 1, 0), new Point(0, 1),
+            new Point(-1, 0), new Point(0,-1));
 
     public static boolean onUnitCircle(Point p) {
         return unitCircle.contains(p);
@@ -105,10 +105,11 @@ class UnitCircle {
 }
 
 public class ColorPoint extends Point {
+    private Color color;
     ...
 }
 
->>>>> UnitCircle.onUnitCircle(new ColorPoint(1, 0)) == false;
+>>>>> UnitCircle.onUnitCircle(new ColorPoint(1, 0, Color.RED)) == false;
 ```
 
  <br>
@@ -136,4 +137,5 @@ public class ColorPoint extends Point {
 - 다음은 실제 자바 라이브러리에서 일반규약을 위배한 사례이다.
   - `java.sql.TimeStamp.equals(...)`: 대칭성 위반
   - `java.net.URL.equals(...)`: 일관성 위반
-- AutoValue나 Lombok과 같은 어노테이션 프로세서를 사용해서 equals & hashCode를 구현할 수 있다. <ins>하지만 [Pitfall(함정)](https://kwonnam.pe.kr/wiki/java/lombok/pitfall)을 항상 조심하자</ins>.
+- AutoValue나 Lombok과 같은 어노테이션 프로세서를 사용해서 equals & hashCode를 구현할 수 있다.  
+  <ins>하지만 [Pitfall(함정)](https://kwonnam.pe.kr/wiki/java/lombok/pitfall)을 항상 조심하자</ins>.
