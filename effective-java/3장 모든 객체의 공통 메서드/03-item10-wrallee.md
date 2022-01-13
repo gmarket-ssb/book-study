@@ -77,7 +77,7 @@ public boolean equals(Object o) {
 
 ColorPoint redPoint = new ColorPoint(1, 2, Color.RED);
 ColorPoint bluePoint = new ColorPoint(1, 2, Color.BLUE);
-Point bridgePoint = new Point(1, 2);
+Point p = new Point(1, 2);
 
 >>>>> redPoint.equals(point) == bluePoint.equals(point) == true;
 >>>>> redPoint.equals(bluePoint) == false
