@@ -3,8 +3,6 @@
 > Immutable classes are less prone to error and are more secure
 >   ex) String, BigInteger, BigDecimal
 
-## **상세설명**
-
 ### 1. class immutable have five rules
 - Don’t provide methods that modify the object’s state 
 - Ensure that the class can’t be extended
@@ -207,7 +205,7 @@ public final class Complex {
 > ObjectInputStream.readUnshared 메소드를 사용해야 한다.
 > 플랫폼이 제공하는 기본 직렬화 방법이면 충분하더라도 말이다. 그렇지 않으면 공격자가 이 클래스로부터 가변 인스턴스를 만들어낼 수 있다.( item88 to be continued.. )
 
-> 정리
+### 정리
   > 클래스는 꼭 필요한 경우가 아니라면 불변이어야 한다.
   > 불변 클래스는 장점이 많으며, 단점이라곤 특정 상황에서의 잠재적 성능 저하뿐이다.
   > 단순한 값 객체는 항상 불변으로 만들자.
