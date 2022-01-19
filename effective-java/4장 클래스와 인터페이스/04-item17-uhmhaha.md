@@ -173,13 +173,11 @@ public final class Complex {
 
 불변 객체가 아닌 객체를 인수로 받는 상황에서 이 값들이 불변이어야 클래스의 보안을 지킬 수 있다면 방어적으로 복사해 사용해야 한다.
 
+BigInteger, BigDecimal은 불변 클래스로 사용되지만 설계 당시 잘못된 설계로
+     모든 메소드가 재정의될 수 있게 설계되었다. 
+     따라서 인수로 받은 BigInteger가 이를 상속한 하위 클래스의 인스턴스인지
+     확신할 수 없으니 이를 가변이라 가정하고 방어적으로 복사해 사용해야 한다.
     ``` java
-    /**
-     * BigInteger, BigDecimal은 불변 클래스로 사용되지만 설계 당시 잘못된 설계로
-     * 모든 메소드가 재정의될 수 있게 설계되었다. 
-     * 따라서 인수로 받은 BigInteger가 이를 상속한 하위 클래스의 인스턴스인지
-     * 확신할 수 없으니 이를 가변이라 가정하고 방어적으로 복사해 사용해야 한다.
-     */
     public static BigInteger safeInstance(BigInteger val) {
         return val.getClass() == BigInteger.class ? val : new BigInteger(val.toByteArray());
     }
