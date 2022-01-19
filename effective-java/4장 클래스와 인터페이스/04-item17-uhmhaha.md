@@ -140,7 +140,7 @@ public final class Complex {
 클라이언트들이 원하는 복잡한 연산들을 정확히 예측할 수 있다면 package-private의 가변 동반 클래스만으로 충분하다.
 > 예 : 소수인 이 BigInteger보다 큰 첫 번째 정수를 반환
 </br>
-<img src="https://user-images.githubusercontent.com/5934737/150108003-689b741b-8851-4067-9b5a-f04cb6370ebb.png" width="400" height="200" />
+<img src="https://user-images.githubusercontent.com/5934737/150108003-689b741b-8851-4067-9b5a-f04cb6370ebb.png" width="450" height="300" />
 </br>
 
 #### (2) 다단계 연산을 제공하는 가변 동반 클래스를 public으로 제공 #### 
