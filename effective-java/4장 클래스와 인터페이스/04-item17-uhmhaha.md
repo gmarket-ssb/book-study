@@ -84,11 +84,11 @@ public final class Complex {
   - 따라서 불변 클래스라면 한번 만든 인스턴스를 최대한 재활용하기를 권한다.
   - 가장 쉬운 재활용 방법은 자주 쓰이는 값들을 상수(public static final)로 제공하는 것이다.
 예컨대 Complex 클래스는 다음 상수들을 제공할 수 있다.
-``` java
-public static final Complex ZERO = new Complext(0, 0);
-public static final Complex ONE = new Complext(1, 0);
-public static final Complex I = new Complext(0, 1);
-```
+    ``` java
+    public static final Complex ZERO = new Complext(0, 0);
+    public static final Complex ONE = new Complext(1, 0);
+    public static final Complex I = new Complext(0, 1);
+    ```
 
 - 불변 클래스는 정적 팩토리를 제공할 수 있다.
   - 불변 클래스는 자주 사용되는 인스턴스를 캐싱하여 같은 인스턴스를 중복 생성하지 않게 해주는 정적 팩토리를 제공할 수 있다. 박싱된 기본 타입 클래스 전부와 BigInteger가 여기에 속한다.
