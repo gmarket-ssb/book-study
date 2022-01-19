@@ -133,7 +133,9 @@ public final class Complex {
 
 다단계 연산을 기본으로 제공한다면 더 이상 각 단계마다 객체를 생성하지 않아도 된다.
 예컨대 BigInteger는 모듈러 지수 같은 다단계 연산 속도를 높여주는 가변 동반 클래스(companion class)를 package-private으로 두고 있다. 
-<img src="https://user-images.githubusercontent.com/5934737/150108068-2e81a00c-4582-4b7a-9977-4f1446f75048.png" width="200" height="400" />
+<img src="https://user-images.githubusercontent.com/5934737/150108068-2e81a00c-4582-4b7a-9977-4f1446f75048.png" width="400" height="200" />
+</br>
+
 클라이언트들이 원하는 복잡한 연산들을 정확히 예측할 수 있다면 package-private의 가변 동반 클래스만으로 충분하다.
 > 예 : 소수인 이 BigInteger보다 큰 첫 번째 정수를 반환
 ![image](https://user-images.githubusercontent.com/5934737/150108003-689b741b-8851-4067-9b5a-f04cb6370ebb.png =250x250)
