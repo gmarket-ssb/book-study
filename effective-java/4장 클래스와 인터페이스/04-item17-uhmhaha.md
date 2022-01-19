@@ -162,7 +162,8 @@ public final class Complex {
             return new Complex(re, im);
         }
     }
-    ``` 
+    ```
+    
 바깥(client로 칭함)에서는 사실상 final로 public이나 protected 생성자가 없으니 다른 패키지에서는 이 클래스를 확장하는 게 불가능하다.
 정적 팩토리 방식은 다수의 구현 클래스를 활용한 유연성을 제공하고, 다음 릴리즈에서 객체 캐싱 기능을 추가해 성능을 끌어올릴 수도 있다.
 
