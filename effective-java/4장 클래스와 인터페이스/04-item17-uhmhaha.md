@@ -149,9 +149,10 @@ public final class Complex {
 대표적인 예는 String 클래스로 String은 가변 동반 클래스인 StringBuilder/StringBuffer 를 제공하고 있다.
 
 ### 4. 불변 클래스를 만드는 또 다른 설계 방법
-앞에서 말했듯 불변 클래스를 만드는 가장 쉬운 방법은 final로 선언하는 방법이지만 더 유연한 방법이 있다.
+
+- 생성자를 private 혹은 package-private으로 만들고 public 정적 팩토리를 제공하는 방법
+ - 앞에서 말했듯 불변 클래스를 만드는 가장 쉬운 방법은 final로 선언하는 방법이지만 더 유연한 방법이 있다.
     
-    > 생성자를 private 혹은 package-private으로 만들고 public 정적 팩토리를 제공하는 방법
     ``` java
     public class Complex {
         private final double re;
@@ -168,40 +169,43 @@ public final class Complex {
     }
     ```
     
-바깥(client로 칭함)에서는 사실상 final로 public이나 protected 생성자가 없으니 다른 패키지에서는 이 클래스를 확장하는 게 불가능하다.
-정적 팩토리 방식은 다수의 구현 클래스를 활용한 유연성을 제공하고, 다음 릴리즈에서 객체 캐싱 기능을 추가해 성능을 끌어올릴 수도 있다.
+  - 바깥(client로 칭함)에서는 사실상 final로 public이나 protected 생성자가 없으니 다른 패키지에서는 이 클래스를 확장하는 게 불가능하다.
+  - 정적 팩토리 방식은 다수의 구현 클래스를 활용한 유연성을 제공하고, 다음 릴리즈에서 객체 캐싱 기능을 추가해 성능을 끌어올릴 수도 있다.
 
-불변 객체가 아닌 객체를 인수로 받는 상황에서 이 값들이 불변이어야 클래스의 보안을 지킬 수 있다면 방어적으로 복사해 사용해야 한다.
-
-BigInteger, BigDecimal은 불변 클래스로 사용되지만 설계 당시 잘못된 설계로
-     모든 메소드가 재정의될 수 있게 설계되었다. 
-     따라서 인수로 받은 BigInteger가 이를 상속한 하위 클래스의 인스턴스인지
-     확신할 수 없으니 이를 가변이라 가정하고 방어적으로 복사해 사용해야 한다.
+- 불변 객체가 아닌 객체를 인수로 받는 상황에서 이 값들이 불변이어야 클래스의 보안을 지킬 수 있다면 방어적으로 복사해 사용해야 한다.
+  - BigInteger, BigDecimal은 불변 클래스로 사용되지만 설계 당시 잘못된 설계로 모든 메소드가 재정의될 수 있게 설계되었다. 
+  - 따라서 인수로 받은 BigInteger가 이를 상속한 하위 클래스의 인스턴스인지 확신할 수 없으니 이를 가변이라 가정하고 방어적으로 복사해 사용해야 한다.
     ``` java
     public static BigInteger safeInstance(BigInteger val) {
         return val.getClass() == BigInteger.class ? val : new BigInteger(val.toByteArray());
     }
     ```
-성능을 위해 불변 클래스의 규칙을 완화할 수 있다.
-"모든 필드가 final이고 어떤 메소드도 그 객체를 수정할 수 없어야 한다"는 원칙은 과한 감이 있어서 성능을 위해 다음처럼 완화할 수 있다. → "어떤 메소드도 객체의 상태 중 외부에 비치는 값을 변경할 수 없다."
-어떤 불변 클래스는 계산 비용이 큰 값을 나중에 계산하여 final이 아닌 필드에 캐시해놓기도 한다. 똑같은 값을 다시 요청하면 캐시해둔 값을 반환하여 계산 비용을 절감하는 것이다.
-private int hashCode;
 
-// 처음 불렸을 때 해시 값을 계산해 캐시한다.
-@Override
-public int hashCode() {
-    int result = hashCode;
-    if (result == 0) {
-        result = Short.hashCode(areaCode);
-        result = 31 * result + Short.hashCode(prefix);
-        result = 31 * result + Short.hashCode(lineNum);
-        hashCode = result;
+- 성능을 위해 불변 클래스의 규칙을 완화할 수 있다.
+> "모든 필드가 final이고 어떤 메소드도 그 객체를 수정할 수 없어야 한다"는 원칙은 과한 감이 있어서 성능을 위해 아래와 같이 완화할 수 있다. 
+>   → "어떤 메소드도 객체의 상태 중 외부에 비치는 값을 변경할 수 없다."
+
+  - 어떤 불변 클래스는 계산 비용이 큰 값을 나중에 계산하여 final이 아닌 필드에 캐시해놓기도 한다. 똑같은 값을 다시 요청하면 캐시해둔 값을 반환하여 계산 비용을 절감하는 것이다.
+
+    ``` java
+    private int hashCode;
+    // 처음 불렸을 때 해시 값을 계산해 캐시한다.
+    @Override
+    public int hashCode() {
+        int result = hashCode;
+        if (result == 0) {
+            result = Short.hashCode(areaCode);
+            result = 31 * result + Short.hashCode(prefix);
+            result = 31 * result + Short.hashCode(lineNum);
+            hashCode = result;
+        }
+        return result;
     }
-    return result;
-}
-직렬화할 때 추가로 주의할 점
-Serializable을 구현하는 불변 클래스의 내부에 가변 객체를 참조하는 필드가 있다면 readObject나 readResolve 메소드를 반드시 제공하거나, ObjectOutputStream.writeUnshared와 ObjectInputStream.readUnshared 메소드를 사용해야 한다.
-플랫폼이 제공하는 기본 직렬화 방법이면 충분하더라도 말이다. 그렇지 않으면 공격자가 이 클래스로부터 가변 인스턴스를 만들어낼 수 있다.
+    ``` 
+> 직렬화할 때 추가로 주의할 점
+> Serializable을 구현하는 불변 클래스의 내부에 가변 객체를 참조하는 필드가 있다면 readObject나 readResolve 메소드를 반드시 제공하거나, ObjectOutputStream.writeUnshared와 
+> ObjectInputStream.readUnshared 메소드를 사용해야 한다.
+> 플랫폼이 제공하는 기본 직렬화 방법이면 충분하더라도 말이다. 그렇지 않으면 공격자가 이 클래스로부터 가변 인스턴스를 만들어낼 수 있다.( item88 to be continued.. )
 
 > 정리
   > 클래스는 꼭 필요한 경우가 아니라면 불변이어야 한다.
