@@ -146,8 +146,8 @@ public final class Complex {
 
 ### 4. 불변 클래스를 만드는 또 다른 설계 방법
 앞에서 말했듯 불변 클래스를 만드는 가장 쉬운 방법은 final로 선언하는 방법이지만 더 유연한 방법이 있다.
-> 생성자를 private 혹은 package-private으로 만들고 public 정적 팩토리를 제공하는 방법
-
+    
+    > 생성자를 private 혹은 package-private으로 만들고 public 정적 팩토리를 제공하는 방법
     ``` java
     public class Complex {
         private final double re;
