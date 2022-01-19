@@ -114,41 +114,57 @@ public final class Complex {
   - 불변 객체는 값의 가짓수가 많다면 이들을 모두 만드는 데 큰 비용을 치러야 한다는 단점이 있다.
   - 예를 들어 백만 비트짜리 BigInteger에서 비트 하나를 바꿔야 한다고 하면 원본과 단지 한 비트만 다른 백만 비트짜리 BigInteger 인스턴스를 생성한다. 이 연산은 BigInteger의 크기에 비례해 시간과 공간을 잡아먹는다.
 
-> bit하나에 
-``` java
-BigInteger moby = ...;
-moby = moby.flipBit(0);    // 새로운 BigInteger 인스턴스 생성 : 
-```
+    > 예시> immutable case bit : 하나를 변경하는데 자원낭비가 심함
+    ``` java
+    BigInteger moby = ...;
+    moby = moby.flipBit(0);    // 새로운 BigInteger 인스턴스 생성 : 
+    ```
+    
+    > 예시> non-immutable case : 가변
+    ``` java
+    BigSet moby = ...;
+    moby.flip(0);    // BigSet 인스턴스
+    ```
 
-값이 다를 때마다 독립된 객체를 만드는 경우의 주의사항
+- 값이 다를 때마다 독립된 객체를 만드는 경우의 주의사항
 원하는 객체를 완성하기까지의 단계가 많고, 그 중간 단계에서 만들어진 객체들이 모두 버려진다면 성능이 저하될 것이다. 이 문제에 대처하는 방법은 두 가지다.
-(1) 흔히 쓰일 다단계 연산(multistep operation)들을 예측하여 기본 기능으로 제공한다.
+
+#### (1) 흔히 쓰일 다단계 연산(multistep operation)들을 예측하여 기본 기능으로 제공 ####
 
 다단계 연산을 기본으로 제공한다면 더 이상 각 단계마다 객체를 생성하지 않아도 된다.
-예컨대 BigInteger는 모듈러 지수 같은 다단계 연산 속도를 높여주는 가변 동반 클래스(companion class)를 package-private으로 두고 있다. 클라이언트들이 원하는 복잡한 연산들을 정확히 예측할 수 있다면 package-private의 가변 동반 클래스만으로 충분하다.
-(2) 다단계 연산을 제공하는 가변 동반 클래스를 public으로 제공한다.
+예컨대 BigInteger는 모듈러 지수 같은 다단계 연산 속도를 높여주는 가변 동반 클래스(companion class)를 package-private으로 두고 있다. 
+![image](https://user-images.githubusercontent.com/5934737/150108068-2e81a00c-4582-4b7a-9977-4f1446f75048.png)
+
+클라이언트들이 원하는 복잡한 연산들을 정확히 예측할 수 있다면 package-private의 가변 동반 클래스만으로 충분하다.
+> 예 : 소수인 이 BigInteger보다 큰 첫 번째 정수를 반환
+![image](https://user-images.githubusercontent.com/5934737/150108003-689b741b-8851-4067-9b5a-f04cb6370ebb.png)
+
+#### (2) 다단계 연산을 제공하는 가변 동반 클래스를 public으로 제공 #### 
 
 클라이언트들이 원하는 복잡한 연산들을 예측할 수 없다면 이 클래스를 public으로 제공하는 것이 최선이다.
 대표적인 예는 String 클래스로 String은 가변 동반 클래스인 StringBuilder/StringBuffer 를 제공하고 있다.
-불변 클래스를 만드는 또 다른 설계 방법
+
+### 4. 불변 클래스를 만드는 또 다른 설계 방법
 생성자를 외부에서 사용하지 못하게 만들고 public 정적 팩토리를 제공한다.
 불변 클래스를 만드는 가장 쉬운 방법은 final로 선언하는 방법이지만 더 유연한 방법이 있다.
 생성자를 private 혹은 package-private으로 만들고 public 정적 팩토리를 제공하는 방법이다.
 public이나 protected 생성자가 없으니 다른 패키지에서는 이 클래스를 확장하는 게 불가능하다.
 정적 팩토리 방식은 다수의 구현 클래스를 활용한 유연성을 제공하고, 다음 릴리즈에서 객체 캐싱 기능을 추가해 성능을 끌어올릴 수도 있다.
-public class Complex {
-    private final double re;
-    private final double im;
+    ``` java
+    public class Complex {
+        private final double re;
+        private final double im;
 
-    private Complex(double re, double im) {
-        this.re = re;
-        this.im = im;
-    }
+        private Complex(double re, double im) {
+            this.re = re;
+            this.im = im;
+        }
 
-    public static Complex valueOf(double re, double im) {
-        return new Complex(re, im);
+        public static Complex valueOf(double re, double im) {
+            return new Complex(re, im);
+        }
     }
-}
+    ``` 
 불변 객체가 아닌 객체를 인수로 받는 상황에서 이 값들이 불변이어야 클래스의 보안을 지킬 수 있다면 방어적으로 복사해 사용해야 한다.
 /**
  * BigInteger, BigDecimal은 불변 클래스로 사용되지만 설계 당시 잘못된 설계로
