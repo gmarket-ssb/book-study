@@ -13,7 +13,7 @@
 
 이 중에서 정적 멤버 클래스를 제외한 나머지를 내부 클래스 (inner class)라고 한다.
 
-![img.png](https://media.vlpt.us/images/cocodori/post/36017566-1426-413d-a7da-5159b87d03c5/innerclass.png)
+![image](https://user-images.githubusercontent.com/57203073/151280264-a6f145f4-fc85-402c-8bb0-f390a039d27a.png)
 
 ### 정적 멤버 클래스
 >바깥 클래스의 인스턴스 생성없이 바로 접근이 가능하다.<br>
