@@ -46,8 +46,8 @@ class Chooser {
 class Chooser2<T> {
     private final T[] choiceArray;
 
-		// 소거되어 무슨 타입인지 알 수 없기 떄문에 경고 발생
-		// 애초에 경고를 제거하는 편이 더 낫다.
+	// 소거되어 무슨 타입인지 알 수 없기 떄문에 경고 발생
+	// 애초에 경고를 제거하는 편이 더 낫다.
     public Chooser2(Collection<T> choices) {
         choiceArray = (T[]) choices.toArray(); // unchecked warnings
     }
