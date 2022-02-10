@@ -30,15 +30,24 @@ public static <E> Set<E> union(Set<E> s1, Set<E> s2) {
 ### 제네릭 싱글턴 팩토리(Generic Singleton Factory)
 요청한 타입 매개변수에 맞게 매번 그 객체의 타입을 바꿔주는 정적 팩토리
 ```java
-private static class EmptyMap<K,V> extends AbstractMap<K,V> implements Serializable { 
+package java.util;
+
+public class Collections {
   ...
-  public Set<K> keySet()                     {return emptySet();}
-  public Collection<V> values()              {return emptySet();}
-  public Set<Map.Entry<K,V>> entrySet()      {return emptySet();}
-  ..
+  private static class EmptyMap<K,V> extends AbstractMap<K,V> implements Serializable { 
+    ...
+    public Set<K> keySet()                     {return emptySet();}
+    public Collection<V> values()              {return emptySet();}
+    public Set<Map.Entry<K,V>> entrySet()      {return emptySet();}
+    ...
+    @SuppressWarnings("unchecked")
+    public static final <T> Set<T> emptySet() {
+      return (Set<T>) EMPTY_SET;
+    }
+  }
 }
 ```
-<br><br>
+<br>
 
 ### 재귀적 타입 한정(Recursive type bound)
 자기 자신이 들어간 표현식을 사용하여 타입 매개변수의 허용범위를 한정할 수 있는 방식
@@ -46,10 +55,12 @@ private static class EmptyMap<K,V> extends AbstractMap<K,V> implements Serializa
 public interface Comparable<T> {
   int compareTo(T p);
 }
+
+// client code
+static <T extends Comparable<T>> T max(List<T> list) { ... }
 ```
-* 여기서 타입 매개변수 `T` 는 `Comparable<T>` 를 구현한 타입이 비교할 수 있는 원소의 타입을 정의함<br>
-(실제로 거의 모든 타입은 자신과 같은 타입의 원소와만 비교할 수 있다.)
-* 주로 타입의 자연적 순서를 정하는 `Comparable` 인터페이스와 함께 쓰인다.
+* 최댓값을 구하는 위 메소드의 `<T extends Comparable<T>>` 부분이 재귀적 타입 한정을 표현한 부분이며, **"자신과 비교될 수 있는 모든 타입 T"** 라고 읽을 수 있다.
+* 따라서 재귀적 타입 한정은, 주로 타입의 자연적 순서를 정하는 `Comparable` 인터페이스와 함께 쓰인다.
 <br><br>
 
 ### 핵심 정리
