@@ -113,6 +113,7 @@ where CAP#1 is a fresh type-variable:
 컬렉션의 타입 불변식을 훼손하지 못하게 막았다.  
 구체적으로는, null 이외의 어떤 원소도 Collection<?>에 넣지 못하게 했으며  
 컬렉션에서 꺼낼 수 있는 객체의 타입도 전혀 알 수 없게 했다.
+(Collection<?>에 어떤 타입의 Collection이 올지 모르기 때문에 타입이 존재하는 값을 넣을수 없음 -> 31장 참고)
 
 ### raw 타입을 사용하는 예외
 
