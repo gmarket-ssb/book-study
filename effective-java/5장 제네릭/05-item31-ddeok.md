@@ -4,8 +4,7 @@
 
 
 매개변수화 타입은 불공변(invariant)  
-ex) List< String >  
-List< Type1 >은 List< Type2 >의 하위타입도 상위 타입도 아니다. (리스코프 치환원칙에 위배)  
+ex) List< String >
 List< String > 은 List < Object >가 하는 일을 제대로 수행하지 못하니 하위타입이 될 수 없음.
 
 이럴때 필요한 유연한 것: 한정적 와일드카드
