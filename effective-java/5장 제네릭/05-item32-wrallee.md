@@ -30,7 +30,7 @@ varargs와 generic 혼용으로 인한 heap pollution 발생. 그리고 ClassCas
 
 > <ins>메서드가 안전한 게 확실하지 않다면 절대로 @SafeVarargs 애너테이션을 달아서는 안 된다.</ins>
 
-제네릭이나 매개변수화 타입의 varargs를 받는 모든 메서드에 @SafeVarargs를 붙여라.
+제네릭이나 매개변수화 타입의 varargs를 받는 모든 메서드에 @SafeVarargs를 붙여라.  
 **= 이 말은 곧 안전하지 않은 varargs 메서드는 절대로 작성하지 말라는 이야기이다.**
 
 <br>
@@ -42,7 +42,7 @@ varargs와 generic 혼용으로 인한 heap pollution 발생. 그리고 ClassCas
 - varargs 배열을 수정하지 않는다.
 - varargs 배열 참조를 노출하지 않는다.
 
-배열을 수정하여 heap pollution이 발생하는 사례는 위에 소개를 했다.
+배열을 수정하여 heap pollution이 발생하는 사례는 위에 소개를 했다.  
 다음은 배열 참조를 노출하여 heap pollution이 발생하는 사례이다.
 
 ```java
