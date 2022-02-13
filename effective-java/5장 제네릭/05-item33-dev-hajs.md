@@ -67,6 +67,6 @@ public class Item33 {
   * 컴파일타임 타입 정보와 런타임 타입 정보를 알아내기 위해 메서드들이 주고받는 class 리터럴을 의미함
   * ex. `objectMapper.readValue(jsonString, Book.class)` -> 클래스 리터럴이 타입 토큰으로 쓰인 경우
 * 슈퍼 타입 토큰
-  * 상속과 리플렉션을 조합해 타입 토큰을 넘어서 `List<String>` 와 같은 형태도 타입 토큰으로 사용할 수 있도록 만든 경우
-  * 자세한 내용은 Neal Gater 블로그 글을 참고.. http://gafter.blogspot.com/2006/12/super-type-tokens.html
+  * 상속과 리플렉션을 조합해 타입 토큰을 넘어서 `List<String>` 와 같은 형태도 타입 토큰으로 사용할 수 있도록 만든 토큰
+  * 자세한 내용은 Neal Gafter 블로그 글을 참고.. http://gafter.blogspot.com/2006/12/super-type-tokens.html
 <br><br>
