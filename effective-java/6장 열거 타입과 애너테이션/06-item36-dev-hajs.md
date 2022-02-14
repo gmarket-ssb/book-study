@@ -24,7 +24,8 @@
   ```java
   public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E> implements Cloneable, java.io.Serializable {...}
   ```
-  * EnumSet 은 Set 인터페이스를 완벽히 구현하여 타입 안전하고, 다른 어떤 Set 구현체와도 함께 사용할 수 있다.<br><br>
+  * EnumSet 은 Set 인터페이스를 완벽히 구현하여 타입 안전하고, 다른 어떤 Set 구현체와도 함께 사용할 수 있다.
+  * 또 내부적으로 비트 백터를 사용하고, enum 값 개수가 64개 이하인 경우에는 long 값 하나만 사용하기에 비트 만큼의 성능이 나온다.<br><br>
 * 그럼 EnumSet 을 사용하여 위 코드를 바꿔보자., 짧고 깔끔하고 안전해진다.
   ```java
   public clss Text {
