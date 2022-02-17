@@ -53,7 +53,7 @@ private static final int PLANET_MERCURY = 0;
     }
     ```
 
-1. 각 상수를 특정 데이터와 연결 짓거나 상수마다 다르게 동작하게 할 떄 열거 타입
+1. 데이터와 메서드를 갖는 열거 타입
 
     ```java
     public enum Planet {
@@ -173,7 +173,7 @@ private static final int PLANET_MERCURY = 0;
             return payType.pay(minutesWorked, payRate);
         }
     
-            // effectively static
+        // effectively static
         enum PayType {
             WEEKDAY {
                 @Override
