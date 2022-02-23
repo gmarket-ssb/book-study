@@ -113,3 +113,10 @@ private static void test(Collection<? extends Operation> opSet, double x, double
 ### 정리
 > 확장할 수 있는 열거 타입이 필요한 경우 인터페이스를 정의하여 구현하자
 > 열거 타입끼리는 상속이 되지 않는다.
+
+### [추가] Enum을 상속할 수 없는 이유
+열거형은 컴파일 시점에 JAVA 컴파일러가 열거형을 추상 클래스 java.lang.Enum의 하위클래스로 바꾸며, 열거형을 final class로 컴파일합니다.
+
+따라서
+- final class이므로 상속 할 수 없고
+- 가능하더라도 Enum을 기본적으로 상속받고 있는 상황에서 추가 Custom Enum class을 추가로 상속하는 상황은 다중 상속이 되므로 불가합니다.
