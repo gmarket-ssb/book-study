@@ -14,7 +14,13 @@
 |Operator|UnaryOperator<T>|매개값O,리턴값O(주로 연산)|T apply(T t)|String::toLowerCase|
 ||BinaryOperator<T>||T apply(T t1, T t2)|BigInteger::add|
 |Predicate|Predicate<T>|매개값O,리턴값O(boolean)|boolean test(T t)|Collection::isEmpty|
-
+```java
+public static void main(String[] args) {
+    Predicate<String> isEmpty = String::isEmpty;
+    System.out.println(isEmpty.test("하지수")); // true
+    System.out.println(isEmpty.test("")); // false
+}
+```
 <br>
   
 ### 표준 함수형 인터페이스 vs 직접 만든 함수형 인터페이스
