@@ -11,11 +11,13 @@
 ```java
 String source = "Abc,abc,def,def,def,ghi,jkl";
 
+// Stream을 잘못 사용한 예
 Map<String, Long> freq = new HashMap<>();
 try (Stream<String> words = new Scanner(source).useDelimiter(",").tokens()) {
     words.forEach(word -> freq.merge(word.toLowerCase(), 1L, Long::sum));
 }
 
+// Stream을 잘 사용한 예
 Map<String, Long> freq2;
 try (Stream<String> words = new Scanner(source).useDelimiter(",").tokens()) {
     freq2 = words.collect(groupingBy(String::toLowerCase, counting()));
@@ -79,7 +81,7 @@ try (Stream<String> words = new Scanner(source).useDelimiter(",").tokens()) {
     ```
 
 4. groupingBy  
-입력으로 분류 함수(classifier)를 받고 출력으로는 원소들을 카테고리별로 모아 놓은 맵을 담은 수집기를 반환한다. 세가지에 대응하는 groupingByConcurrent 메서드도 제공된다.
+입력으로 분류 함수(classifier)를 받고 출력으로는 원소들을 카테고리별로 모아 놓은 맵을 담은 수집기를 반환한다. 세가지에 대응하는 `groupingByConcurrent` 메서드도 제공된다.
     ```java
     // 인수 1개 받는 groupingBy 예
     Map<String, List<String>> groupingBy = Stream.of(source.split(",")).collect(groupingBy(word -> alphabetize(word)));
@@ -106,7 +108,6 @@ try (Stream<String> words = new Scanner(source).useDelimiter(",").tokens()) {
 
 ## 핵심정리
 
-- 스트림 파이프라인 프로그래밍의 핵심은 부작용 없는 함수 객체에 있다.
-    - 스트림 연산에 건네지는 모든 함수 객체는 부작용이 없어야 한다.
+- 스트림 연산에 건네지는 모든 함수 객체는 부작용이 없어야 한다.
 - 스트림의 종단 연산 `forEach`는 스트림이 수행한 계산 결과를 보고할 때만 이용해야 한다.
 - 스트림을 올바로 사용하려면 수집기를 잘 알아둬야 한다.
