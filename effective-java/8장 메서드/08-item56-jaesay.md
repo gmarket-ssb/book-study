@@ -4,40 +4,34 @@
 
 ## 표준 규약
 
-메서드용 문서화 주석에는 해당 메서드와 클라이언트 사이의 규약을 명료하게 기술해야 한다.
+- 메서드용 문서화 주석에는 해당 메서드와 클라이언트 사이의 규약을 명료하게 기술해야 한다.
+  - how가 아닌 what을 기술
+      - 상속용 클래스의 메서드일 경우는 예외
+  - 전제조건(precondition)을 모두 나열
+      - @throws 태그로 비검사예외와 전제조건 하나를 연결
+      - @param 태그를 이용해 그 조건에 영향받는 매개변수에 기술
+  - 사후조건(postcondition) 모두 나열
+  - 사후조건으로 명확히 나타나지는 않지만 시스템 상태에 어떤한 변화를 가져오는 변화(부작용) 기술
+      - e.g. 백그라운드 쓰레드
 
-- how가 아닌 what을 기술
-    - 상속용 클래스의 메서드일 경우는 예외
-- 전제조건(precondition)을 모두 나열
-    - @throws 태그로 비검사예외와 전제조건 하나를 연결
-    - @param 태그를 이용해 그 조건에 영향받는 매개변수에 기술
-- 사후조건(postcondition) 모두 나열
-- 사후조건으로 명확히 나타나지는 않지만 시스템 상태에 어떤한 변화를 가져오는 변화(부작용) 기술
-    - e.g. 백그라운드 쓰레드
-
-메서드의 계약(contract)을 완벽히 기술하려면 아래사항을 지켜야 한다.
-
-- 모든 매개변수에 @param 태그
-- 반환타입이 void가 아니라면 @return 태그
-- 발생할 가능성이 있는 모든 예외에 @throws
-- 코딩 표준에서 허락한다면 @return 태그의 설명이 메서드 설명과 같을 때 @return 태그 생략
-- 관례상 @param 태그와 @return 태그의 설명은 해당 매개변수가 뜻하는 값이나 반환값을 설명하는 명사구를 쓴다. @throws 태그의 설명은 if로 시작해 해당 예외를 던지는 조건을 설명하는 절이 뒤따른다. (영어일 경우) @param, @return, @throws 태그의 설명에는 마침표를 붙이지 않는다.
-- 인스턴스 메서드의 문서화 주석에 쓰이는 this는 호출된 메서드가 자리하는 객체를 가리킨다.
-
-```java
-/**
- * Returns the element at the specified position in this list.
- *
- * @param index index of the element to return
- * @return the element at the specified position in this list
- * @throws IndexOutOfBoundsException if the index is out of range
- *         ({@code index < 0 || index >= size()})
- */
-E get(int index);
-```
-
-## 자바독 특징
-
+- 메서드의 계약(contract)을 완벽히 기술하려면 아래사항을 지켜야 한다.
+  - 모든 매개변수에 @param 태그
+  - 반환타입이 void가 아니라면 @return 태그
+  - 발생할 가능성이 있는 모든 예외에 @throws
+  - 코딩 표준에서 허락한다면 @return 태그의 설명이 메서드 설명과 같을 때 @return 태그 생략
+  - 관례상 @param 태그와 @return 태그의 설명은 해당 매개변수가 뜻하는 값이나 반환값을 설명하는 명사구를 쓴다. @throws 태그의 설명은 if로 시작해 해당 예외를 던지는 조건을 설명하는 절이 뒤따른다. (영어일 경우) @param, @return, @throws 태그의 설명에는 마침표를 붙이지 않는다.
+  - 인스턴스 메서드의 문서화 주석에 쓰이는 this는 호출된 메서드가 자리하는 객체를 가리킨다.
+  ```java
+  /**
+   * Returns the element at the specified position in this list.
+   *
+   * @param index index of the element to return
+   * @return the element at the specified position in this list
+   * @throws IndexOutOfBoundsException if the index is out of range
+   *         ({@code index < 0 || index >= size()})
+   */
+  E get(int index);
+  ```
 - 자바독 유틸리티는 문서화 주석을 HTML로 변환하므로 문서화 주석 안의 HTML 요소들이 최종적으로 문서에 반영된다. HTML 메타문자를 주의해서 사용해야 한다.
 - {@code} 태그
     - 코드용 폰트로 랜더링
