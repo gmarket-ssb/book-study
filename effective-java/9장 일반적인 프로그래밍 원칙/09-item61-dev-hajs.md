@@ -33,6 +33,7 @@ public class Unbelievable {
 * 자바 언어가 타입 매개변수로 기본 타입을 지원하지 않기에 **매개변수화 타입이나 매개변수화 메서드의 타입매개변수** 로 사용한다.
   * `ThreadLocal<Integer>` ...
 * **리플렉션을 통해 메서드를 호출할 때** 도 박싱된 기본타입을 사용해야 한다.
+   * `Method.invoke(Object object)` -> [docs](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#invoke-java.lang.Object-java.lang.Object...-)
 <br>
 
 ### 정리
