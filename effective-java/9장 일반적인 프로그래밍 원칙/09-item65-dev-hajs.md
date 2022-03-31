@@ -27,3 +27,17 @@
 
 ### 결론
 * 리플렉션은 아주 제한된 형태로만 사용해야 그 단점을 피하고 이점만 취할 수 있다.
+* **리플렉션을 사용해야 한다면 되도록 객체 생성에만 사용하고, 생성한 객체를 이용할 때는 적절한 인터페이스나 컴파일타임에 알 수 있는 상위 클래스로 형변환해 사용해야 한다.**
+  ```java
+  // 클래스 이름을 Class 객체로 변환
+  Class<? extends Set<String>> cl = null;
+  cl = Class.forName(args[0]);
+  
+  // 생성자를 얻음
+  Constructor<? extends Set<String>> cons = null;
+  cons = cl.getDeclaredConstructor();
+  
+  // 집합(Set<String>인터페이스)의 인스턴스를 생성
+  Set<String> s = null;
+  s = cons.newInstance();
+  ```
