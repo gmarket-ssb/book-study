@@ -1,7 +1,14 @@
 # readObject 메서드는 방어적으로 작성하라.
 
+* 방어적복사( Defensive copy)
+  - 생성자를 통해 초기화 할 때, 새로운 객체로 감싸서 복사해주는 방법이다. 외부와 내부에서 주소값을 공유하는 인스턴스의 관계를 끊어주기 위함
+* mutable vs imutable
+  - stringBuilder의 값을 abc에서 abcdef로 변경하였을 때, 메모리 주소 값이 변경되지 않았다. 이는 곧 1785210046의 메모리 주소에 할당된 abc란 값이 abcdef로 변한 것임을 나타낸다. 따라서 StringBuffer class는 Mutable하게 동작
+  - str의 값을 abc에서 abcdef로 변경하였을 때, 메모리 주소 값도 같이 변경되었다. 이는 곧 1785210046의 메모리 주소에 할당된 abc란 값이 abcdef로 변한 것이 아니라 1151020327의 메모리 주소에 abcdef란 값을 가진 String 객체가 새로 생성된 것임을 나타낸다. 따라서 String class는 Immutable하게 동작
+ 
 ## readObject 메서드
-
+ - readObject는 Public 생성자이므로 방어적 복사를 고려해야한다.
+ - 
  - 우리는 InputObjectStream / OutputObjectStream 를 통해 객체를 읽고 쓴다.
  - 이 클래스에 포함된 메서드가 readObject() / writeObject() 이다.
  - 클래스에 readObject() / writeObject() 가 정의되어 있다면, 기본 직렬화 과정에서 이 메서드를 통해 직렬화와 역직렬화를 수행한다.
@@ -198,4 +205,12 @@ private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundEx
  - readObject 메서드에서 재정의 가능 메서드를 호출하면 안된다. (item 19)
     - 클래스가 final 이 아닌 경우에만 해당
     - 이 클래스의 하위 클래스가 불리기 이전에 생성자의 재정의된 메서드가 실행되므로 오류를 뱉게 될 것이다.
-    
+
+### 참고
+
+https://velog.io/@guswlsapdlf/Java%EC%9D%98-Mutable%EA%B3%BC-Immutable
+https://velog.io/@max9106/Java-%EB%B0%A9%EC%96%B4%EC%A0%81-%EB%B3%B5%EC%82%ACDefensive-copy
+https://stackoverflow.com/questions/9979982/should-i-use-the-final-modifier-when-creating-date-objects
+
+Mutable vs Imutable
+<img width="834" alt="image" src="https://user-images.githubusercontent.com/5934737/165678520-c0c54f72-dace-47cc-a1d7-b84c79794d3a.png">
