@@ -108,17 +108,34 @@ public static void main(String[] args) {
     System.out.println(p); // Wed Nov 22 00:21:29 PST 2017 - Wed Nov 22 00:21:29 PST 1969
 }
 ```
-이 예시에서 Period 인스턴스는 불변식을 유지한 채 생성됐지만 의도적으로 내부의 값을 수정할 수 있었다.
-이처럼 변경할 수 있는 Period 인스턴스를 획득한 공격자는 인스턴스가 불변이라고 가정하는 클래스에 넘겨 엄청난 보안 문제를 일으킬 수 있다.
+문제는 정상적으로 직렬화된 Period 인스턴스의 바이트 스트림 끝에
+private Date 필드로의 참조를 추가하면 가변 Period 인스턴스를 만들어 낼 수가 있다.
+공격자는 ObjectInputStream에서 Period 인스턴스를 읽은 후, 스트림 끝에 추가되어 있는'악의적인 객체 참조'를 읽어 Period 객체의 내부 정보를 얻을 수 있다. 
+그리고 이 참조로 얻은 Date 인스턴스들을 검사 없이 수정해버릴 수도 있으니, Period 인스턴스의 필드는 더 이상 검사되지 않는다.
 
-이 문제의 근원은 Period의 readObject메서드가 방어적 복사를 충분히 하지 않은 데 있다.
-객체를 직렬화할 때는 클라이언트가 소유해서는 안 되는 객체 참조를 갖는 필드를 모두 방어적으로 복사해야 한다.
-따라서 readObject에서는 불변 클래스 안의 모든 private 가변 요소를 방어적으로 복사 해야한다.
+즉,이 예에서 Period 인스턴스는 불변식을 유지한 채 생성됐지만, 이렇게 의도적으로 내부의 값을 수정할 수 있다. 
+이처럼 변경할 수 있는 Period 인스턴스를 획득한 공격자는 이 인스턴스가 불변이라고 가정하는 클래스에 넘겨 엄청난 보안 문제를 일으킬 수 있다.
 
-## readObject 의 문제점
- - 새로운 객체를 만들어내는 특이한 public 생성자와 같다고 할 수 있다.
- - 따라서, 생성자처럼 `유효성검사`, `방어적 복사` 를 수행해야한다. 그렇지 않으면, 불변식을 보장하지 못한다.
- 
+### readObject 메서드에서는 private 가변요소를 방어 복사하라
+```java
+private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+    s.defaultReadObject();
+    
+    // 가변 요소들을 방어적으로 복사한다.
+    start = new Date(start.getTime());
+    end = new Date(end.getTime());
+    
+    // 불변식을 만족하는지 검사한다.
+    if(start.compareTo(end) > 0) {
+       throw new InvalidObjectException(start + "가 " + end + "보다 늦다.");
+    }
+}
+```
+방어적 복사를 유효성 검사보다 앞서 수행하며, Date의 clone 메서드는 사용하지 않았음에 주목하자.
+두 조치 모두 Period를 공격으로 부터 보호하는데 필요하다.
+또한 final 필드는 방어적 복사가 불가능 하니 주의하자
+그래서 이 readObject를 사용하려면 start와 end필드에서 final 한정자를 제거해야 한다.
+
 ### 불변식을 보장하지 못하는 사례 : Period 클래스 유효성 검사
  - readObject() 를 정의하지 않아서, 자바의 기본 직렬화를 수행한다.
  ```java
