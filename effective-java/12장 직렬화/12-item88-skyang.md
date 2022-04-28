@@ -8,18 +8,113 @@
  
 ## readObject 메서드
  - readObject는 Public 생성자이므로 방어적 복사를 고려해야한다.
- - 
- - 우리는 InputObjectStream / OutputObjectStream 를 통해 객체를 읽고 쓴다.
- - 이 클래스에 포함된 메서드가 readObject() / writeObject() 이다.
- - 클래스에 readObject() / writeObject() 가 정의되어 있다면, 기본 직렬화 과정에서 이 메서드를 통해 직렬화와 역직렬화를 수행한다.
-    - 커스텀한 직렬화 (직렬화에 특정 처리를 하고 싶을 때) 사용.
-    - private 메서드로 작성해야 한다.
-    - 이 메서드들의 처음에 defaultWriteObject() / defaultReadObject() 를 호출하여 기본 직렬화를 실행하게 해야한다.
-    - 리플렉션을 통해 작업을 수행한다.
+ ```java
+public class BogusPeriod {
+    
+    private static final byte[] serializedForm = {
+        (byte)0xac, (byte)0xed, 0x00, 0x05, 0x73, 0x72, 0x00, 0x06....
+    }
+    
+    public static void main(String[] args) {
+        Period p = (Period) deserialize(serializedForm);
+        System.out.println(p);
+    }
+    
+    static Object deserialize(byte[] sf) {
+        try {
+            return new ObjectInputStream(new ByteArrayInputStream(sf)).readObject();
+        } catch(IOException | ClassNotFoundException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+}
+```
+- 이 코드의 serializedForm에서 상위 비트가 1인 바이트 값들은 byte로 형변환했는데,
+- 이는 자바가 바이트 리터럴을 지원하지 않고 byte 타입은 부호가 있는 (signed) 타입이기 때문이다.
+- 위의 프로그램을 실행하면
+Fri Jan 01 12:00:00 PST 1999 - Sun Jan 01 12:00:00 PST 1984를 출력한다.
+- Period를 직렬화할 수 있도록 선언한 것 만으로도 불변식을 깨뜨리는 객체를 만들 수 있다.
 
 <br>
 <br>
+
+## 그럼 어떻게? - 유효성검사수행
+역직렬화 된 이후 유효성검사를 추가로 수행한다.
+```java
+private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+    s.defaultReadObject();
     
+    // 불변식을 만족하는지 검사한다.
+    if(start.compareTo(end) > 0) {
+       throw new InvalidObjectException(start + "가 " + end + "보다 늦다.");
+    }
+}
+```
+- 위의 if문 추가로 허용되지 않는 Period 인스턴스가 생성되는 일을 막을 수 있지만, 아직도 미묘한 문제가 숨어있다.
+정상 Period 인스턴스에서 시작된 바이트 스트림 끝에 private Date 필드로의 참조를 추가하면 가변 Period 인스턴스를 만들 수 있다
+ 
+```java
+ public class MutablePeriod {
+    //Period 인스턴스
+    public final Period period;
+    
+    //시작 시각 필드 - 외부에서 접근할 수 없어야 한다.
+    public final Date start;
+    //종료 시각 필드 - 외부에서 접근할 수 없어야 한다.
+    public final Date end;
+    
+    public MutablePeriod() {
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectArrayOutputStream out = new ObjectArrayOutputStream(bos);
+            
+            //유효한 Period 인스턴스를 직렬화한다.
+            out.writeObject(new Period(new Date(), new Date()));
+            
+            /**
+             * 악의적인 '이전 객체 참조', 즉 내부 Date 필드로의 참조를 추가한다.
+             * 상세 내용은 자바 객체 직렬화 명세의 6.4절을 참고
+             */
+            byte[] ref = {0x71, 0, 0x7e, 0, 5}; // 참조 #5
+            bos.write(ref); // 시작 start 필드 참조 추가
+            ref[4] = 4; //참조 #4
+            bos.write(ref); // 종료(end) 필드 참조 추가
+            
+            // Period 역직렬화 후 Date 참조를 훔친다.
+            ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
+            period = (Period) in.readObject();
+            start = (Date) in.readObject();
+            end = (Date) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new AssertionError(e);
+        }
+    }
+}
+```
+다음 공격 코드를 실행하면 이 공격이 실제로 이뤄지는 모습을 확인할 수 있다.
+
+```java
+public static void main(String[] args) {
+    MutablePeriod mp = new MutablePeriod();
+    Period p = mp.period;
+    Date pEnd = mp.end;
+    
+    //시간 되돌리기
+    pEnd.setYear(78);
+    System.out.println(p); // Wed Nov 22 00:21:29 PST 2017 - Wed Nov 22 00:21:29 PST 1978
+    
+    //60년대로 회귀
+    pEnd.setYear(60);
+    System.out.println(p); // Wed Nov 22 00:21:29 PST 2017 - Wed Nov 22 00:21:29 PST 1969
+}
+```
+이 예시에서 Period 인스턴스는 불변식을 유지한 채 생성됐지만 의도적으로 내부의 값을 수정할 수 있었다.
+이처럼 변경할 수 있는 Period 인스턴스를 획득한 공격자는 인스턴스가 불변이라고 가정하는 클래스에 넘겨 엄청난 보안 문제를 일으킬 수 있다.
+
+이 문제의 근원은 Period의 readObject메서드가 방어적 복사를 충분히 하지 않은 데 있다.
+객체를 직렬화할 때는 클라이언트가 소유해서는 안 되는 객체 참조를 갖는 필드를 모두 방어적으로 복사해야 한다.
+따라서 readObject에서는 불변 클래스 안의 모든 private 가변 요소를 방어적으로 복사 해야한다.
+
 ## readObject 의 문제점
  - 새로운 객체를 만들어내는 특이한 public 생성자와 같다고 할 수 있다.
  - 따라서, 생성자처럼 `유효성검사`, `방어적 복사` 를 수행해야한다. 그렇지 않으면, 불변식을 보장하지 못한다.
@@ -211,6 +306,8 @@ private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundEx
 https://velog.io/@guswlsapdlf/Java%EC%9D%98-Mutable%EA%B3%BC-Immutable
 https://velog.io/@max9106/Java-%EB%B0%A9%EC%96%B4%EC%A0%81-%EB%B3%B5%EC%82%ACDefensive-copy
 https://stackoverflow.com/questions/9979982/should-i-use-the-final-modifier-when-creating-date-objects
+https://blog.yevgnenll.me/posts/implement-serializable-with-great-caution-effective-java-86
+https://doridorigang.tistory.com/2
 
 Mutable vs Imutable
 <img width="834" alt="image" src="https://user-images.githubusercontent.com/5934737/165678520-c0c54f72-dace-47cc-a1d7-b84c79794d3a.png">
