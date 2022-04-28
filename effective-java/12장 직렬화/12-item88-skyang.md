@@ -51,8 +51,10 @@ private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundEx
 }
 ```
 - 위의 if문 추가로 허용되지 않는 Period 인스턴스가 생성되는 일을 막을 수 있지만, 아직도 미묘한 문제가 숨어있다.
+
+## 유효성검사로도 안된다고? - 
 정상 Period 인스턴스에서 시작된 바이트 스트림 끝에 private Date 필드로의 참조를 추가하면 가변 Period 인스턴스를 만들 수 있다
- 
+
 ```java
  public class MutablePeriod {
     //Period 인스턴스
@@ -184,6 +186,7 @@ https://velog.io/@max9106/Java-%EB%B0%A9%EC%96%B4%EC%A0%81-%EB%B3%B5%EC%82%ACDef
 https://stackoverflow.com/questions/9979982/should-i-use-the-final-modifier-when-creating-date-objects
 https://blog.yevgnenll.me/posts/implement-serializable-with-great-caution-effective-java-86
 https://doridorigang.tistory.com/2
-
+https://docs.oracle.com/javase/8/docs/platform/serialization/spec/protocol.html
+java serialization specification : https://www.infoworld.com/article/2072752/the-java-serialization-algorithm-revealed.html
 Mutable vs Imutable
 <img width="834" alt="image" src="https://user-images.githubusercontent.com/5934737/165678520-c0c54f72-dace-47cc-a1d7-b84c79794d3a.png">
