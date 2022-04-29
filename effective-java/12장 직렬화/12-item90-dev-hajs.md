@@ -5,6 +5,44 @@
 
 ### 직렬화 프록시 패턴(serialization proxy pattern)
 ![image](https://user-images.githubusercontent.com/57446639/165578676-4b510927-0fe6-475b-939a-a2c1108fd3f4.png)
+```java
+public class Period implements Serializable {
+    private final Date start;
+    private final Date end;
+
+    public Period(Date start, Date end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    // proxy
+    private static class SerializationProxy implements Serializable {
+        private final Date start;
+        private final Date end;
+
+        private static final long serialVersionUID = 123123L;
+
+        public SerializationProxy(Period p) {
+            this.start = p.start;
+            this.end = p.end;
+        }
+
+        private Object readResolve() {
+            return new Period(start, end);
+        }
+    }
+
+    // 직렬화 프록시 패턴용 writePlace 메서드
+    private Object writeReplace() {
+        return new SerializationProxy(this);
+    }
+
+    // 직렬화 프록시 패턴용 readObject 메서드
+    private void readObject(ObjectInputStream ois) throws IOException {
+        throw new InvalidObjectException("Proxy required!");
+    }
+}
+```
 * 바깥 클래스의 논리적 상태를 표현하는 중첩 클래스를 설계하여 `private static` 으로 선언한다.
   * -> 여기서 중첩 클래스가 직렬화 프록시다.
 * 그리고 바깥 클래스와 직렬화 프록시 모두 Serializable 을 구현한다고 선언해야 한다.
