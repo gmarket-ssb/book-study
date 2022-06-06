@@ -1,6 +1,19 @@
 # Refactoring
-
 > __리팩터링(Refactoring)__ : 소프트웨어의 겉보기 동작은 그대로 유지한 채, 코드를 이해하고 수정하기 쉽도록 내부 구조를 변경하는 기법
+
+
+
+## Rules
+- 파일명은 `{section #}-group-{group id}-{user id}.md` 형태로 작성
+  ```
+  01-group-a-dev-hajs.md
+  02-group-b-wrallee.md
+  ```
+- 아이템 타이틀을 `##(H2)` 로 작성 후 내용 작성
+  ```
+  ## 냄새 1. 이해하기 힘든 이름
+  ```
+
 
 ## Reference
 - [Refactoring.com](https://refactoring.com)
