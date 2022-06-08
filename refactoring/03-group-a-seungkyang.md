@@ -14,3 +14,19 @@
 • 같은 조건으로 여러개의 Swtich 문이 있다면, “조건문을 다형성으로 바꾸기 (Replace Conditional with Polymorphism)”을 사용할 수 있다.
 • 반복문 안에서 여러 작업을 하고 있어서 하나의 메소드로 추출하기 어렵다면, “반복문 쪼개기 (Split Loop)”를 적용할 수 있다.
 
+## 리팩토링 7. 매개변수 객체 만들기
+
+### 중복되는 parameter 들을 객채화
+Tips. IDE 빠른메뉴 : Refoctoring 기능 활용( Refactor -> introduce parameter object )
+
+### 중복되는 parameter 들을 field화
+여러 함수에서 사용되는 field 가 있다면 field화 해서 적용
+Tips. 'this.'를 붙여서 local 변수인지, class 변수인지를 구분
+
+> __문제__ : before
+
+```java
+package me.whiteship.refactoring._01_smell_mysterious_name._01_before;
+
+import org.kohsuke.github.*;
+```
