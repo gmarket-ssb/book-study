@@ -98,5 +98,7 @@ import org.kohsuke.github.*;
 기술적으로는 “함수 추출하기”와 동일한 리팩토링이지만 의도만 다를 뿐이다.
 
 ### 적용
+if( A ) else (B) => A ? B : C
+decompose conditional을  통해서 명확하게 함수이름을 통해서 어떤 동작을하고싶은지 가독성이 높아진다.
 
-###고찰
+
