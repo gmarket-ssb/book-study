@@ -147,7 +147,7 @@ public class Shipment {
         Shipment shipment = new Shipment();
         // 조건문을 함수레벨로 쪼개서 플래그 함수 없이 어떤 역할을 하는 함수인지 알 수 있음
         assertEquals(placedOn.plusDays(1), shipment.rushDeliveryDate(orderFromWA));
-        assertEquals(placedOn.plusDays(2), shipment.regularDeliveryDate(orderFromWA, false));
+        assertEquals(placedOn.plusDays(2), shipment.regularDeliveryDate(orderFromWA));
     }
 }
 
