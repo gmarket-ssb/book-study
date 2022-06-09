@@ -14,7 +14,7 @@
     - 히지만, 매개변수를 줄이면서 새로운 의존성이 생긴다면 다르게 고민할 필요가 있음
 - **임시 변수를 질의 함수로 바꾸기**와 **함수 선언 변경하기**를 통해 이 리팩토링을 적용
 
-> **BEFORE**: `discountedPrice`의 매개변수인 `discountLevel`는 필드인 `quantity`를 사용
+> **AS-IS**: `discountedPrice`의 매개변수인 `discountLevel`는 필드인 `quantity`를 사용
 ```java
 public class Order {
 
@@ -39,7 +39,7 @@ public class Order {
 }
 ```
 
-> **AFTER**: `discountLevel` 매개변수 대신, 질의함수인 `discountLevel()` 생성. 따라서 `discountLevel` 매개변수 삭제
+> **TO-BE**: `discountLevel` 매개변수 대신, 질의함수인 `discountLevel()` 생성. 따라서 `discountLevel` 매개변수 삭제
 ```java
 public class Order {
 
@@ -79,7 +79,7 @@ public class Order {
     - IntelliJ에선 macos 기준 `Option + Command + B`를 통해 구현부로 이동할 수 있음
 - **조건문 분해하기**를 활용할 수 있음
 
-> **BEFORE**: `deliveryDate`내 `isRush` 플래그를 기준으로 다른 로직이 존재
+> **AS-IS**: `deliveryDate`내 `isRush` 플래그를 기준으로 다른 로직이 존재
 ```java
 public class Shipment {
 
@@ -116,7 +116,7 @@ public class Shipment {
 
 ```
 
-> **AFTER**: 플래그 대신 조건문을 기준으로 함수로 나눔. Caller 쪽에선 플래그 없이 함수 이름을 가지고 구분 가능
+> **TO-BE**: 플래그 대신 조건문을 기준으로 함수로 나눔. Caller 쪽에선 플래그 없이 함수 이름을 가지고 구분 가능
 ```java
 public class Shipment {
 
@@ -159,7 +159,7 @@ public class Shipment {
     - **클래스 내부로 메소드를 옮기고, 데이터를 필드로 만들면** 메소드에 전달해야하는 매개변수 목록도 줄일 수 있음
 
 
-> **BEFORE**: `print`, `header`, `getMarkdownForParticipant` 함수의 매개변수는 `participants`에서 뽑은 값으로 구성
+> **AS-IS**: `print`, `header`, `getMarkdownForParticipant` 함수의 매개변수는 `participants`에서 뽑은 값으로 구성
 ```java
 public class StudyDashboard {
 
@@ -209,7 +209,7 @@ public class StudyDashboard {
 }
 ```
 
-> **AFTER**: 즉, `participants`를 필드로 구성. 해당 함수에선 필드에 직접 접근하여 사용 가능
+> **TO-BE**: 즉, `participants`를 필드로 구성. 해당 함수에선 필드에 직접 접근하여 사용 가능
 ```java
 public class StudyDashboard {
 
