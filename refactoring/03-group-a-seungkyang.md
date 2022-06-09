@@ -185,6 +185,32 @@ Tips. IDE 빠른메뉴 : Refoctoring 기능 활용( Refactor -> introduce parame
       new StudyPrinter(this.totalNumberOfEvents, participants).execute();
   
 ```
+- More refactoring
+> __Before__ :  함수로 추출 + inline refactoring
+```java
+    for (GHIssueComment comment : comments) {
+        //## refactoring 영역 ##########
+        String username = comment.getUserName();  //#2. inline refactoring
+        // #1. 함수로 추출
+        boolean isNewUser = participants.stream().noneMatch(p -> p.username().equals(username));
+        Participant participant = null;
+        if (isNewUser) {
+            participant = new Participant(username);
+            participants.add(participant);
+        } else {
+            participant = participants.stream().filter(p -> p.username().equals(username)).findFirst().orElseThrow();
+        }
+        //## refactoring 영역 ##########
+        participant.setHomeworkDone(eventId);
+    }
+```
+> __After__ 
+```java
+    for (GHIssueComment comment : comments) {
+        Participant participant = findParticipant(comment.getUserName(), participants);
+        participant.setHomeworkDone(eventId);
+    }
+```
 
 ## 리팩토링 11. 조건문 분해하기
 
