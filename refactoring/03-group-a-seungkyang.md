@@ -214,17 +214,44 @@ Tips. IDE 빠른메뉴 : Refoctoring 기능 활용( Refactor -> introduce parame
 
 ## 리팩토링 11. 조건문 분해하기
 
-###고찰
-조건문이 복잡해지는 경우 조건 자체가 복잡한경우, true or false가 해야할일이 길어질경우 고려하는 것이다.
+- 조건문이 복잡해지는 경우 또는 조건 자체가 복잡한경우, true or false가 해야할일이 길어질경우 고려하는 것이다.
+- 여러 조건에 따라 달라지는 코드를 작성하다보면 종종 긴 함수가 만들어지는 것을 목격할 수 있다.
+- “조건”과 “액션” 모두 “의도”를 표현해야한다.
+-  기술적으로는 “함수 추출하기”와 동일한 리팩토링이지만 의도만 다를 뿐이다.
 
-여러 조건에 따라 달라지는 코드를 작성하다보면 종종 긴 함수가 만들어지는 것을 목격할 수 있다.
-“조건”과 “액션” 모두 “의도”를 표현해야한다.
-기술적으로는 “함수 추출하기”와 동일한 리팩토링이지만 의도만 다를 뿐이다.
+> __Before__ :  무슨코드인지 이해가  어렵다.
+```java
+    private Participant findParticipant(String username, List<Participant> participants) {
+        Participant participant;
+        if (participants.stream().noneMatch(p -> p.username().equals(username))) {
+            participant = new Participant(username);
+            participants.add(participant);
+        } else {
+            participant = participants.stream().filter(p -> p.username().equals(username)).findFirst().orElseThrow();
+        }
 
-### 적용
-if( A ) else (B) => A ? B : C
-decompose conditional을  통해서 명확하게 함수이름을 통해서 어떤 동작을하고싶은지 가독성이 높아진다.
+        return participant;
+    }
+```
+> __Middle__ : 함수로 추출 및 함수명을 통해서 이해하기 쉽도록 refactoring, 명확하게 함수이름을 통해서 어떤 동작을하고싶은지 가독성이 높아진다.
+```java : 
+    private Participant findParticipant(String username, List<Participant> participants) {
+        Participant participant;
+        if (isNewParticipant(username, participants))) {
+            participant = createNewParticipant(username, participants)
+        } else {
+            participant = findExistingParticipant(username, participants);
+        }
 
+        return participant;
+    }
+```
+> __After__ : 추가 refactoring if( A ) else (B) => A ? B : C
+```java : 
+      return isNewParticipant(username, participants) ?
+              createNewParticipant(username, participants) :
+              findExistingParticipant(username, participants);
+```
 
 ## 리팩토링 12. 반복문 쪼개기
 
