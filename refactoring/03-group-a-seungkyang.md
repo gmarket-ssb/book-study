@@ -25,7 +25,7 @@
 - 그런데, 거기에서 더 나아가 긴 함수를 리팩토링할 때, 그러한 임시 변수를 함수로 추출하여 분리한다면 빼낸 함수로 전 달해야 할 매개변수를 줄일 수 있다.
 - 99%는 함수추출로 해결된다.
 
-> before
+> Before
 
 ```java
         try (FileWriter fileWriter = new FileWriter("participants.md");
@@ -48,7 +48,7 @@
             });
 ```
 
-> after
+> After
 
 ```java
 ...
@@ -57,35 +57,53 @@
                 writer.print(markdownForHomework);
             });
 ```
-- first step : markdownForHomework에 할당되는 긴영역을 Query함수(질의하는함수)로 추출한다. getMarkdownForParticipant
-- second step : count, rate 변수에 할당되는 영역이 특정함수에만 사용되므로 추출한함수내로 이동한다. 
+- Refactoring #1 : markdownForHomework에 할당되는 긴영역을 Query함수(질의하는함수)로 추출한다. getMarkdownForParticipant
+- Refactoring #2 : count, rate 변수에 할당되는 영역이 특정함수에만 사용되므로 추출한함수내로 이동한다. 
 
 ## 리팩토링 8. 매개변수 객체 만들기
 
-### 중복되는 parameter 들을 객채화
+### 중복되는 parameter 들을 객채화 
 Tips. IDE 빠른메뉴 : Refoctoring 기능 활용( Refactor -> introduce parameter object )
 
 ### 중복되는 parameter 들을 field화
-여러 함수에서 사용되는 field 가 있다면 field화 해서 적용
-Tips. 'this.'를 붙여서 local 변수인지, class 변수인지를 구분
+여러 함수에서 사용되는 field 가 있다면 클래스 변수(&Constructor) field화 해서 적용
 
-> __문제__ : before
+> __Before__ : "int totalNumberOfEvents, Participant p" 매개변수가 중복되어 확인되고 있다.
 
 ```java
-package me.whiteship.refactoring._01_smell_mysterious_name._01_before;
+    private double getRate(int totalNumberOfEvents, Participant p) {
+        long count = p.homework().values().stream()
+                .filter(v -> v == true)
+                .count();
+        double rate = count * 100 / totalNumberOfEvents;
+        return rate;
+    }
 
-import org.kohsuke.github.*;
+    private String getMarkdownForParticipant(int totalNumberOfEvents, Participant p) {
+        return String.format("| %s %s | %.2f%% |\n", p.username(), checkMark(p, totalNumberOfEvents), getRate(totalNumberOfEvents, p));
+    }
 ```
 
 > after
 
 ```java
-package me.whiteship.refactoring._01_smell_mysterious_name._01_before;
-
-import org.kohsuke.github.*;
+    //Class varialble 생성
+    private final int totalNumberOfEvents;
+    //생성자
+    public StudyDashboard(int totalNumberOfEvents) {
+        this.totalNumberOfEvents = totalNumberOfEvents;
+    }
+    ...
+    // parameter 감소
+    private String header(int totalNumberOfParticipants) { 
+    ...
+  
 ```
+- Refactoring #1 : IDE 빠른메뉴 : Refoctoring 기능 활용( Refactor -> introduce parameter object )
+- Refactoring #2 : IDE 빠른메뉴 : Refoctoring 기능 활용( Refactor -> introduce field ), 클래스 변수로 생성
+  - Tips. 'this.'를 붙여서 local 변수인지, class 변수인지를 구분하는 습관.
 
-## 리팩토링 9. 매개변수 객체 만들기
+## 리팩토링 9. 객체 통째로 넘기기
 ### 고찰
 어떤 한 레코드에서 구할 수 있는 여러 값들을 함수에 전달하는 경우, 해당 매개변수를 레 코드 하나로 교체할 수 있다.
 매개변수 목록을 줄일 수 있다. (향후에 추가할지도 모를 매개변수까지도...) 
