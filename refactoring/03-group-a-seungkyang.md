@@ -84,7 +84,7 @@ Tips. IDE 빠른메뉴 : Refoctoring 기능 활용( Refactor -> introduce parame
     }
 ```
 
-> after
+> After
 
 ```java
     //Class varialble 생성
