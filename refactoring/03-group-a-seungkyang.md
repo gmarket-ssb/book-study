@@ -1,8 +1,9 @@
 ## Section3. Long function
 
-#### 짧은 함수 vs 긴 함수 
+#### discourse : 짧은 함수 vs 긴 함수 
 - Trade off가 있다. : 
-  - 함수가 길 수록 더 이해하기 어렵다. vs 짧은 함수는 더 많은 문맥 전환을 필요로 한다.
+  - 긴 함수일수록 더 이해하기 어렵다.
+  - 짧은 함수는 더 많은 문맥 전환을 필요로 한다.
 - “과거에는” 작은 함수를 사용하는 경우에 더 많은 서브루틴 호출로 인한 오버헤드가 있었다.
 - 좋은 이름 짓기 : 함수에 “좋은 이름”을 사용했다면 해당 함수의 코드를 보지 않고도 이해할 수 있다.
   - 좋은함수이름 >>> 주석 : 어떤 코드에 “주석”을 남기고 싶다면, 주석 대신 함수를 만들고 함수의 이름으로 “의도”를 표현해보자.
@@ -19,25 +20,45 @@
 
 ## 리팩토링 7. 임시변수를 질의 함수로 바꾸기
 
-### 임시변수를 찾는다. 그리고 질의 함수로 바꾼다. 결국 함수추출인 것이다.
-변수를 사용하면 반복해서 동일한 식을 계산하는 것을 피할 수 있고, 이름을 사용해 의미를 표현할 수도 있다.
-긴 함수를 리팩토링할 때, 그러한 임시 변수를 함수로 추출하여 분리한다면 빼낸 함수로 전 달해야 할 매개변수를 줄일 수 있다.
+- 임시변수를 활용하는 것도 Refactoring이다.
+  - 변수를 사용하면 반복해서 동일한 식을 계산하는 것을 피할 수 있고, 이름을 사용해 의미를 표현할 수도 있다.
+- 그런데, 거기에서 더 나아가 긴 함수를 리팩토링할 때, 그러한 임시 변수를 함수로 추출하여 분리한다면 빼낸 함수로 전 달해야 할 매개변수를 줄일 수 있다.
+- 99%는 함수추출로 해결된다.
 
 > before
 
 ```java
-package me.whiteship.refactoring._01_smell_mysterious_name._01_before;
+        try (FileWriter fileWriter = new FileWriter("participants.md");
+             PrintWriter writer = new PrintWriter(fileWriter)) {
+            participants.sort(Comparator.comparing(Participant::username));
 
-import org.kohsuke.github.*;
+            writer.print(header(totalNumberOfEvents, participants.size()));
+
+            participants.forEach(p -> {
+                 // #### refactoring 영역-from
+                long count = p.homework().values().stream()
+                        .filter(v -> v == true)
+                        .count();
+                double rate = count * 100 / totalNumberOfEvents;
+
+                String markdownForHomework = String.format("| %s %s | %.2f%% |\n", p.username(), checkMark(p, totalNumberOfEvents), rate); 
+               // #### refactoring 영역-to
+               
+                writer.print(markdownForHomework);
+            });
 ```
 
 > after
 
 ```java
-package me.whiteship.refactoring._01_smell_mysterious_name._01_before;
-
-import org.kohsuke.github.*;
+...
+            participants.forEach(p -> {
+                String markdownForHomework = getMarkdownForParticipant(totalNumberOfEvents, p);
+                writer.print(markdownForHomework);
+            });
 ```
+- first step : markdownForHomework에 할당되는 긴영역을 Query함수(질의하는함수)로 추출한다. getMarkdownForParticipant
+- second step : count, rate 변수에 할당되는 영역이 특정함수에만 사용되므로 추출한함수내로 이동한다. 
 
 ## 리팩토링 8. 매개변수 객체 만들기
 
