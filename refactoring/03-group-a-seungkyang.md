@@ -84,7 +84,7 @@ Tips. IDE 빠른메뉴 : Refoctoring 기능 활용( Refactor -> introduce parame
     }
 ```
 
-> After
+> After : function 들의 paramter 좀 더 간소화 되었다.
 
 ```java
     //Class varialble 생성
@@ -104,33 +104,87 @@ Tips. IDE 빠른메뉴 : Refoctoring 기능 활용( Refactor -> introduce parame
   - Tips. 'this.'를 붙여서 local 변수인지, class 변수인지를 구분하는 습관.
 
 ## 리팩토링 9. 객체 통째로 넘기기
-### 고찰
-어떤 한 레코드에서 구할 수 있는 여러 값들을 함수에 전달하는 경우, 해당 매개변수를 레 코드 하나로 교체할 수 있다.
-매개변수 목록을 줄일 수 있다. (향후에 추가할지도 모를 매개변수까지도...) 
-이 기술을 적용하기 전에 의존성을 고려해야 한다.
-어쩌면 해당 메소드의 위치가 적절하지 않을 수도 있다. (기능 편애 “Feature Envy” 냄새에 해당한다.)
 
-### 적용
-1. 객체에서 get으로 꺼내는게 아니라(obj.getter()) 객체를 그대로(obj)
+- 어떤 한 레코드에서 구할 수 있는 여러 값들을 함수에 전달하는 경우, 해당 매개변수를 레 코드 하나로 교체할 수 있다.
+- 매개변수 목록을 줄일 수 있다. (향후에 추가할지도 모를 매개변수까지도...) 
+- 이 기술을 적용하기 전에 의존성을 고려해야 한다.
+- 어쩌면 해당 메소드의 위치가 적절하지 않을 수도 있다. (기능 편애 “Feature Envy” 냄새에 해당한다.)
 
-### 고민할문제
-1. 함수를 일반화된 데이터 Map<K, V>를 param으로 받는게 맞는가, 아니면 위의 obj를 받는게 맞는가.
-=
-다른곳에서도 사용하는가? 이함수를 다른 도메인ㅇ에도 적용할것인가?에 따라 그냥 놔둘수 있다.
-= 
-과연이위치가 적절한가? 다른 도메인에도 사용할것인가? ( Refactor => Move Method )
-만약 밖으로 추출(util성)한다면 Normalize할 필요가 있다.
+> __Before__ : participants p에서 값을 계속 꺼내고 있다. 
 
+```java
+    participants.forEach(p -> {
+        String markdownForHomework = getMarkdownForParticipant(p.username(), p.homework());
+        writer.print(markdownForHomework);
+    });
+```
+> __After__ : paramter list가 간소화 되었다.
+
+```java
+     participants.forEach(p -> {
+          String markdownForHomework = getMarkdownForParticipant(p);
+          writer.print(markdownForHomework);
+      });
+  ...
+  
+```
+
+### 추가로 고민할문제
+1. 의존성 
+   - 함수를 일반화된 데이터 Map<K, V>를 param으로 받는게 맞는가, 아니면 위의 obj를 받는게 맞는가.
+   - 다른곳에서도 사용하는가? 이함수를 다른 도메인에도 적용할것인가?에 따라 그냥 놔둘수 있다.
+2. 과연이위치가 적절한가? 다른 도메인에도 사용할것인가? ( Refactor => Move Method )
+   -  밖으로 추출(util성)한다면 Normalize할 필요가 있다.
+   -  
+> __Before__ : getRate를 이 클래스안애서만 사용하겠는가? 부분 Normalize
+```java
+    double getRate(Map<Integer, Boolean> homework) {
+        long count = homework.values().stream()
+                .filter(v -> v == true)
+                .count();
+        return (double) (count * 100 / this.totalNumberOfEvents);
+    }
+ ```
+ > __After__ : Participant로 추후 record에서 별도의 Class로 고려가능한 형태로 변경됨
+ ```java
+    public double getRate(double total) {
+        long count = this.homework.values().stream()
+                .filter(v -> v == true)
+                .count();
+        return count * 100 / total;
+    }
+ ```
+ 
 ## 리펙도링 10. 함수를 명령으로 바꾸기
-### 고찰
-함수를 독립적인 객체인, Command로 만들어 사용할 수 있다. 
-커맨드 패턴을 적용하면 다음과 같은 장점을 취할 수 있다.( 참고 : https://gmlwjd9405.github.io/2018/07/07/command-pattern.html )
+
+- 함수를 독립적인 객체인, Command로 만들어 사용할 수 있다. 
+- 커맨드 패턴을 적용하면 다음과 같은 장점을 취할 수 있다.( 참고 : https://gmlwjd9405.github.io/2018/07/07/command-pattern.html )
 - 부가적인 기능으로 undo 기능을 만들 수도 있다.
 - 복잡한 기능을 구현해야한다면.....더 복잡한 기능을 구현하는데 필요한 여러 메소드를 추가할 수 있다. 상속이나 템플릿을 활용할 수도 있다.(check)
 - 복잡한 메소드를 여러 메소드나 필드를 활용해 쪼갤 수도 있다.
 - 대부분의 경우에 “커맨드” 보다는 “함수”를 사용하지만, 커맨드 말고 다른 방법이 없는 경우에만 사용 한다.
 
-### 적용
+> __Before__ : 앞으로 여러기능을 추가될 여지가 있는 코드를 Command Pattern을 이용하여 추출.( Markdown, Console, Excel등 앙한 출력을 할수 있게 만들수 있다. )
+
+```java
+      try (FileWriter fileWriter = new FileWriter("participants.md");
+          PrintWriter writer = new PrintWriter(fileWriter)) {
+          participants.sort(Comparator.comparing(Participant::username));
+
+          writer.print(header(participants.size()));
+
+          participants.forEach(p -> {
+              String markdownForHomework = getMarkdownForParticipant(p);
+              writer.print(markdownForHomework);
+          });
+      }
+```
+> __After__ : 별도의 Class StudyPrinter를 만들어 이동함
+
+```java
+      new StudyPrinter(this.totalNumberOfEvents, participants).execute();
+  
+```
 
 ## 리팩토링 11. 조건문 분해하기
 
