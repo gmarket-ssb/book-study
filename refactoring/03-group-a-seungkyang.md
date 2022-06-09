@@ -255,23 +255,82 @@ Tips. IDE 빠른메뉴 : Refoctoring 기능 활용( Refactor -> introduce parame
 
 ## 리팩토링 12. 반복문 쪼개기
 
-### 고찰
-코드를 수정할때 반복문이 길면 condition을 고려해야함.
-각각의 반복문마다 쪼개놓고 정리하자
-O(N)의 입장에서도 N or N^2이냐는 다른문제이다.
-하나의 반복문에서 여러 다른 작업을 하는 코드를 쉽게 찾아볼 수 있다. 해당 반복문을 수정할 때 여러 작업을 모두 고려하며 코딩을 해야한다. 반복문을 여러개로 쪼개면 보다 쉽게 이해하고 수정할 수 있다.
-성능 문제를 야기할 수 있지만, “리팩토링”은 “성능 최적화”와 별개의 작업이다. 리팩토링을 마친 이후에 성능 최적화 시도할 수 있다.
+- O(N)의 입장에서도 N or N^2이냐는 다른문제이다.
+- 하나의 반복문에서 여러 다른 작업을 하는 코드를 쉽게 찾아볼 수 있다. 
+- 해당 반복문을 수정할 때 여러 작업을 모두 고려하며 코딩을 해야한다. 
+- 반복문을 여러개로 쪼개면 보다 쉽게 이해하고 수정할 수 있다.
+- 성능 문제를 야기할 수 있지만, “리팩토링”은 “성능 최적화”와 별개의 작업이다. 리팩토링을 마친 이후에 성능 최적화 시도할 수 있다.
+- 코드를 수정할때 반복문이 길면 for문안에서 일어나는 여러가지 condition을 고려해야함.( 우리 code패턴.... )
+- 각각의 반복문마다 쪼개놓고 정리하자
 
-### 적용
+> __Before__
+```java
+     for (GHIssueComment comment : comments) {
+              Participant participant = findParticipant(comment.getUserName(), participants);
+              participant.setHomeworkDone(eventId);
+
+              if (firstCreatedAt == null || comment.getCreatedAt().before(firstCreatedAt)) {
+                  firstCreatedAt = comment.getCreatedAt();
+                  first = participant;
+              }
+          }
+```
+> __Middle__ : 하나의 for 문당 하나의 작업만 하도록 변경 
+```java : 
+     for (GHIssueComment comment : comments) {
+              Participant participant = findParticipant(comment.getUserName(), participants);
+              participant.setHomeworkDone(eventId);
+
+          }
+          
+     for (GHIssueComment comment : comments) {
+              Participant participant = findParticipant(comment.getUserName(), participants);
+
+              if (firstCreatedAt == null || comment.getCreatedAt().before(firstCreatedAt)) {
+                  firstCreatedAt = comment.getCreatedAt();
+                  first = participant;
+              }
+          }
+```
+
+> __After__ : 함수로 추출함 + introduce field, class 변수로 이동 
+```java : 
+      checkHomework(issue.getComments(), participants, eventId);
+      findFirst(comments, participants)
+```
+
+### Refactoing Tips
 하나의 for문에서 하나의 작업만하도록 쪼갠다. 그리고 각각을 함수로 쪼갠다. (intellij의 함수만들어주는 기능 활용, 인라인리펙토링활용 )
 introduce field를 활용
 
 ## 리팩토링 13. 조건문을 다형성으로 바꾸기
 
-### 고찰
-여러 타입에 따라 각기 다른 로직으로 처리해야 하는 경우에 다형성을 적용해서 조건문을 보다 명확하게 분리할 수 있다. (예, 책, 음악, 음식 등...) 반복되는 switch문을 각기 다른 클래스를 만들어 제거할 수 있다.
-공통으로 사용되는 로직은 상위클래스에 두고 달라지는 부분만 하위클래스에 둠으로써, 달 리지는 부분만 강조할 수 있다.
-모든 조건문을 다형성으로 바꿔야 하는 것은 아니다.
+- 여러 타입에 따라 각기 다른 로직으로 처리해야 하는 경우에 다형성을 적용해서 조건문을 보다 명확하게 분리할 수 있다. (예, 책, 음악, 음식 등...) 반복되는 switch문을 각기 다른 클래스를 만들어 제거할 수 있다.
+- 공통으로 사용되는 로직은 상위클래스에 두고 달라지는 부분만 하위클래스에 둠으로써, 달라지는 부분만 강조할 수 있다.
+- 모든 조건문을 다형성으로 바꿔야 하는 것은 아니다.
+- 다형성 overriding!!
 
-### 적용
-다형성 overriding!!
+> __Before__
+```java : StudyPrinter class 내의 Switch case 문
+public void execute() throws IOException {
+        switch (printerMode) {
+            case CVS -> {
+                  ...
+            }
+            case CONSOLE -> {
+                  ...
+            }
+            case MARKDOWN -> {
+                  ...
+                }
+            }
+        }
+    }
+```
+
+> __After__ : 함수로 추출함 + introduce field, class 변수로 이동 
+```java : StudyPrinter 생성
+  public abstract class StudyPrinter {
+    public abstract void execute() throws IOException;
+  }
+```
