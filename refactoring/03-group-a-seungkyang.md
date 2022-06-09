@@ -310,8 +310,8 @@ introduce field를 활용
 - 모든 조건문을 다형성으로 바꿔야 하는 것은 아니다.
 - 다형성 overriding!!
 
-> __Before__
-```java : StudyPrinter class 내의 Switch case 문
+> __Before__ : StudyPrinter class 내의 Switch case 문
+```java : 
 public void execute() throws IOException {
         switch (printerMode) {
             case CVS -> {
@@ -328,9 +328,20 @@ public void execute() throws IOException {
     }
 ```
 
-> __After__ : 함수로 추출함 + introduce field, class 변수로 이동 
+> __After1__ : StudyPrinter 를 추상클래스로 선언, 추상 Method로 변경,
 ```java : StudyPrinter 생성
   public abstract class StudyPrinter {
     public abstract void execute() throws IOException;
   }
 ```
+> __After2__ : StudyPrinter 를 추상클래스를 상속받는 MarkdownPrinter, CSVPrinter, ConsolePrinter등을 생성
+```java : StudyPrinter 생성
+    private void print() throws IOException, InterruptedException {
+        checkGithubIssues(getGhRepository());
+        new MarkdownPrinter(this.totalNumberOfEvents, this.participants, PrinterMode.MARKDOWN).execute(); // or new CSVPrinter() or ...
+    }
+```
+### More Refactoing
+factory method pattern을 사용하는 방법도 동적으로 바꿔줄수 있기 때문에 좋은 방법이다.
+하지만 어차피 switch case문을 어디선가 작성해야하기 때문에 request 기반으로 동적으로 변경 시에는 이게 더 맞고,
+지금 같은 정적인 코드는 직접 생성해서 코드하는게 맞다. 
