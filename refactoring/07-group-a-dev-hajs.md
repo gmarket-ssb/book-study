@@ -6,13 +6,12 @@
 <br><br>
 **관련 리팩토링 기술**
   * [단계 쪼개기 (Split Phase)](https://github.com/gmarket-ssb/book-study/blob/main/refactoring/07-group-a-dev-hajs.md#%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81-24-%EB%8B%A8%EA%B3%84-%EC%AA%BC%EA%B0%9C%EA%B8%B0)
-  * [함수 옮기기 (Move Function)](https://github.com/gmarket-ssb/book-study/new/main/refactoring/07-group-a-dev-hajs.md#%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81-25-%ED%95%A8%EC%88%98-%EC%98%AE%EA%B8%B0%EA%B8%B0)
+  * [함수 옮기기 (Move Function)](https://github.com/gmarket-ssb/book-study/blob/main/refactoring/07-group-a-dev-hajs.md#%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81-25-%ED%95%A8%EC%88%98-%EC%98%AE%EA%B8%B0%EA%B8%B0)
   * 함수 추출하기 (Extract Function)
-  * [클래스 추출하기 (Extract Class)](https://github.com/gmarket-ssb/book-study/new/main/refactoring/07-group-a-dev-hajs.md#%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81-26-%ED%81%B4%EB%9E%98%EC%8A%A4-%EC%B6%94%EC%B6%9C%ED%95%98%EA%B8%B0)
+  * [클래스 추출하기 (Extract Class)](https://github.com/gmarket-ssb/book-study/blob/main/refactoring/07-group-a-dev-hajs.md#%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81-26-%ED%81%B4%EB%9E%98%EC%8A%A4-%EC%B6%94%EC%B6%9C%ED%95%98%EA%B8%B0)
 
 
 ---
-<br><br>
 
 ### 리팩토링 24. 단계 쪼개기
 > 모듈성
