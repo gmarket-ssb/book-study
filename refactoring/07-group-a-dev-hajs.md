@@ -91,16 +91,16 @@
       private boolean premium;
       ...
 
-      double overdraftCharge(int daysOverdrawn) {
-          if (this.isPremium()) {
+      private double overdraftCharge() {
+          if (this.type.isPremium()) {
               final int baseCharge = 10;
-              if (daysOverdrawn <= 7) {
+              if (this.daysOverdrawn <= 7) {
                   return baseCharge;
               } else {
-                  return baseCharge + (daysOverdrawn - 7) * 0.85;
+                  return baseCharge + (this.daysOverdrawn - 7) * 0.85;
               }
           } else {
-              return daysOverdrawn * 1.75;
+              return this.daysOverdrawn * 1.75;
           }
       }
   }
@@ -126,19 +126,6 @@
      private int daysOverdrawn() {
          return this.daysOverdrawn;
      }
-   
-     private double overdraftCharge() {
-         if (this.type.isPremium()) {
-             final int baseCharge = 10;
-             if (this.daysOverdrawn <= 7) {
-                 return baseCharge;
-             } else {
-                 return baseCharge + (this.daysOverdrawn - 7) * 0.85;
-             }
-         } else {
-             return this.daysOverdrawn * 1.75;
-         }
-      }
   }
   
   public class AccountType {
