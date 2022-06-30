@@ -9,3 +9,31 @@
     -   조건부 로직을 다형성으로 바꾸기
     -   클래스 추출하기
     -   배개변수 객체 만들기
+
+## 기본형을 객체로 바꾸기
+
+-   개발 초기에는 기본형으로 표현한 데이터가 나중엔 다양한 기능을 필요로 하는 경우가 발생함
+    -   문자열로 표현하던 전화번호의 지역 코드가 필요하거나 다양한 포맷을 지원하는 경우
+    -   숫자로 표현하던 온도의 단위를 변환하는 경우
+-   기본형을 사용한 데이터를 감싸 줄 클래스로 만들면, 필요한 기능을 추가할 수 있다.
+
+```
+class Machine {
+  int temperature;
+  ...
+}
+
+// after
+class Machine {
+  Temperature temperature;
+  ...
+}
+
+class Temperature {
+  int value;
+
+  public Temperature(int value) {
+    check(value);  // 체크 로직 등 필요한 로직을 삽입할 수 있다.
+  }
+}
+```
