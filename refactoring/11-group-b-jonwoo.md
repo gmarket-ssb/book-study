@@ -52,6 +52,14 @@ class Temperature {
 // before
 class ClassMember {
   Type type;
+  
+  void func() {
+    var result;
+    if type is student
+      result = a;    // get result
+    else if type is teacher
+      result = b;    // get result
+  }
 }
 
 enum Type {
@@ -61,13 +69,19 @@ enum Type {
 // after
 abstract class Type {
    // 필수 스펙, 구현체
+   
+   abstract int get();
 }
 
-class Student extends Type { /* student 한정 기능, 구현체 */ }
-class Teacher extends Type { /* teacher 한정 기능, 구현체 */ }
+class Student extends Type { /* student 한정 기능, 구현체 */ get() { ... } }
+class Teacher extends Type { /* teacher 한정 기능, 구현체 */ get() { ... } }
 
 class ClassMember {
   Type type
+  
+  void func() {
+    var result = type.get();
+  }
 }
 ```
 
