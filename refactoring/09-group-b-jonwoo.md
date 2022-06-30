@@ -7,3 +7,36 @@
 -   여러 모듈을 참고하고 있다면? 가장 많이 참조하는 곳으로 옮기거나 함수를 쪼갠다.
 -   데이터와 해동 데이터를 참조하는 행동을 같은 곳에 두자
 -   데이터와 행동을 분리하는 패턴은 예외 적용 대상
+
+```java
+class A {
+  B b;
+  
+  func something2() {
+    something1();
+  }
+  
+  func something1() {
+    /**
+     * only codes relate B'
+     */ 
+  }
+}
+
+// after
+class B {
+  func something1() {
+    /**
+     * only codes relate B'
+     */ 
+  }
+}
+
+class A {
+  B b;
+  func something2 {
+    b.something1();
+  }
+}
+  
+```
