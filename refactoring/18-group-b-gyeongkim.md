@@ -105,7 +105,7 @@ class PersonTest {
   - 적절한 경우에 사용한다면 쉽고 효율적인 방법
   - 상속 사용이 적절치 않다고 생각되면 해당 리팩토링을 적용
 
-> **AS-IS**
+> **AS-IS**: `Scroll` 클래스가 `CategoryItem`이라는 클래스를 상속
 ```java
 public class Scroll extends CategoryItem {
 
@@ -121,7 +121,7 @@ public class Scroll extends CategoryItem {
   }
 }
 ```
-
+- 상속구조로 유지보수하기 어렵다면, 해당 슈퍼클래스를 위임 구조로 변경
 > **TO-BE**: 슈퍼클래스 상속 대신 위임 구조로 변경
 ```java
 public class Scroll {
@@ -141,3 +141,248 @@ public class Scroll {
   }
 }
 ```
+
+### 리팩토링 40. 서브클래스를 위임으로 바꾸기
+
+- 행동이 카테고리에 따라 바뀐다면, 일반적인 로직을 슈퍼클래스로 두고 특이케이스는 서브클래스를 사용해 표현
+- 명확한 단점이라고 하면 **한 번만 사용**할 수 있음
+  - 카테고리의 기준이 **하나**여야 한다는 뜻
+  - `Person`의 나누는 기준이 `Age(나이)` 혹은 `Income-Level(소득수준)`이어야지, 둘 다일 수 없음
+- 하지만 위임을 통해 여러 기준으로 다른 객체에게 위임할 수 있음
+- 그리고 슈퍼클래스가 변경되면 서브클래스에도 영향
+  - 만약 서브 클래스가 다른 모듈에 존재한다면??
+  - 위임을 사용해 중간에 인터페이스를 만들어 의존성을 줄일 수 있음 -> Loose Couple(느슨한 결합)
+- `상속 대신 위임을 선호하라`라는 말은 상속을 적용하고 언제든지 이런 리팩토링을 사용해 위임으로 전환할 수 있음을 의미
+<details>
+  <summary>테스트 코드</summary>
+  
+```java
+class BookingTest {
+  @Test
+  void basePrice() {
+    Show lionKing = new Show(List.of(), 120);
+    LocalDateTime weekday = LocalDateTime.of(2022, 1, 20, 19, 0);
+
+    Booking booking = new Booking(lionKing, weekday);
+    assertEquals(120, booking.basePrice());
+
+    Booking premium = new PremiumBooking(lionKing, weekday, new PremiumExtra(List.of(), 50));
+    assertEquals(170, premium.basePrice());
+  }
+
+  @Test
+  void basePrice_on_peakDay() {
+    Show lionKing = new Show(List.of(), 120);
+    LocalDateTime weekend = LocalDateTime.of(2022, 1, 15, 19, 0);
+
+    Booking booking = new Booking(lionKing, weekend);
+    assertEquals(138, booking.basePrice());
+
+    Booking premium = new PremiumBooking(lionKing, weekend, new PremiumExtra(List.of(), 50));
+    assertEquals(188, premium.basePrice());
+  }
+
+  @Test
+  void talkback() {
+    Show noTalkbackShow = new Show(List.of(), 120);
+    Show talkbackShow = new Show(List.of("talkback"), 120);
+    LocalDateTime nonPeekday = LocalDateTime.of(2022, 1, 20, 19, 0);
+    LocalDateTime peekday = LocalDateTime.of(2022, 1, 15, 19, 0);
+
+    assertFalse(new Booking(noTalkbackShow, nonPeekday).hasTalkback());
+    assertTrue(new Booking(talkbackShow, nonPeekday).hasTalkback());
+    assertFalse(new Booking(talkbackShow, peekday).hasTalkback());
+
+    PremiumExtra premiumExtra = new PremiumExtra(List.of(), 50);
+    assertTrue(new PremiumBooking(talkbackShow, peekday, premiumExtra).hasTalkback());
+    assertFalse(new PremiumBooking(noTalkbackShow, peekday, premiumExtra).hasTalkback());
+  }
+
+  @Test
+  void hasDinner() {
+    Show lionKing = new Show(List.of(), 120);
+    LocalDateTime weekday = LocalDateTime.of(2022, 1, 20, 19, 0);
+    LocalDateTime weekend = LocalDateTime.of(2022, 1, 15, 19, 0);
+    PremiumExtra premiumExtra = new PremiumExtra(List.of("dinner"), 50);
+
+    assertTrue(new PremiumBooking(lionKing, weekday, premiumExtra).hasDinner());
+    assertFalse(new PremiumBooking(lionKing, weekend, premiumExtra).hasDinner());
+  }
+}
+```
+
+</details>
+
+> **AS-IS**: `Booking` 클래스를 상속하는 `PremiumBooking`
+```java
+public class Booking {
+
+  protected Show show;
+
+  protected LocalDateTime time;
+
+  public Booking(Show show, LocalDateTime time) {
+    this.show = show;
+    this.time = time;
+  }
+
+  public boolean hasTalkback() {
+    return this.show.hasOwnProperty("talkback") && !this.isPeakDay();
+  }
+
+  protected boolean isPeakDay() {
+    DayOfWeek dayOfWeek = this.time.getDayOfWeek();
+    return dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY;
+  }
+
+  public double basePrice() {
+    double result = this.show.getPrice();
+    if (this.isPeakDay()) result += Math.round(result * 0.15);
+    return result;
+  }
+
+}
+
+public class PremiumBooking extends Booking {
+
+  private PremiumExtra extra;
+
+  public PremiumBooking(Show show, LocalDateTime time, PremiumExtra extra) {
+    super(show, time);
+    this.extra = extra;
+  }
+
+  @Override
+  public boolean hasTalkback() {
+    return this.show.hasOwnProperty("talkback");
+  }
+
+  @Override
+  public double basePrice() {
+    return Math.round(super.basePrice() + this.extra.getPremiumFee());
+  }
+
+  public boolean hasDinner() {
+    return this.extra.hasOwnProperty("dinner") && !this.isPeakDay();
+  }
+}
+```
+- `PremiumBooking`을 Delegate를 통해 서브클래스를 없앨 수 있음
+
+> **TO-BE(1)**: `PremiumDelegate` 생성 및 `Booking` 객체 생성 팩토리 매소드 생성
+
+```java
+public class PremiumDelegate {
+
+  private Booking host;
+  private PremiumExtra extra;
+
+  public PremiumDelegate(Booking host, PremiumExtra extra) {
+    this.host = host;
+    this.extra = extra;
+  }
+}
+
+public class Booking {
+
+  protected PremiumDelegate premiumDelegate;
+
+  public static Booking createBooking(Show show, LocalDateTime time) {
+    return new Booking(show, time);
+  }
+
+  public static PremiumBooking createPremiumBooking(Show show, LocalDateTime time, PremiumExtra extra) {
+    PremiumBooking premiumBooking = new PremiumBooking(show, time, extra);
+    premiumBooking.premiumDelegate = new PremiumDelegate(premiumBooking, extra);
+    return premiumBooking;
+  }
+  
+  ...
+}
+```
+
+- 팩토리 메서드를 만든 이유는 이름명명의 이유도 있겠지만, 리턴객체의 타입이 자유로워짐
+- `createPremiumBooking`에서 `premiumBooking.premiumDelegate = new PremiumDelegate(premiumBooking, extra);` 작업을 통해 서브클래스와 Delegate를 연결지음
+  - 추후에 Delegate로 서브클래스에 있는 코드를 옮김
+
+> **TO-BE(2)**: `hasTalkback` 코드 옮기기
+```java
+public class Booking {
+  public boolean hasTalkback() {
+    return (this.premiumDelegate != null)
+          ? this.premiumDelegate.hasTalkback()
+          : this.show.hasOwnProperty("talkback") && !this.isPeakDay();
+  }
+}
+
+public class PremiumDelegate {
+
+  public boolean hasTalkback() {
+    return this.host.show.hasOwnProperty("talkback");
+  }
+}
+
+public class PremiumBooking extends Booking {
+
+  // @Override
+  // public boolean hasTalkback() {
+  //   return this.show.hasOwnProperty("talkback");
+  // }
+}
+```
+- `PremiumBooking::hasTalkback`의 역할을 `PremiumDelegate::hasTalkback`이 대신 위임받음
+- 그래서 `Booking`의 `hasTalkback`만 호출해줘도 됨
+
+> **TO-BE(3)**: `basePrice` 코드 옮기기
+```java
+public class PremiumDelegate {
+  public double extendBasePrice(double basePrice) {
+    return Math.round(basePrice + this.extra.getPremiumFee());
+  }
+}
+
+public class Booking {
+  public double basePrice() {
+    double result = this.show.getPrice();
+    if (this.isPeakDay()) result += Math.round(result * 0.15);
+    return (this.premiumDelegate != null) ? this.premiumDelegate.extendBasePrice(result) : result;
+  }
+}
+
+public class PremiumBooking extends Booking {
+
+  // @Override
+  // public double basePrice() {
+  //   return Math.round(super.basePrice() + this.extra.getPremiumFee());
+  // }
+}
+```
+- `PremiumBooking::basePrice`는 기존 `Booking::basePrice`에 `Premium Fee`만큼 더해진 값
+- 이 역시 `PremiumDelegate::extendBasePrice`에서 계산하도록 수정
+
+> **TO-BE(4)**: `hasDinner` 코드 옮기기 및 `PremiumBooking` 삭제
+```java
+public class PremiumDelegate {
+  public boolean hasDinner() {
+    return this.extra.hasOwnProperty("dinner") && !this.host.isPeakDay();
+  }
+}
+
+public class Booking {
+  public boolean hasDinner() {
+    return this.premiumDelegate != null && this.premiumDelegate.hasDinner();
+  }
+}
+
+public class PremiumBooking extends Booking {
+
+  // public boolean hasDinner() {
+  //   return this.extra.hasOwnProperty("dinner") && !this.isPeakDay();
+  // }
+}
+```
+- `hasDinner`는 `PremiumBooking`에만 있던 메소드 -> `PremiumBooking`만의 행동
+  - 즉, `Booking`에선 처리할 필요가 없음
+  - 그럼에도 `Booking`에선 구현해줘야함 -> 이는 해당 리팩토링의 사이드 이펙트라고 판단됨
+- `PremiumDelegate`로 위임시켜서 메소드 호출
+- 이로서 `PremiumBooking`은 서브클래스로서 의미가 없기 떄문에 삭제되어도 됨.
