@@ -142,6 +142,150 @@ public class Customer {
     }
 }
 ```
-> Before 4 : CustomerService의 isUnknown의 책임은 어느클래스에 잇는것이 맞는가? move to customer class ( IDE refactor : move to instance  )
+> Before&After 4 : 이름이 잇을것이기 때문에 반드시 true를 return하도록함
+```java 
+public class Customer {
+ public boolean isUnknown() {
+        return false;
+    }
+}
+```
+
+> Before&After 5 :  자 이제 customer가 known인지는 customer 가 판단
+```java 
+public class UnknownCustomer extends Customer {
+   @Override
+    public boolean isUnknown() {
+        return true;
+    }
+}
+```
+> Before 6 :  그럼 customer는 site에서 결정을 지어줘야한다.
+```java 
+    public Site(Customer customer) {
+        this.customer = customer;
+    }
+```
+> After 6 : 
+```java 
+public class Site {
+    public Site(Customer customer) {
+
+        this.customer = customer.getName().equals("unknown") ? new UnknownCustomer() : customer;
+    }
+}
+```
+(* Tip : refactoring 중간중간 계속 Test를 수행하여 문제가없는지 확인한다. )
+
+> Before 7 :  customerName = "occupant"; 부분을 각 클래스의 getName을 호출하도록 변경
+```java 
+public class CustomerService {
+
+    public String customerName(Site site) {
+        Customer customer = site.getCustomer();
+
+        String customerName;
+        if (customer.getName().equals("unknown")) {
+            customerName = "occupant";
+        } else {
+            customerName = customer.getName();
+        }
+
+        return customerName;
+    }
+    ...
+}
+```
+> After 7 : 
+```java 
+public class UnknownCustomer extends Customer {
+    ...
+    @Override
+    public String getName() {
+        return "occupant";
+    }
+    ...
+}
+```
+
+> Before&After 8 :  getName만 호출하도록 변경
+```java 
+public class CustomerService {
+    ...
+    public String customerName(Site site) {
+        return site.getCustomer().getName();
+//before
+//        Customer customer = site.getCustomer();
+//
+//        String customerName;
+//        if (customer.isUnknown()) {
+//            customerName = "occupant";
+//        } else {
+//            customerName = customer.getName();
+//        }
+//
+//        return customerName;
+    }
+    ...
+}
+```
+> Before&After 9 :  billingPlan도 로직이 있을 필요가 없다.
+```java 
+public class CustomerService {
+   public BillingPlan billingPlan(Site site) {
+        return site.getCustomer().getBillingPlan();
+//before
+//        Customer customer = site.getCustomer();
+//        return customer.isUnknown() ? new BasicBillingPlan() : customer.getBillingPlan();
+    }
+}
+
+public class UnknownCustomer extends Customer {
+    ...
+    public UnknownCustomer() {
+        super("unknown", new BasicBillingPlan() , new NullPaymentHistory());
+    }
+    ...
+```
+> Before 10 :  Null Object pattern의 적용, 0을 리턴하는 부분을 NullPaymentHistory를 적용함
+```java 
+public class CustomerService {
+    public int weeksDelinquent(Site site) {
+        Customer customer = site.getCustomer();
+        return customer.isUnknown() ? 0 : customer.getPaymentHistory().getWeeksDelinquentInLastYear();
+    }
+    ...
+```
+> After 10-1: NullPaymentHistory class 생성
+```java 
+public class NullPaymentHistory extends PaymentHistory{
+
+    public NullPaymentHistory() {
+        super(0);
+    }
+}
+
+```
+> After 10-2: UnknownCustomer 생성자를 변경
+```java 
+
+public class UnknownCustomer extends Customer {
+
+    public UnknownCustomer() {
+        super("unknown", new BasicBillingPlan() , new NullPaymentHistory());
+    }
+
+```
+> After 10-3: weeksDelinquent 로직을 단순화
+```java 
+public class CustomerService {
+    public int weeksDelinquent(Site site) {
+        return site.getCustomer().getPaymentHistory().getWeeksDelinquentInLastYear();
+//before : null object pattern의 적용 : Null Payment HIstory로 추출한다.
+//        Customer customer = site.getCustomer();
+//        return customer.isUnknown() ? 0 : customer.getPaymentHistory().getWeeksDelinquentInLastYear();
+    }
+   ...
+```
 
 
