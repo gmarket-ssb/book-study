@@ -291,8 +291,8 @@ public class Booking {
     return new Booking(show, time);
   }
 
-  public static PremiumBooking createPremiumBooking(Show show, LocalDateTime time, PremiumExtra extra) {
-    PremiumBooking premiumBooking = new PremiumBooking(show, time, extra);
+  public static Booking createPremiumBooking(Show show, LocalDateTime time, PremiumExtra extra) {
+    Booking premiumBooking = new PremiumBooking(show, time, extra);
     premiumBooking.premiumDelegate = new PremiumDelegate(premiumBooking, extra);
     return premiumBooking;
   }
