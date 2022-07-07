@@ -1,4 +1,4 @@
-## 냄새14. 성의없는 요소
+## Section14. 성의없는 요소
 
 ### Why?
 - 변수, 메소드, 클래스를 만들때 오히려 효율적이라고 생각하지만 비효율적인 경우도 발생한다.
@@ -30,6 +30,7 @@
   - 추상 클래스를 만들었지만 크게 유요하지 않다면 “계층 합치기 (Collapse Hierarchy)”
   - 불필요한 위임은 “함수 인라인 (Inline Function)” 또는 “클래스 인라인 (Inline Class)”
   - 사용하지 않는 매개변수를 가진 함수는 “함수 선언 변경하기 (Change Function Declaration)” 오로지 테스트 코드에서만 사용하고 있는 코드는 “죽은 코드 제거하기 (Remove Dead Code)”
+
 ### 리팩토링 35. 죽은 코드 제거하기 Remove Dead Code
 사용하지 않는 코드가 애플리케이션 성능이나 기능에 영향을 끼치지는 않는다.
 하지만, 해당 소프트웨어가 어떻게 동작하는지 이해하려는 사람들에게는 꽤 고통을 줄 수있다.
@@ -38,7 +39,7 @@
 <img width="799" alt="image" src="https://user-images.githubusercontent.com/5934737/177667498-ec183fe8-7ffc-4cc2-ad09-51a550b76a61.png">
 
 
-## 냄새16. 임시필드 Temporary Field
+## Section16. 임시필드 Temporary Field
 - 클래스에 있는 어떤 필드가 특정한 경우에만 값을 갖는 경우.
 - 어떤 객체의 필드가 “특정한 경우에만” 값을 가진다는 것을 이해하는 것은 일반적으로 예상하지 못하기때문에 이해하기 어렵다. 
 
@@ -288,7 +289,7 @@ public class CustomerService {
    ...
 ```
 
-## 냄새 17. 메시지 체인 Message Chains
+## Section17. 메시지 체인 Message Chains
 
 - 예) this.member.getCredit().getLevel().getDescription()
 - 체인 중 일부가 변경된다면 클라이언트의 코드도 변경해야 한다. 
