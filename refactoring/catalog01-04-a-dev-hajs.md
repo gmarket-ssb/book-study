@@ -4,6 +4,8 @@
 - 함수 추출하기 (Extract Function)
 - 함수 인라인하기 (Inline Function)
 - **변수 추출하기 (Extract Variable)**
+  - 표현식이 복잡한 경우 일부를 변수로 추출하여 이름을 주도록 하는 리팩토링 기법
+  - 디버깅 시 breakpoint 를 줄 수도 있고, 상태를 출력하는 문장을 추가할 수 있다.
 - **변수 인라인하기 (Inline Variable)**
 - 함수 선언 변경하기 (Change Function Declaration)
   - 함수의 이름, 매개변수, 리턴 타입 등을 변경하는 리팩토링 기법
@@ -12,7 +14,10 @@
 - 매개변수 객체 만들기 (Introduce Parameter Object)
   - 매개변수가 많을 때 사용하는 리팩토링 기법
 - 여러 함수를 클래스로 묶기 (Combine  Functions into Class)
+  - 공통된 데이터를 중심으로 긴밀하게 엮여 동작하는 함수 무리가 있을 때 수행하는 리팩토링 기법
 - 여러 함수를 변환 함수로 묶기 (Combine Functions into Transform)
+  - 특정 정보를 도출하는 함수가 많을 때 하나로 합치도록 하는 리팩토링 기법
+  - 검색과 갱신을 일관된 장소에서 처리할 수 있고, 중복된 로직도 막을 수 있다. 
 - 단계 쪼개기 (Split Phase)
   - 한 함수에서 하고 있는 많은 일들을 세부적으로 분리하는 리팩토링 기법
 
@@ -25,12 +30,46 @@
   - public 필드를 record 를 통해서 감추는 리팩토링 기법
 - **컬렉션 캡슐화하기 (Encapsulate Collection)**
   - 컬렉션에 접근하는 기술 자체를 감추는 리팩토링 기법
+  ```javascript
+  // before
+  class Person {
+    get courses() { return this._courses; }
+    set courses(aList) { this._courses = aList; }
+  }
+  
+  // after
+  class Person {
+    get courses() { return this._courses.slice(); } // 아무도 목록을 변경할 수 없도록 복제본을 제공
+    addCourse(aCourse)    {...}
+    removeCourse(aCourse) {...}
+  }
+  ```
 - 기본형을 객체로 바꾸기 (Replace Primitive with Object)
+  ```java
+  // before
+  orders.filter(o => "high" === o.priority);
+  
+  // after
+  orders.filter(o => o.priority.higherThan(new Priority("normal"));
+  ```
 - 임시 변수를 질의 함수로 바꾸기 (Replcae Temp with Query)
+  - 임시 변수를 아예 함수로 만들어 사용하도록 하는 리팩토링 기법
+  - 추출한 함수와 원래 함수의 경계가 더 분명해져서 부자연스러운 의존 관계나 부수 효과를 찾고 제거하는 데 도움이 된다.
 - 클래스 추출하기 (Extract Class)
 - 클래스 인라인하기 (Inline Class)
 - 위임 숨기기 (Hide Delegate)
   - 클래스가 또 다른 클래스와 어떤 연관관계를 가지고 있는지를 감추는 리팩토링 기법
+  ```java
+  // before
+  manager = person.department.manager;
+  
+  // after
+  manager = person.manager;
+  
+  class Person {
+    get manager() { return this.department.manager; }
+  }
+  ```
 - 중재자 제거하기 (Remove Middle Man)
   - '위임 숨기기' 의 반대 개념으로, 너무 많이 캡슐화가 된 경우 사용하기 좋은 리팩토링 기법
 - **알고리듬 교체하기 (Substitute Algorithm)**
