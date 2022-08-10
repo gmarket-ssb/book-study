@@ -50,12 +50,19 @@
       ```
 4. tomcat run check
     - <img src="https://user-images.githubusercontent.com/57446639/183723693-f344d3db-ad84-42e5-b7a2-e7a19c860811.png" width="500"/>
+<br><br>
 
-## docker registry?
+## Docker Registry?
 <img src="https://user-images.githubusercontent.com/57446639/183725587-a0a55704-d33c-47bd-bddc-5b47890bbb25.png" width="400"/><br>
 - https://hub.docker.com/
 - 도커 레지스트리는 누구나 이미지를 올리고 내려받을 수 있다.
 - 방금한 실습도 레지스트리에 있는 톰캣 이미지를 찾아서 컨테이너로 변환해서 만들고, 컨테이너가 웹 페이지를 띄워줬다.
 - 도커 레지스트리에서 원하는 이미지를 다운로드 하는 방법 : ```$ docker pull mysql```
 - 다운로드 받은 이미지를 확인하는 방법: ```# docker images```
+<br><br>
 
+## Docker Life Cycle
+<img src="https://user-images.githubusercontent.com/57446639/183859851-2c0fe2d7-9f4f-4086-a3a0-f88574fe0c59.png" width="400"/><br>
+- `run = pull + create + start`
+  - pull 이 되어 있는 이미지라면 pull 을 또 하지는 않는다.
+  - 그렇다고 run 명령어를 계속 날리면, 중복된 컨테이너가 계속 생겨나므로 create 와 start 명령어를 명시적으로 분리해서 사용하는게 좋다.
