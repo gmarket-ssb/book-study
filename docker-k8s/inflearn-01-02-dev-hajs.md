@@ -42,7 +42,7 @@
 2. docker version check
     - ```$ docker --version```
 3. docker image download
-    - ```
+    - ```bash
       ## tomcat image search
       $ docker search tomcat
       ## image background run (80 접속 > 8080 포트의 tomcat 포워딩, name: tc)
@@ -71,30 +71,30 @@
 
 ## Simple Docker Commands
 - 기존에 설치된 모든 컨테이너와 이미지 정지 및 삭제
-  - ```
-  ## -a: all, -q: container name
-  $ docker stop `docker ps -a -q`
-  $ docker rm `docker ps -a -q`
-  $ docker rmi `docker images -q`
-  ```
+  - ```bash
+    ## -a: all, -q: container name
+    $ docker stop `docker ps -a -q`
+    $ docker rm `docker ps -a -q`
+    $ docker rmi `docker images -q`
+    ```
 - 도커 기능을 사용해 Jenkins 검색
-  - ```
-  $ docker search jenkins
-  ```
+  - ```bash
+    $ docker search jenkins
+    ```
 - Jenkins 를 사용하여 설치
-  - ```
-  $ docker pull jenkins/jenkins
-  ## 오픈된 포트 확인
-  $ docker inspect jenkins/jenkins
-  $ docker run -d --name jenkins -p 8080:8080 jenkins/jenkins
-  ```
+  - ```bash
+    $ docker pull jenkins/jenkins
+    ## 오픈된 포트 확인
+    $ docker inspect jenkins/jenkins
+    $ docker run -d --name jenkins -p 8080:8080 jenkins/jenkins
+    ```
 - Jenkins 포트로 접속하여 웹 서비스 열기
-  - ```
-  $ curl 127.0.0.1:8080
-  ```
+  - ```bash
+    $ curl 127.0.0.1:8080
+    ```
 - Jenkins 의 초기 패스워드 찾아서 로그인하기
-  - ```
-  ## init password 확인, 저장된 path 확인
-  $ docker logs jenkins
-  $ docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
-  ```
+  - ```bash
+    ## init password 확인, 저장된 path 확인
+    $ docker logs jenkins
+    $ docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+    ```
