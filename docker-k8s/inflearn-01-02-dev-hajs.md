@@ -45,8 +45,10 @@
     - ```
       ## tomcat image search
       $ docker search tomcat
-      ## image background run (port: 8080, name: tc)
-      $ docker run -d -p 8080:8080 --name tc amd64/tomcat
+      ## image background run (80 접속 > 8080 포트의 tomcat 포워딩, name: tc)
+      $ docker run -d --name tc -p 80:8080 amd64/tomcat
+      ## temp run container (stop 시키면 container 가 사라짐)
+      $ docker run -d --name tc -p 80:8080 --rm amd64/tomcat
       ```
 4. tomcat run check
     - <img src="https://user-images.githubusercontent.com/57446639/183723693-f344d3db-ad84-42e5-b7a2-e7a19c860811.png" width="500"/>
@@ -66,3 +68,33 @@
 - `run = pull + create + start`
   - pull 이 되어 있는 이미지라면 pull 을 또 하지는 않는다.
   - 그렇다고 run 명령어를 계속 날리면, 중복된 컨테이너가 계속 생겨나므로 create 와 start 명령어를 명시적으로 분리해서 사용하는게 좋다.
+
+## Simple Docker Commands
+- 기존에 설치된 모든 컨테이너와 이미지 정지 및 삭제
+  - ```
+  ## -a: all, -q: container name
+  $ docker stop `docker ps -a -q`
+  $ docker rm `docker ps -a -q`
+  $ docker rmi `docker images -q`
+  ```
+- 도커 기능을 사용해 Jenkins 검색
+  - ```
+  $ docker search jenkins
+  ```
+- Jenkins 를 사용하여 설치
+  - ```
+  $ docker pull jenkins/jenkins
+  ## 오픈된 포트 확인
+  $ docker inspect jenkins/jenkins
+  $ docker run -d --name jenkins -p 8080:8080 jenkins/jenkins
+  ```
+- Jenkins 포트로 접속하여 웹 서비스 열기
+  - ```
+  $ curl 127.0.0.1:8080
+  ```
+- Jenkins 의 초기 패스워드 찾아서 로그인하기
+  - ```
+  ## init password 확인, 저장된 path 확인
+  $ docker logs jenkins
+  $ docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+  ```
