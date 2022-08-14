@@ -16,3 +16,6 @@
 
 ### 클러스터 아키텍쳐
 <img width="1002" alt="image" src="https://user-images.githubusercontent.com/106303141/184526652-1e398bb4-787e-469d-8198-7448fd1944c8.png">
+
+### 쿠버네티스에서 애플리케이션 실행
+<img width="955" alt="image" src="https://user-images.githubusercontent.com/106303141/184527269-f4257f43-daa7-4b4c-a5da-b1a2c384cf62.png">
