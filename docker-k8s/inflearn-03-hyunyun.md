@@ -31,3 +31,10 @@
 
 
 
+---
+
+## 실습과정
+### 구성
+- 마스터노드 < 워커노드 (2개)
+
+![image](https://user-images.githubusercontent.com/106303141/184595213-00ddb740-9532-4229-8bfc-a25231c93f14.png)
