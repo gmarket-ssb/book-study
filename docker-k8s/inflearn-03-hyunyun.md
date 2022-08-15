@@ -33,11 +33,14 @@
 
 ---
 
+
+
 ## 실습과정
 ### 방법 (택 1)
 - 구글 클라우드 플랫폼 (GCP)
 - VMWare
-- Amazon EKS
+- AWS EKS
+- VirtualBox
 
 ### 구성
 - 마스터노드 < 워커노드 (2개)
