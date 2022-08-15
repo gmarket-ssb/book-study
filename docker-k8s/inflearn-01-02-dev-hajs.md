@@ -31,7 +31,7 @@
 <br><br>
 
 
-## Kubernates, k8s
+## Kubernetes, k8s
 2014년에 나온 컨테이너 기반 오픈소스 가상화 프로젝트
 <br><br>
 
