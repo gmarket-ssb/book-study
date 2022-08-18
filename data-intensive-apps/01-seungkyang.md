@@ -151,7 +151,7 @@ JOIN follows ON follows.followee_id = users.id WHERE follows.follower id = curre
 ### 부하대응 접근방식
 * vertical scaling vs horizontal scaling : 용량확장(단일머신) vs 규모확장(여러머신)
 * stateless vs statful 의 배포 확장 : stateful 의 추가고려사항 많음.
----
+
 ****
 ## 유지보수성
 ****
