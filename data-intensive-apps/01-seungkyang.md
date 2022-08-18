@@ -123,6 +123,7 @@ SELECT tweets.*, users.* FROM tweets JOIN users ON tweets.sender_id = users.id
 
 JOIN follows ON follows.followee_id = users.id WHERE follows.follower id = current user
 ```
+  
   * 문제점 : Heavy query
 
 * version2 : 개별로 각 사용자의 홈라인 캐시를 유지한다. 트윗작성후 각자의 타임라인 캐시에 새로운 트윗을 삽입한다.
