@@ -106,13 +106,74 @@ Application의 경우 CPU의 성능은 더이상 제한요소가 아니다.
 
 ### 부하기술하기 
 
+* 부하의 지표들
+  * TPS, Database read/time ratio, Active User, Cache hit ratio
 
+### 트위터의 예
+#### User Story
+* 트윗작성 : 사용자는 팔로워에게 새로운 메시지를 게시할 수 있다. ( 4.6k req/s, peak time 12k req/s )
+* 홈 타임라인 : 사용자는 팔오우한 사람이 작성한 트윗을 볼 수 있다. ( 300k req/s )
+
+#### 문제점
+* fan out 현상 : input, output 의 심각한 비대칭현상. ( 참고 : https://gdnn.tistory.com/88 )
+
+#### 구현 history
+* Versoin1 : 홈라인구성
+```java
+SELECT tweets.*, users.* FROM tweets JOIN users ON tweets.sender_id = users.id
+
+JOIN follows ON follows.followee_id = users.id WHERE follows.follower id = current user
+```
+  * 문제점 : Heavy query
+
+* version2 : 개별로 각 사용자의 홈라인 캐시를 유지한다. 트윗작성후 각자의 타임라인 캐시에 새로운 트윗을 삽입한다.
+<img width="738" alt="image" src="https://user-images.githubusercontent.com/5934737/185282079-11119a77-34c3-4fc5-a92b-58d0b1bc3baf.png">
+
+  * 문제점 : 일부 인플루언서의 경우 굉장히 많은 쓰기가 발생, 3천만건이상의 쓰기가 발생할 수도 잇다.
+
+* version3 : hybrid형태로 홈라인구성시점에 별도로 가져와서 합치는 형태
+
+<img width="737" alt="image" src="https://user-images.githubusercontent.com/5934737/185282422-365ecaad-05ca-4fe3-b181-8cd8d0bdd998.png">
+
+### 성능기술하기
+* 부하테스트의 Test case 유형 : 
+  * 시스템자원(CPU, Memory, N/W bandwidth)를 유지하고 시스템성능 영향파악
+  * 시스템자원증가시키면서 시스템성능 영향파악
+
+* 성능 수치
+  * throughput 초당 처리건수
+  * response time : 응답시간
+
+* 성능측청결과 후 고려사항
+  * outlier
+  * tail latency : 10000건중 느린 1건의 최적화에는 비용이 많이 증가한다.
+  * 서비스 수준목표( service level objective, service level agreement ) 를 고려한다.
+  * 큐지연 : 선두차단.
+
+### 부하대응 접근방식
+* vertical scaling vs horizontal scaling : 용량확장(단일머신) vs 규모확장(여러머신)
+* stateless vs statful 의 배포 확장 : stateful 의 추가고려사항 많음.
 ---
 ****
 ## 유지보수성
 ****
 " 시간이 지나면서 시스템에 다양한 작업을 진행할때 생산적으로 진행될 수 잇어야한다. "
 
+* 주요 용어들
+  * 운용성 : 운영팀이 운영하기 원활하게 만들어라
+  * 단순성 : 복잡도를 최대한 단순화하자
+  * 발전성 : 변경하기 용이하도록 하자.
+
+### 운용성 : 운영의 편리함만들기 
+* 시스템 모니터링, 장애 성능저하등의 원인 추적 용이성
+* 보안패치 최신
+* 배포, 설정관련한 도구 및 사례마련
+* 담당자 퇴사/이동등에도 조직의 지식 보존
+### 단순성 : 복잡도 관리
+* big ball of mud : 하나의 시스템을 매우 복잡하고 어렵게 만드는 경우
+* 추상화를 통해서 구현을 재 사용하도록 한다.
+### 발전성 : 변화를 쉽게 만들기
+* 애자일 작업패턴 : TDD, refactoring
 
 ---
 
