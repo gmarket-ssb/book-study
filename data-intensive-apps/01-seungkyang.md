@@ -28,7 +28,8 @@ Application의 경우 CPU의 성능은 더이상 제한요소가 아니다.
   * 데이터베이스 처럼 지속성을 보장하는 메시지 큐인 아파치 카프카
 
 ### 현실문제 : 하나의 도구로는 만족시킬수 없는 요구사항
-<img width="790" alt="image" src="https://user-images.githubusercontent.com/5934737/185275353-2c32c47f-34db-4ef7-b4f3-f415e0ceb4c1.png">
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/5934737/185275353-2c32c47f-34db-4ef7-b4f3-f415e0ceb4c1.png">
+
 * 데이터 베이스는 메인데이터 베이스와 분리된 캐시계층유지 필요
 * Elasticsearch나 solr같은 전문(full-text) 검색 서버의 경우 메인 DB 와 동기화된 캐시나 색인을 유지하는 것은 Application 코드의 책임
 * 개발자는 결국 Client에게 구현을 숨기고 일관된 결과를 제공받을수 잇도록 서비스를 제공해야한다.
