@@ -117,14 +117,12 @@ Application의 경우 CPU의 성능은 더이상 제한요소가 아니다.
 * fan out 현상 : input, output 의 심각한 비대칭현상. ( 참고 : https://gdnn.tistory.com/88 )
 
 #### 구현 history
-* Versoin1 : 홈라인구성
+* Version1 : 홈라인구성시 Heavy query 
 ```java
 SELECT tweets.*, users.* FROM tweets JOIN users ON tweets.sender_id = users.id
 
 JOIN follows ON follows.followee_id = users.id WHERE follows.follower id = current user
 ```
-  
-  * 문제점 : Heavy query
 
 * version2 : 개별로 각 사용자의 홈라인 캐시를 유지한다. 트윗작성후 각자의 타임라인 캐시에 새로운 트윗을 삽입한다.
 <img width="738" alt="image" src="https://user-images.githubusercontent.com/5934737/185282079-11119a77-34c3-4fc5-a92b-58d0b1bc3baf.png">
