@@ -20,6 +20,8 @@
 ### 쿠버네티스에서 애플리케이션 실행
 <img width="955" alt="image" src="https://user-images.githubusercontent.com/106303141/184527269-f4257f43-daa7-4b4c-a5da-b1a2c384cf62.png">
 
+### 포드(POD)란?
+![image](https://user-images.githubusercontent.com/106303141/185937876-525cc725-6e53-4545-b684-96ebada9b08e.png)
 
 
 ### 쿠버네티스 설치전 주의사항
