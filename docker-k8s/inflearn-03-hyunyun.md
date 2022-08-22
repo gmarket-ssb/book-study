@@ -49,3 +49,19 @@
 
 ![image](https://user-images.githubusercontent.com/106303141/184595842-df3a0ae1-ae94-4887-9ff2-13f68cbe835c.png)
 
+### 쿠버네티스에서 앱 실행해보기 (Go언어)
+
+- 쿠버네티스에서 올릴 컨테이너 이미지를 하나 생성
+- 포트 8080에서  HTTP서버를 시작
+
+```
+apt install golang
+go get github.com/julienschmidt/httprouter
+go build main.go
+main
+```
+
+
+
+
+
