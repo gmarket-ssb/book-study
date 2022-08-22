@@ -59,6 +59,7 @@ sudo apt-mark hold kubelet kubeadm kubectl
 - 마스터노드 (1개) -< 워커노드 (2개)
 
 #### 스왑기능 비활성화
+메모리(RAM)이 모자랄때 하드디스크의 일부를 RAM처럼 쓰는 기능
 ```
 sudo swapoff -a
 sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
