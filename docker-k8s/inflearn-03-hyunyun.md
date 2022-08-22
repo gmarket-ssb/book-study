@@ -86,7 +86,7 @@ kubeadm init
 ![image](https://user-images.githubusercontent.com/106303141/185929570-02c05591-2fb8-4fdd-bdbb-b1d357c49a2a.png)
 
 
-
+### ngnix 애플리케이션 생성과 확인
 ![image](https://user-images.githubusercontent.com/106303141/184595213-00ddb740-9532-4229-8bfc-a25231c93f14.png)
 
 ![image](https://user-images.githubusercontent.com/106303141/184595842-df3a0ae1-ae94-4887-9ff2-13f68cbe835c.png)
