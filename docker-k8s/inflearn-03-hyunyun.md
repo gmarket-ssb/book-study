@@ -123,6 +123,8 @@ sudo docker run -d -p 8080:8080 --rm http-go
 curl 127.0.0.1:8080
 ```
 
+![image](https://user-images.githubusercontent.com/106303141/185936182-3901d591-26ac-4a29-92b6-582d0b92da0d.png)
+
 
 
 
