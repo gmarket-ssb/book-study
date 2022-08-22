@@ -97,13 +97,31 @@ kubeadm init
 - 쿠버네티스에서 올릴 컨테이너 이미지를 하나 생성
 - 포트 8080에서  HTTP서버를 시작
 
+앱 작성 후 실행
 ```
 apt install golang
 go get github.com/julienschmidt/httprouter
 go build main.go
 main
 ```
+![image](https://user-images.githubusercontent.com/106303141/185933816-993f2e8a-7e30-4e2e-be0a-8364a2caa0df.png)
 
+dockerfile
+```
+FROM golang:1.11
+WORKDIR /usr/src/app
+COPY main  /usr/src/app
+CMD ["/usr/src/app/main"]
+```
+
+도커 빌드 및 푸시
+```
+sudo docker build -t gasbugs/http-go .
+sudo docker login
+sudo docker push gasbugs/http-go
+sudo docker run -d -p 8080:8080 --rm http-go
+curl 127.0.0.1:8080
+```
 
 
 
