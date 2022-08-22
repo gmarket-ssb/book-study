@@ -23,6 +23,7 @@
 ### 포드(POD)란?
 ![image](https://user-images.githubusercontent.com/106303141/185937876-525cc725-6e53-4545-b684-96ebada9b08e.png)
 
+디플로이 -> 레플리카셋 -> 포드
 
 ### 쿠버네티스 설치전 주의사항
 - 최소 2GB이상의 RAM (4GB추천, 넉넉하게 8GB)
