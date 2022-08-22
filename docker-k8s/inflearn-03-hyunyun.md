@@ -42,8 +42,50 @@
 - AWS EKS
 - VirtualBox
 
-### 구성
-- 마스터노드 < 워커노드 (2개)
+### 쿠버네티스 설치
+```
+# kube_install.sh
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+```
+
+### 설치 후 노드 복제 (클러스터 구성)
+#### 목표
+- 마스터노드 (1개) -< 워커노드 (2개)
+
+#### 스왑기능 비활성화
+```
+sudo swapoff -a
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+```
+
+#### 도커 cgroups -> systemd로 변경하기
+cgroups는 리눅스 커널의 종류로, 컨테이너나 프로세스가 리눅스 자원에 접근하는 것을 제한하는 기능
+```
+sudo docker info | grep -i cgroup # 현재 도커의 cgroup 확인
+
+cat <<EOF | sudo tee /etc/docker/daemon.json # 도커 데몬의 설정파일 구성
+#{
+#  "exec-opts": ["native.cgroupdriver=systemd"]
+#}
+#EOF
+
+service docker restart # 도커 재시작
+```
+
+#### 마스터 노드 초기화
+```
+kubeadm init
+```
+
+![image](https://user-images.githubusercontent.com/106303141/185929570-02c05591-2fb8-4fdd-bdbb-b1d357c49a2a.png)
+
+
 
 ![image](https://user-images.githubusercontent.com/106303141/184595213-00ddb740-9532-4229-8bfc-a25231c93f14.png)
 
