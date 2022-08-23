@@ -185,10 +185,12 @@ c) 상호 연결이 많은 데이터 => 관계형은 무난, 그래프 모델 �
 
 #### 스키마 접근 방식
 - 쓰기 스키마 (schema-on-write) : 스키마는 명시적이고 DB는 모든 데이터가 스키마를 따름을 보장 (RDB 접근 방식, Statically typed) -> 엄격한 타입 제한과 구조화, 별도의 Alter Table 필요
+
   <img width="930" alt="image" src="https://user-images.githubusercontent.com/8626130/186197929-730021aa-d15c-46fb-a8f6-6d6fcfeafa4e.png">
 
 - 읽기 스키마 (schema-on -read) : 데이터 구조는 암묵적이고 데이터를 읽을 때만 해석
 (= Dynamically typed) -> 읽는 Application의 데이터 필드드만 추가하면 됨
+
   <img width="868" alt="image" src="https://user-images.githubusercontent.com/8626130/186197868-6813d977-ad77-408b-b4bb-d9f228142cf6.png">
 
 ### 질의를 위한 데이터 지역성
@@ -236,12 +238,16 @@ SQL, 관계대수(relational algebra) 같은 선언형 언어는 결과를 충�
 
 ![image](https://user-images.githubusercontent.com/8626130/186202483-583f3ff0-909d-4bd5-9ecd-03d7f002d6dc.png)
 
+
 POSTGRES
+
 <img width="872" alt="image" src="https://user-images.githubusercontent.com/8626130/186202233-f1743df4-2334-4d0d-9808-ea6a2f5b4c04.png">
 
 > 상어과에 속하는 종만 보이도록 관측치를 필터링 한 다음, 관측치가 발생한 달력의 월로 그룹화하고, 해당 달의 모든 관측치에 보여진 동물 수를 합친다.
 
+
 MongoDB
+
 <img width="762" alt="image" src="https://user-images.githubusercontent.com/8626130/186202879-33948ea9-a1d3-4fa7-98d6-34115010188c.png">
 
 ### 그래프형 데이터 모델
