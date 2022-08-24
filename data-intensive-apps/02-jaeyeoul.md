@@ -278,3 +278,6 @@ MongoDB
 RDF
 ![image](https://user-images.githubusercontent.com/8626130/186206096-1fc932a3-6eaa-4f15-b3a1-52b39785843b.png)
 - https://www.w3.org/TR/rdf-sparql-query/
+- https://ko.wikipedia.org/wiki/%EC%8B%9C%EB%A7%A8%ED%8B%B1_%EC%9B%B9
+- https://github.com/solid
+- https://solidproject.org/
