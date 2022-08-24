@@ -1,6 +1,6 @@
 ## 도커로 개발환경 확장하기
 
-[##_Image|kage@bcXbM0/btrJ17mM02q/f9GeW6Z5ZutdbbQbBjrc90/img.png|CDM|1.3|{"originWidth":1920,"originHeight":1080,"style":"alignCenter","width":618,"height":348}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbcXbM0%2FbtrJ17mM02q%2Ff9GeW6Z5ZutdbbQbBjrc90%2Fimg.png)
 
 ## 마이크로서비스 패키징
 
@@ -10,7 +10,7 @@
 
 -   도커파일, Dockerfile : 도커로 만들 이미지의 세부 사항을 포함하는 하나의 스크립트 파일
 
-[##_Image|kage@dyzxHx/btrJZPHdrqD/TK3PNFlgYoR47U3GNEDi9K/img.png|CDM|1.3|{"originWidth":471,"originHeight":412,"style":"alignCenter","width":423,"height":370}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdyzxHx%2FbtrJZPHdrqD%2FTK3PNFlgYoR47U3GNEDi9K%2Fimg.png)
 
 도커파일에서 마이크로서비스와 그 종속성 및 관련 파일들을 정의한다.
 
@@ -36,7 +36,7 @@ CMD npm start              // node app을 실행한다
 
 도커 이미지 빌드
 
-[##_Image|kage@Exxtb/btrJZIVURL1/WvYEXKm0zH9DWqDqUBAVN1/img.png|CDM|1.3|{"originWidth":1920,"originHeight":1080,"style":"alignCenter","width":657,"height":370}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FExxtb%2FbtrJZIVURL1%2FWvYEXKm0zH9DWqDqUBAVN1%2Fimg.png)
 
 ```
 # docker build -t {이미지 이름} {도커파일 이름} {실행할 디렉터리}
@@ -54,13 +54,13 @@ docker run -d -p 3000:3000 video-streaming
 docker logs {container id}
 ```
 
-[##_Image|kage@k374Z/btrJZJtIEde/B5wd3ijZp3thcv21JmwZB0/img.png|CDM|1.3|{"originWidth":1268,"originHeight":570,"style":"alignCenter","width":578,"height":260}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fk374Z%2FbtrJZJtIEde%2FB5wd3ijZp3thcv21JmwZB0%2Fimg.png)
 
 [![asciicast](https://asciinema.org/a/516645.svg)](https://asciinema.org/a/516645)
 
 ## 마이크로서비스 게시하기
 
-[##_Image|kage@bEUM33/btrJZJHjRqX/Qr7CxXFXi7HEdU3PI8EXW1/img.png|CDM|1.3|{"originWidth":1920,"originHeight":1080,"style":"alignCenter","width":505,"height":284}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbEUM33%2FbtrJZJHjRqX%2FQr7CxXFXi7HEdU3PI8EXW1%2Fimg.png)
 
 1.  애저에 있는 private container registry를 생성한다.
 2.  publish 하기 전 `docker login` 명령어를 사용해 인증한다.
@@ -78,7 +78,7 @@ docker pull rura6502.azurecr.io/video-streaming:latest
 docker run --rm -p 3000:3000 rura6502.azurecr.io/video-streaming:latest
 ```
 
-[##_Image|kage@bRhQoA/btrJ2pt0HzU/3wQZN332VJH9lIqHFKrCs0/img.png|CDM|1.3|{"originWidth":1920,"originHeight":1080,"style":"alignCenter"}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbRhQoA%2FbtrJ2pt0HzU%2F3wQZN332VJH9lIqHFKrCs0%2Fimg.png)
 
 [![asciicast](https://asciinema.org/a/516649.svg)](https://asciinema.org/a/516649)
 
@@ -86,7 +86,9 @@ docker run --rm -p 3000:3000 rura6502.azurecr.io/video-streaming:latest
 
 이번엔 두 가지 기능, 비디오를 저장하는 공간인 파일 저장소와 비디오 경로를 저장하기 위한 데이터베이스를 추가한다. 데이터베이스로 MongoDB를 저장하고 파일 저장소로는 애저 스토리지를 사용한다. 또한 이렇게 추가되는 서비스를 같이 실행시키기 위해 도커 컴포즈를 사용해 개발 환경을 구축한다.
 
-[##_Image|kage@dnW5Gb/btrKsFYBNHp/57gSdcFSKOsGO1B7XVXc90/img.png|CDM|1.3|{"originWidth":489,"originHeight":249,"style":"alignCenter"}_##][##_Image|kage@IhSaX/btrKp5xds5F/Gv2XT8L2WtOB38qhQ8ik9k/img.png|CDM|1.3|{"originWidth":731,"originHeight":388,"style":"alignCenter","width":597,"height":317}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdnW5Gb%2FbtrKsFYBNHp%2F57gSdcFSKOsGO1B7XVXc90%2Fimg.png)
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FIhSaX%2FbtrKp5xds5F%2FGv2XT8L2WtOB38qhQ8ik9k%2Fimg.png)
 
 ### 도커 컴포즈를 사용하는 이유
 
@@ -142,7 +144,7 @@ docker-compose down        #
 
 마이크로소프트가 제공하는 클라우드 저장소인 azure storage를 이용해서 비디오 스트리밍 서비스가 이용할 비디오 파일을 저장한다. 여기서 역할 분리(SoC, Separation Of Concerns)와 단일 책임 원칙(Single Responsibility Principle)을 적용해 아래와 같은 모양으로 설계할 것이다.
 
-[##_Image|kage@rcQAy/btrKq4xRfRF/IvrUlKJ4pyKBSwiffB8Vj0/img.png|CDM|1.3|{"originWidth":714,"originHeight":367,"style":"alignCenter"}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FrcQAy%2FbtrKq4xRfRF%2FIvrUlKJ4pyKBSwiffB8Vj0%2Fimg.png)
 
 위와 같이 스토리지에 연결하는 서비스를 별도로 분리하면, 다른 클라우드 서비스를 사용할 때 해당 부분만 쉽게 교체할 수 있으며, 핫스왑(운영 중에 중단 없이 교체가 가능한 기능)을 지원한다고 볼 수 있다.
 
@@ -158,7 +160,7 @@ export STORAGE_ACCESS_KEY={ACCESS_KEY}
 
 새로 추가되고 기존에 변경된 애플리케이션을 다시 이미지로 만들고 구동시키기 위해 docker-compose 파일을 업데이트한다.
 
-[##_Image|kage@lojam/btrKuTVTjY5/zrKHRQj9v1nOwxwtrdaJCk/img.png|CDM|1.3|{"originWidth":873,"originHeight":461,"style":"alignCenter"}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Flojam%2FbtrKuTVTjY5%2FzrKHRQj9v1nOwxwtrdaJCk%2Fimg.png)
 
 ```
 version: '3'
@@ -199,7 +201,7 @@ docker compose를 사용하지 않았다면 azure-storage, video-streaming 컨�
 
 현재 제공하고있는 비디오에 대한 메타데이터(비디오 경로, 비디오 정보 등)를 저장하기 위해 mongo db를 사용한다.
 
-[##_Image|kage@cGFGQA/btrKpRZMt86/Uuk6f2kYRVWZE4AR5Q1VH0/img.png|CDM|1.3|{"originWidth":1920,"originHeight":1080,"style":"alignCenter","width":561,"height":316}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcGFGQA%2FbtrKpRZMt86%2FUuk6f2kYRVWZE4AR5Q1VH0%2Fimg.png)
 
 mongo db는 다루기 쉽고, 다양한 구조적 데이터를 저장할 수 있다. 다양한 구조적 데이터를 저장할 수 있으며 용량 확장이 매우 쉽다.
 
