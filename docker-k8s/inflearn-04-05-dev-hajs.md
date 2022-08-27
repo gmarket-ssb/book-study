@@ -25,12 +25,28 @@
 
 `$kubectl get nodes` 명령어로 띄워진 노드를 확인해보면, 미니큐브 노드 하나만 띄워진 것을 확인할 수 있다.<br>
 <img src="https://user-images.githubusercontent.com/57446639/187022449-44387b0e-e904-480d-8a00-7203281ca19d.png" width="500"/>
-<br><br>
+<br><br><br>
 
 
 ### 쿠버네티스 워크로드
+#### pod
+pod 는 표준 Kubernetes 모듈의 기본 구성요소이며, 배포 가능한 가장 작은 Kubernetes 객체다.<br>
+<img src="https://user-images.githubusercontent.com/57446639/187022794-9cd7cdc4-ef07-4258-b85a-59730d57c241.png" width="650"/>
+- pod 는 밀접하게 연관된 프로세스를 함께 실행하고 마치 하나의 환경에서 동작하는 것처럼 보이게 한다.
+- pod 의 모든 컨테이너는 동일한 네트워크 및 UTS 네임스페이스에서 실행된다.
+- 같은 호스트 및 네트워크 인터페이스를 공유하므로 포트 충돌 가능성이 있으니 유의해야 한다.
 
+<img src="https://user-images.githubusercontent.com/57446639/187026473-c235fd76-a2c7-4651-9bed-0ddb8683187a.png" width="500"/>
+- 그러므로 위 그림과 같이 두 가지의 컨테이너가 밀접한 실행이 필요한 경우(ex. 파일 시스템 및 네트워크를 공유해야하는 경우, 네트워크 통신이 매우 빨라야 하는 경우) 에서만 한 pod 에 넣도록 하자.
 
+pod 의 정의 요소
+- apiVersion:
+- kind:
+- metamata:
+- spec:
+- stateful:
+
+<br><br>
 
 ### 그 외
 - kubeadmn 을 설치하면 kubectl 이 같이 설치된다.
