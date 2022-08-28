@@ -101,13 +101,16 @@ ReplicationController 세 가지 요소
 ReplicationController vs ReplicaSet
 - 거의 동일하게 동작하지만, ReplicaSet 이 더 풍부한 포드 셀렉터 사용이 가능하다.
 - 정확히는 ReplicationController 는 동일 기반 선택기만 지원하는 반면, ReplicaSet 은 세트 기반 선택기를 지원한다는 것이다.
+<img src="https://user-images.githubusercontent.com/57446639/187057798-6965645f-4329-4385-a0c1-6dd489351401.png" width="700"/><br>
+<br>
 
 <img src="https://user-images.githubusercontent.com/57446639/187057613-6e152439-433f-4b2e-b166-669f584f0390.png" width="650"/><br>
 - ReplicationController: 특정 레이블을 포함하는 포드가 일치하는지 확인
 - ReplicaSet: 특정 레이블이 없거나 해당 값과 관계없이 특정 레이블 키를 포함하는 포드를 매치하는지 확인
 
 <img src="https://user-images.githubusercontent.com/57446639/187057212-4dab5895-65cf-4a99-9612-7261e0449c5b.png" width="650"/><br>
-<img src="https://user-images.githubusercontent.com/57446639/187057687-105b6921-5cb1-43f7-8753-5a17df1cceea.png" width="650"/><br><br>
+<img src="https://user-images.githubusercontent.com/57446639/187057687-105b6921-5cb1-43f7-8753-5a17df1cceea.png" width="650"/><br>
+<br>
 
 #### Deployment
 
