@@ -36,15 +36,27 @@ pod 는 표준 Kubernetes 모듈의 기본 구성요소이며, 배포 가능한 
 - pod 의 모든 컨테이너는 동일한 네트워크 및 UTS 네임스페이스에서 실행된다.
 - 같은 호스트 및 네트워크 인터페이스를 공유하므로 포트 충돌 가능성이 있으니 유의해야 한다.
 
-<img src="https://user-images.githubusercontent.com/57446639/187026473-c235fd76-a2c7-4651-9bed-0ddb8683187a.png" width="500"/>
+<img src="https://user-images.githubusercontent.com/57446639/187026473-c235fd76-a2c7-4651-9bed-0ddb8683187a.png" width="500"/><br>
 - 그러므로 위 그림과 같이 두 가지의 컨테이너가 밀접한 실행이 필요한 경우(ex. 파일 시스템 및 네트워크를 공유해야하는 경우, 네트워크 통신이 매우 빨라야 하는 경우) 에서만 한 pod 에 넣도록 하자.
 
 pod 의 정의 요소
-- apiVersion:
-- kind:
-- metamata:
-- spec:
-- stateful:
+```yaml
+apiVersion: apps/v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  containers:
+    name: nginx
+    image: nginx:latest
+```
+- apiVersion: 쿠버네티스 api 버전
+- kind: 어떤 리소스 유형인지 결정(포드 레플리카 컨트롤러, 서비스 등)
+- metamata: 포드와 관련된 이름, 네임스페이스, 라벨 그 밖의 정보 존재
+- spec: 컨테이너, 볼륨 등의 정보
+- stateful: 포드의 상태, 각 컨테이너의 설명 및 상태, 포드 내부의 IP 및 그 밖의 기본 정보 등
 
 <br><br>
 
