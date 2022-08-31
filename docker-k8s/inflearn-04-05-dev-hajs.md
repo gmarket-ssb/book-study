@@ -92,6 +92,8 @@ ReplicationController
 - 구버전(~v1.8) 에서 사용하던 컨트롤러
 - 포드가 항상 실행되도록 유지하는 쿠버네티스 리소스
 - 포드를 감지하고 대체 포드를 생성
+- 참고로, 우리 Fusion 은 ReplicationController 를 사용하고 있음
+  - `kind: ReplicationController`
 
 ReplicationController 세 가지 요소
 1. ReplicationController 가 관리하는 포드 범위를 결정하는 **레이블 셀렉터**
@@ -105,21 +107,77 @@ ReplicationController vs ReplicaSet
 <br>
 
 <img src="https://user-images.githubusercontent.com/57446639/187057613-6e152439-433f-4b2e-b166-669f584f0390.png" width="650"/><br>
-- ReplicationController: 특정 레이블을 포함하는 포드가 일치하는지 확인
-- ReplicaSet: 특정 레이블이 없거나 해당 값과 관계없이 특정 레이블 키를 포함하는 포드를 매치하는지 확인
+- ReplicationController: 특정 레이블을 포함하는 포드가 일치하는지 확인, 언제든지 지정된 수의 파드 레플리카가 실행 중임을 보장한다.
+- ReplicaSet: 특정 레이블이 없거나 해당 값과 관계없이 특정 레이블 키를 포함하는 포드를 매치하는지 확인, 명시된 동일 파드 개수에 대한 가용성을 보증하는데 사용한다.
 
 <img src="https://user-images.githubusercontent.com/57446639/187057212-4dab5895-65cf-4a99-9612-7261e0449c5b.png" width="650"/><br>
 <img src="https://user-images.githubusercontent.com/57446639/187057687-105b6921-5cb1-43f7-8753-5a17df1cceea.png" width="650"/><br>
-<br>
+<br><br>
 
 #### Deployment
+> https://kubernetes.io/ko/docs/concepts/workloads/controllers/deployment/
+- 애플리케이션을 다운 타입 없이 업데이트 가능하도록 도와주는 리소스
+- ReplicaSet 과 ReplicationController 상위에 배포되는 리소스
+- ReplicaSet 을 컨트롤할 수 있는 기능이 있음
 
+<img src="https://user-images.githubusercontent.com/57446639/187705201-a5f4b3fb-b97e-4c53-996c-4f93574c3607.png" width="650"/><br>
+- 쿠버네티스에서는 Deployment 를 통해서 Pod 생성하는 것을 권장하고 있다.
+- 간단히 Deployment = ReplicaSet + Pod + History 라고 생각하면 되고, ReplicaSet 의 상위 추상표현이라고 이해하면 쉽다.
 
+<br><br>
 
+#### 롤링 업데이트
+모든 포드를 업데이트 하는 방법
+1. 새로운 포드를 실행시키고 작업이 완료되면 오래된 포드를 삭제 -> 잠깐의 다운 타임 발생
+2. 롤링 업데이트
+
+업데이트 전략
+```yaml
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnvailable: 25%
+```
+- type
+  - Rolloing Update (default)
+    - 오래된 포드를 하나씩 제거하는 동시에 새로운 포드 추가
+    - 요청을 처리할 수 있는 양은 그대로 유지
+    - 반드시 이전 버전과 새 버전을 동시에 처리 가능하도록 설계한 경우에만 사용해야 함
+  - Recreate
+    - 새 포드를 만들기 전에 이전 포드를 모두 삭제
+    - 여러 버전을 동시에 실행 불가능
+    - 잠깐의 다운 타임 존재
+- rollingUpdate
+  - maxSurge
+    - 기본값 25%, 개수로도 설정 가능
+    - 추가 배포를 허용할 최대 개수 설정
+  - maxUnavailable
+    - 기본값 25%, 개수로도 설정 가능
+    - 동작하지 않는 포드의 개수 설정
+
+<br><br>
+
+#### Namespaces
+Namespace
+- 리소스를 각각의 분리된 영역으로 나누기 좋은 방법
+- 여러 네임스페이스를 사용하면 복잡한 쿠버네티스 시스템을 더 작은 그룹으로 분할할 수 있음
+- 리소스 이름은 네임스페이스 내에서만 고유 명칭 사용
+
+<br><br><br>
+
+## 정리
+- pod: 여러 개의 컨테이너를 운영하는 가장 기초적인 모듈
+- replicaSet: 동일 pod 에 대한 가용성을 안정적으로 보장받기 위한 모듈
+- deployment: pod 와 replicaset 을 효율적으로 관리하기 위한 모듈
+- label: 수 많은 도커 이미지를 구분하기 위한 도구
+- service: pod 의 load balancer
 
 <br><br><br>
 
 ## 명령어 모음
+pod
 - `$kubectl get pod`: 띄워진 pod 확인
 - `$kubectl get pod -w`: pod 정보를 실시간(watch)으로 확인
 - `$kubectl get pod [{podName}] -o yaml`: 띄워진 pod 를 디테일하게 확인
@@ -128,11 +186,28 @@ ReplicationController vs ReplicaSet
 - `$kubectl delete pod {podName}`: 해당 pod 를 제거
 - `$kubectl delete pod --all`: 모든 pod 를 제거
 - `$kubectl port-forward {podName} 8888:8080`: 8888 포트를 8080 포트로 포트 포워딩
+
+label
 - `$kubectl label pod {podName} test=foo`: test=foo 라는 레이블 추가
 - `$kubectl label pod {podName} rel=beta --overwrite`: 기존 레이블 수정
 - `$kubectl label pod {podName} rel-`: 레이블 삭제
 - `$kubectl get pod --show-labels`: pod 의 레이블 확인
 - `$kubectl get pod --show-labels -l 'env'`: pod 의 특정 레이블 필터링 검색
+
+deployment
+- `$kubectl rollout pause deployment {podName}`: 업데이트 중에 일시정지하길 원하는 경우
+- `$kubectl rollout undo deployment {podName}`: 업데이트 일시중지 중 취소
+- `$kubectl rollout undo deployment {podName} --to-revision=1`: 특정 버전으로 undo
+- `$kubectl rollout resume deployment {podName}`: 업데이트 재시작
+- `$kubectl rollout status deployment {podName}`: 업데이트 상태 확인
+- `$kubectl rollout history deployment {podName}`: 업데이트 히스토리 확인 (create 시 `--record=true` 옵션을 줘야 확인 가능)
+
+namespaces
+- `$kubectl get ns`: 클러스터의 네임스페이스 확인
+- `$kubectl get pod --all-namespaces`: 전체 네임스페이스를 대상으로 확인
+- `$kubectl create ns {namespaceName}`: 네임스페이스 생성
+- `$kubectl create ns {namespaceName} --dry-run`: 네임스페이스 생성 전 command 가 문법에 맞는지 확인
+- `$kubectl create ns {namespaceName} --dry-run -o yaml`: 네임스페이스 생성 전 command 가 문법에 맞는지 확인하고, yaml 파일을 만들어 줌
 <br><br><br>
 
 ## 참고
