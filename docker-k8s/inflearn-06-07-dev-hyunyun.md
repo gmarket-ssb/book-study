@@ -35,6 +35,7 @@
 
 ![image](https://user-images.githubusercontent.com/106303141/190142023-f059b8b4-f7f0-4aa9-afef-440ed9ab8ac9.png)
 큐브 시스템 설정 기본경로
+> 기본경로의 yaml 파일은 함부로 수정할 시, 복구가 어려울 수 있으므로, 스냅샷이나 백업을 따로 하는것을 권장한다.
 
 ```
 vim /etc/systemd/system/kubelet.service.d
@@ -47,4 +48,24 @@ vim /etc/systemd/system/kubelet.service.d
 > KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml 을 확인
 
 ![image](https://user-images.githubusercontent.com/106303141/190143369-cd44246e-a985-49e9-a6ad-07b141e44d2e.png)
-> staticPodPath를 확인하여 경로를 수정하는데, manifests폴더의 파일들은 따로 백업 후 작업하는 것을 권장한다.
+> staticPodPath를 확인
+
+실습을 위해 /etc/kubernates/manifests 경로에 static-pod.yaml을 새로 생성한다.
+![image](https://user-images.githubusercontent.com/106303141/190144175-898f96e9-2741-4d85-8973-e586d790321a.png)
+
+![image](https://user-images.githubusercontent.com/106303141/190144591-b31b874c-501b-4f8b-a9f8-a370f3429b27.png)
+
+
+## etcd
+
+쿠버네티스 데이터베이스이며, 쿠버네티스의 전체 설정 정보를 저장한다.
+
+![image](https://user-images.githubusercontent.com/106303141/190146258-a82fff7d-a0a5-4118-ae0c-111c68ecc98c.png)
+
+
+1. Key-Value 데이터 셋으로 이루어져있다.
+2. etcdctl이라는 클라이언트 오픈소스가 있으므로 활용
+
+![image](https://user-images.githubusercontent.com/106303141/190145923-6a0ddc8d-8e9c-4230-b97d-65728d81a8ca.png)
+
+
