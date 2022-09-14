@@ -34,6 +34,17 @@
 3. 특정 경로에 yaml파일을 구성하여 설정한다.
 
 ![image](https://user-images.githubusercontent.com/106303141/190142023-f059b8b4-f7f0-4aa9-afef-440ed9ab8ac9.png)
+큐브 시스템 설정 기본경로
 
+```
+vim /etc/systemd/system/kubelet.service.d
+# 10-kubeadm.conf 확인
+```
 
+![image](https://user-images.githubusercontent.com/106303141/190142994-bbfafe37-f482-4dee-b13d-1466132bb07f.png)
 
+> kubelet에 대한 환경 명령어를 확인 할 수 있다.
+> KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml 을 확인
+
+![image](https://user-images.githubusercontent.com/106303141/190143369-cd44246e-a985-49e9-a6ad-07b141e44d2e.png)
+> staticPodPath를 
