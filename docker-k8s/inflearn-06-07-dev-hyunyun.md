@@ -1,5 +1,3 @@
-# kube-system 컴포넌트
-
 ## kube-system 컴포넌트 이해
 
 <img width="247" alt="image" src="https://user-images.githubusercontent.com/106303141/189862902-a80c5655-1eb5-4cd2-ab44-7f178b35bd4b.png">
@@ -67,5 +65,45 @@ vim /etc/systemd/system/kubelet.service.d
 2. etcdctl이라는 클라이언트 오픈소스가 있으므로 활용
 
 ![image](https://user-images.githubusercontent.com/106303141/190145923-6a0ddc8d-8e9c-4230-b97d-65728d81a8ca.png)
+
+
+## Service
+
+### 포드의 문제점
+1. 포드는 IP 주소의 지속적인 변동, 로드밸런싱을 관리해줄 또다른 개체가 필요
+2. 포드는 개별의 쿠버네티스 네트워크를 갖고있으므로, 외부랑 통신이 안된다.
+3. 이 문제를 해결하기위해 서비스 라는 리소스가 존재
+
+![image](https://user-images.githubusercontent.com/106303141/190166076-c1ea4f99-9aef-4459-ac32-df4579f99867.png)
+
+### 서비스의 요구사항
+1. 포드의 IP가 변경될 때 마다 재설정 하지 않도록 해야 함
+
+![image](https://user-images.githubusercontent.com/106303141/190167617-874388ca-a918-4ae4-adaa-b90fb3dab049.png)
+
+### 서비스의 세션 고정하기
+1. 다수의 포드 환경에서 웹서비스의 세션 유지를 위해 클라이언트 IP를 그대로 유지해주는 방법
+2. sessionAffinity: ClientIP 옵션을 통해 해결
+
+![image](https://user-images.githubusercontent.com/106303141/190168183-e35d8219-2e22-4f2d-a39e-3a4fee25edbb.png)
+
+### 서비스 노출하는 세 가지 방법
+1. NodePort: 노드 자체 포트를 사용하여 포드로 리다이렉션
+2. LoadBalancer: 외부 게이트웨이를 사용해 노드 포트로 리다이렉션 (L4)
+3. Ingress: 하나의 IP 주소를 통해 여러 서비스를 제공 (L7)
+
+> Cloud 서비스에서는 LoadBalanecer와 Ingress방법 둘다 기본 지원되나, VirtualBox나 VmWare에서는 지원되지 않아, 구현에는 어렵다.
+
+#### 노드포트 서비스 패킷 흐름
+
+![image](https://user-images.githubusercontent.com/106303141/190180464-280512bb-88c5-4f89-b9a1-aa4236032d38.png)
+
+
+
+
+
+
+
+
 
 
