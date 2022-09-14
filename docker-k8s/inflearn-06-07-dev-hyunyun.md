@@ -47,4 +47,4 @@ vim /etc/systemd/system/kubelet.service.d
 > KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml 을 확인
 
 ![image](https://user-images.githubusercontent.com/106303141/190143369-cd44246e-a985-49e9-a6ad-07b141e44d2e.png)
-> staticPodPath를 
+> staticPodPath를 확인하여 경로를 수정하는데, manifests폴더의 파일들은 따로 백업 후 작업하는 것을 권장한다.
