@@ -98,9 +98,25 @@ vim /etc/systemd/system/kubelet.service.d
 
 ![image](https://user-images.githubusercontent.com/106303141/190180464-280512bb-88c5-4f89-b9a1-aa4236032d38.png)
 
+## 쿠버네티스 네트워크 모델
+1. 한 포드의 다수의 컨테이너끼리 통신
+![image](https://user-images.githubusercontent.com/106303141/190310824-572ebf93-a197-4f12-92ff-0435ca3cf819.png)
+![image](https://user-images.githubusercontent.com/106303141/190311802-3d558bed-4b58-419d-8d18-cc6f675e9d3a.png)
+
+2. 포드끼리 통신
+> 포드끼리의 통신을 위해서는 CNI플러그인이 필요(ACI, AOS, AWS VPN CNI, CNI-Genie, GCE, flannel, Weave Net, Calico 등)
+![image](https://user-images.githubusercontent.com/106303141/190312280-2090836a-12b2-4ad7-8bf0-1941d7ca4586.png)
+> Weavenet 네트워크 모델
 
 
+3. 포드와 서비스 사이의 통신
 
+![image](https://user-images.githubusercontent.com/106303141/190313683-79e1ba5e-3c52-42cb-aed3-a90c4f0333f7.png)
+
+
+4. 외부 클라이언트와 서비스 사이의 통신
+
+![image](https://user-images.githubusercontent.com/106303141/190314054-8785963e-f90f-4205-8c8f-7aad7bf7bd4b.png)
 
 
 
