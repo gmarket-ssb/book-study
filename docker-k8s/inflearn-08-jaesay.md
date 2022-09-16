@@ -18,9 +18,9 @@
 
 파드가 배치되는 노드는 스케쥴링에 따라 달라질 수 있기 때문에 데이터를 유지하기 위해서 사용하지 않고 노드에 있는 데이터를 포드에 제공하고 싶을 때 주로 사용한다.
 
-따라서 노드의 리소스/로그를 확인한다던지 모니터링 용도로 많이 쓰인다. 예를 들어 GCP에서 쿠버네티스 클러스터를 만들면 노드마다 노드 및 컨테이너들의 로그를 수집하기 위해 데몬셋으로 fluentd가 떠있다.
+따라서 노드의 리소스/로그를 확인한다던지 모니터링 용도로 많이 쓰인다. 예를 들어 GCP에서 쿠버네티스 클러스터를 만들면 노드마다 노드 및 컨테이너들의 로그를 수집하기 위해 데몬셋으로 fluentbit이 떠있다.
 
-> kubectl get pod fluentd-pod-name -n kube-system -o yaml
+> kubectl get pod fluentd-pod-name -n fluentbit-gke-57rmg -n kube-system -o yaml
   ```
   volumes:
   - hostPath:
@@ -40,3 +40,17 @@
       type: ""
     name: varlibdockercontainers
   ```
+  ### ****gcePersistentDisk (deprecated)****
+
+클라우드 종속적 네트워크 볼륨
+
+`gcePersistentDisk` 볼륨은 구글 컴퓨트 엔진(GCE) 영구 디스크(PD)를 파드에 마운트한다. 파드를 제거할 때 지워지는 `emptyDir` 와는 다르게, PD의 내용은 유지되고, 볼륨은 마운트 해제만 된다. 이는 PD에 데이터를 미리 채울 수 있으며, 파드 간에 데이터를 공유할 수 있다는 것을 의미한다. 구글 컴퓨트 엔진(GCE) 영구 디스크(PD)는 한개 파드와 마운트할 수 있다.
+
+`gcePersistentDisk` 를 사용할 때 몇 가지 제한이 있다.
+
+- 파드가 실행 중인 노드는 GCE VM이어야 함
+- 이러한 VM은 영구 디스크와 동일한 GCE 프로젝트와 영역(zone)에 있어야 함
+
+### nfs
+
+`nfs` 볼륨을 사용하면 기존 NFS (네트워크 파일 시스템) 볼륨을 파드에 마운트 할수 있다. 파드를 제거할 때 지워지는 `emptyDir` 와는 다르게 `nfs` 볼륨의 내용은 유지되고, 볼륨은 그저 마운트 해제만 된다. 이 의미는 NFS 볼륨에 데이터를 미리 채울 수 있으며, 파드 간에 데이터를 공유할 수 있다는 뜻이다. NFS는 여러 작성자가 동시에 마운트할 수 있다.
