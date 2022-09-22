@@ -6,13 +6,13 @@
 
 ![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fcvh4fY%2FbtrLaeFt0vp%2FNn7Sz2E7XqDZCIlLHPxJg1%2Fimg.png)
 
-[##_Image|kage@1pAuY/btrK90ncVdm/4IRWJ2vRo33ZsUbTqBmD6k/img.png|CDM|1.3|{"originWidth":3864,"originHeight":1878,"style":"alignCenter","width":527,"height":256}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F1pAuY%2FbtrK90ncVdm%2F4IRWJ2vRo33ZsUbTqBmD6k%2Fimg.png)
 
 ## 히스토리 마이크로서비스 소개
 
 사용자가 시청한 내용을 기록하는 히스토리 서비스를 추가한다. viewed 라는 메세지 이름을 가진 메세지를 video-streaming 마이크로서비스가 history 마이크로서비스에게 전달하고 history 마이크로서비스는 이를 데이터베이스에 기록한다.
 
-[##_Image|kage@cf8t8B/btrK7CNVmXQ/SlGukuK7PdVqSADYdEh3H1/img.jpg|CDM|1.3|{"originWidth":4032,"originHeight":1606,"style":"alignCenter","width":587,"height":234}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fcf8t8B%2FbtrK7CNVmXQ%2FSlGukuK7PdVqSADYdEh3H1%2Fimg.jpg)
 
 ## 빠른 개발 주기를 위한 라이브 리로드
 
