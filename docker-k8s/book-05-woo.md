@@ -4,7 +4,9 @@
 
 마이크로서비스간 협업을 위해 필요한 도커, 도커 컴포즈를 다시 살펴보고, 개발 생산성 향상을 위해 라이브 리로드를 구성한다. 이전 챕터에서 마이크로서비스간 HTTP 요청을 통해 서비스를 제공했다면, 이번엔 직접 메시징(direct messaging)으로 확장해보고, 이를 RabbitMQ를 사용해 간접 메세징(indirect messaging)으로 변경하는 것을 진행한다.
 
-[##_Image|kage@cvh4fY/btrLaeFt0vp/Nn7Sz2E7XqDZCIlLHPxJg1/img.png|CDM|1.3|{"originWidth":3654,"originHeight":1874,"style":"alignCenter","width":472,"height":242}_##][##_Image|kage@1pAuY/btrK90ncVdm/4IRWJ2vRo33ZsUbTqBmD6k/img.png|CDM|1.3|{"originWidth":3864,"originHeight":1878,"style":"alignCenter","width":527,"height":256}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fcvh4fY%2FbtrLaeFt0vp%2FNn7Sz2E7XqDZCIlLHPxJg1%2Fimg.png)
+
+[##_Image|kage@1pAuY/btrK90ncVdm/4IRWJ2vRo33ZsUbTqBmD6k/img.png|CDM|1.3|{"originWidth":3864,"originHeight":1878,"style":"alignCenter","width":527,"height":256}_##]
 
 ## 히스토리 마이크로서비스 소개
 
