@@ -26,15 +26,13 @@
 - 쓰기 읽기(read-your-writes) 보장
 - 단조 읽기(monotonic read) 보장
 
-# 리더와 팔로워
+# 리더와 팔로워/리더 기반 복제(leader-based replication)
 
-## 리더 기반 복제(leader-based replication)
-
-단일 디더 복제를 말하는 것 같다…
+## 단일 리더 복제(single-leader replication)
 
 모든 복제본에 쓰기를 처리하는 가장 일반적인 방법이다.
 
-복제 서버 중 하는를 리더(leader)로 지정한다. 다른 복제 서버는 팔로워(follower)라고 한다. 
+복제 서버 중 하나를 리더(leader)로 지정한다. 다른 복제 서버는 팔로워(follower)라고 한다. 
 
 여러 관계형 데이터베이스, 일부 비관계형데이터 베이스, 분산 메시지 브로커에서 사용된다.
 
