@@ -27,8 +27,6 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: envar-configmap
-  labels:
-    purpose: demonstrate-envars
 spec:
   containers:
   - name: envar-demo-container
@@ -66,8 +64,6 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: volumes-configmap
-  labels:
-    purpose: demonstrate-envars
 spec:
   containers:
   - name: envar-demo-container
@@ -81,3 +77,43 @@ spec:
         # Provide the name of the ConfigMap containing the files you want to add to the container
         name: special-config
 ```
+
+### 시크릿
+
+시크릿은 컨피그맵과 유사하지만 특별히 기밀 데이터를 보관하기 위한 것이다. 시크릿 같은 경우는 좀 더 안전한 처리를 위해 인코딩해서 데이터를 처리한다.
+
+```yaml
+apiVersion: v1
+data:
+  password: MTIzNHNzZHNh
+  username: YWRtaW4=
+kind: Secret
+metadata:
+  name: db-user-pass
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: envar-secret
+spec:
+  containers:
+  - name: envar-demo-container
+    image: gcr.io/google-samples/node-hello:1.0
+    env:
+    - name: user # 환경변수명
+      valueFrom:
+        secretKeyRef:
+          name: db-user-pass # secret name과 매칭
+          key: username # secret 키(username)의 value와 환경변수명(user)의 value가 맵핑
+    - name: pass
+      valueFrom:
+        secretKeyRef:
+          name: db-user-pass
+          key: password
+```
+
+쿠버네티스 시크릿은 기본적으로 API 서버의 기본 데이터 저장소(etcd)에 암호화되지 않은 상태로 저장된다. 따라서 권한있는 파드나 권한있는 사용자는 확인해볼수 있다.
+
+yaml 파일로 만들 경우 수동으로 base64 인코딩을 해야하고 커멘드로 저장하는 경우는 평문으로 저장해도 된다. 결과는 같다.
+
+환경변수로 들어갈 때에는 ConfigMap과 저장한 것과 동일하게 디코딩된 평문으로 들어가게 된다.
