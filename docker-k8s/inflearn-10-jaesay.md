@@ -210,3 +210,42 @@ CPU는 1 하이퍼 스레딩 기능이 있는 베어 메탈 인텔 프로세서�
 K, M, G의 단위는 1000씩 증가 (잘 사용안함)
 
 Ki, Mi, Gi의 단위는 1024씩 증가 (보통 요걸로 사용, 우리가 이해하는 MB, KB, GB)
+
+### ****리밋 레인지(Limit Range)****
+
+기본적으로 컨테이너는 쿠버네티스 클러스터에서 무제한 컴퓨팅 리소스로 실행된다.
+
+쿠버네티스 1.10 버전부터 리밋레인지 지원이 기본적으로 활성화되었다.
+
+네임 스페이스에서 파드 또는 컨테이너별로 리소스를 제한할 수 있다. limitrange-demo 네임스페이스에서 컨테이너는 CPU는 200-800m 설정가능하며 설정 안할 시 default로 요청/제한 800m이 설정되고 memory는 500Mi-1Gi 설정가능하며 default로 요청/제한 1Gi 설정된다.
+
+```bash
+# kubectl describe limitrange -n limitrange-demo
+Name:       cpu-min-max-demo-lr
+Namespace:  limitrange-demo
+Type        Resource  Min   Max   Default Request  Default Limit  Max Limit/Request Ratio
+----        --------  ---   ---   ---------------  -------------  -----------------------
+Container   cpu       200m  800m  800m             800m           -
+
+Name:       mem-min-max-demo-lr
+Namespace:  limitrange-demo
+Type        Resource  Min    Max  Default Request  Default Limit  Max Limit/Request Ratio
+----        --------  ---    ---  ---------------  -------------  -----------------------
+Container   memory    500Mi  1Gi  1Gi              1Gi            -
+```
+
+리소스 쿼터 설정 시 프로젝트를 진행할 때 제한된 리소스 안에서 활동하게 할 수 있다. 네임스페이스의 모든 컨테이너의 합을 제한할 수 있다.
+
+```bash
+# kubectl describe resourcequota -n quota-mem-cpu-example
+Name:            mem-cpu-demo
+Namespace:       quota-mem-cpu-example
+Resource         Used   Hard
+--------         ----   ----
+limits.cpu       800m   2
+limits.memory    800Mi  2Gi
+requests.cpu     400m   1
+requests.memory  600Mi  1Gi
+```
+
+네임스페이스에서 스토리지클래스별 최소 및 최대 스토리지 요청을 지정할 수 있다.
