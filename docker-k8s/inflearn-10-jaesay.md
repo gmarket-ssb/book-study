@@ -143,3 +143,68 @@ myapp-pod   0/1     Init:1/2   0          4m40s
 myapp-pod   0/1     PodInitializing   0          4m41s
 myapp-pod   1/1     Running           0          4m42s
 ```
+## 시스템 리소스 요구사항과 제한 설정
+
+주로 관리자가 설정한다.
+
+애플리케이션 설정과 밀접한 CPU와 메모리 설정을 제한한다.
+
+포드의 디스크를 설정하는 방법도 있지만 가득차는 경우는 없다고 봐도 무방하기 떄문에..설정을 하지 않는다. 대게 별도 스토리지에 대한 주로 스토리지를 제한한다. ⇒ 조사해보기
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: rsc-nginx
+  name: rsc-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rsc-nginx
+  template:
+    metadata:
+      labels:
+        app: rsc-nginx
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources:
+          requests: # 리소스 요청 설정
+            memory: "200Mi"
+            cpu: "1m"
+          limits: # 리소스 제한 설정
+            memory: "400Mi"
+            cpu: "2m"
+        ports:
+        - containerPort: 80
+```
+kubectl top pod rsc-nginx-68c9547c-fl9n2
+```Bash
+NAME                       CPU(cores)   MEMORY(bytes)   
+rsc-nginx-68c9547c-fl9n2   0m           2Mi
+```
+
+### CPU
+
+CPU는 코어 단위로 지정
+
+CPU 0.5가 있는 컨테이너 는 CPU 1 개를 요구하는 절반의 CPU 
+
+CPU 0.1은 100m과 동일한 기능 (m은 1/1000 CPU)
+
+CPU는 1 하이퍼 스레딩 기능이 있는 베어 메탈 인텔 프로세서의 하이퍼 스레드
+
+클라우드마다 이름이 다르다. (e.g. 1 AWS vCPU, 1 GCP 코어, 1 Azure vCore, 1 IBM vCPU)
+
+작게 만드는 추세..⇒ 조사해보기
+
+### Memory
+
+메모리는 바이트 단위로 지정
+
+K, M, G의 단위는 1000씩 증가 (잘 사용안함)
+
+Ki, Mi, Gi의 단위는 1024씩 증가 (보통 요걸로 사용, 우리가 이해하는 MB, KB, GB)
