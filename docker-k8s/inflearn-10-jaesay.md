@@ -265,7 +265,7 @@ kube-proxy가 데몬셋으로 만든 쿠버네티스에서 기본적으로 활�
 NAME         DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
 kube-proxy   1         1         1       1            1           kubernetes.io/os=linux   31d
 ```
-## ****테인트(Taints)와 톨러레이션(Tolerations)****
+## 테인트(Taints)와 톨러레이션(Tolerations)
 
 노드가 갖고 있는 오점(taint)을 용인(toleration)하는 옵션을 파드에 설정하면 해당 노드에 스케줄될 수 있다. 스케줄을 허용하지만 보장하지는 않는다. 스케줄러는 그 기능의 일부로서 다른 매개변수를 고려한다.
 
@@ -286,10 +286,39 @@ kube-proxy   1         1         1       1            1           kubernetes.io/
 
 `nodeName` 필드를 사용하여 노드를 직접 지정할 수도 있고 노드의 `label` 을 추가하고 `nodeSelector` 를 사용하여 노드를 선택할 수 있다.
 
-## ****다중 스케줄러(Multiple Schedulers)****
+## 다중 스케줄러(Multiple Schedulers)
 
 쿠버네티스는 kube-scheduler를 기본 스케줄러로 사용한다. 만일 기본 스케줄러가 사용자의 필요를 만족시키지 못한다면 직접 스케줄러를 구현하여 사용할 수 있다.
 
 기본 스케줄러와 함께 여러 스케줄러를 동시에 실행 가능하다.
 
 멀티플 스케쥴러를 설정하려면 쿠버네티스 api를 사용하기 위해 권한이 필요하고 `schedulerName` 을 통해서 지정하면 해당 스케줄러한테 스케줄링을 받을 수 있다.
+
+## HPA(Horizontal Pod Autoscaling)
+
+쿠버네티스는 자체적으로 리소스를 모니터링하다가 사용량이 차면 파드를 더 배치하는 방식으로 오토스케일링을 한다.
+
+부하량이 줄어들고, 파드의 수가 최소 설정값 이상인 경우, HorizontalPodAutoscaler는 워크로드 리소스(디플로이먼트, 스테이트풀셋, 또는 다른 비슷한 리소스)에게 스케일 다운을 지시한다. 부하량이 줄었다고 바로 파드를 줄이면 불필요한 오토스케일링이 발생할 수 있기 떄문에 적당한 시간을 발생한다.
+
+TARGETS = Limited와 Requested 비율
+
+```bash
+# kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10
+# kubectl get hpa -w
+NAME         REFERENCE               TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+php-apache   Deployment/php-apache   0%/50%    1         10        1          85s
+php-apache   Deployment/php-apache   249%/50%   1         10        1          2m16s
+php-apache   Deployment/php-apache   249%/50%   1         10        4          2m32s
+php-apache   Deployment/php-apache   124%/50%   1         10        5          2m47s
+php-apache   Deployment/php-apache   17%/50%    1         10        5          3m17s
+php-apache   Deployment/php-apache   0%/50%     1         10        5          3m47s
+php-apache   Deployment/php-apache   0%/50%     1         10        5          8m2s
+php-apache   Deployment/php-apache   0%/50%     1         10        2          8m17s
+php-apache   Deployment/php-apache   0%/50%     1         10        2          8m32s
+php-apache   Deployment/php-apache   0%/50%     1         10        1          8m47s
+```
+
+쿠버네티스에서 지원안하지만 클라우드에서 아래 기능을 제공할 수도 있다.
+
+- VPA(vertical pod autoscaler): 파드의 사용 가능한 리소스를 늘리는 방법
+- CA(cluster autoscaler): 클러스터 자체를 늘리는 방법(노드 추가)
