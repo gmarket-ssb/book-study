@@ -249,3 +249,19 @@ requests.memory  600Mi  1Gi
 ```
 
 네임스페이스에서 스토리지클래스별 최소 및 최대 스토리지 요청을 지정할 수 있다.
+
+## 데몬셋(DaemonSet)
+
+리눅스에서는 벡그라운드 프로세스를 일컫는다. 쿠버네티스에서도 쿠버네티스 전반의 걸쳐서 시스템을 지원하기 위한 포드를 말한다. 
+
+노드 당 포드를 하나씩 구성된다. 그러한 특성에 맞게 노드의 리소스 관리용으로 많이 사용되며 노드의 파일을 공유하는 스토리지인 hostPath랑 많이 쓰인다.
+
+노드 당 하나의 포드이기 떄문에 Deployment처럼 개수를 설정할 필요 없다.
+
+kube-proxy가 데몬셋으로 만든 쿠버네티스에서 기본적으로 활동중인 파드이다.
+
+```bash
+# kubectl get ds -n kube-system
+NAME         DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+kube-proxy   1         1         1       1            1           kubernetes.io/os=linux   31d
+```
