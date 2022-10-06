@@ -141,7 +141,7 @@ output "cluster_host" {
 
 생성한 쿠버넷에 접속하기위해 kubectl을 사용한다.
 
-[](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbhScxi%2FbtrNXj5GwrM%2FmF6LNhuITVYYTKOCD1DZy0%2Fimg.jpg)
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbhScxi%2FbtrNXj5GwrM%2FmF6LNhuITVYYTKOCD1DZy0%2Fimg.jpg)
 
 ```
 $ brew install kubectl
@@ -176,7 +176,7 @@ Full HCL
 -   마이크로서비스를 배포한다.
 -   자동화된 CD 파이프라인을 구축한다.
 
-[](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fcfpa3B%2FbtrNWrphaK3%2FoWceKsM4OnLpkozCCdEnb0%2Fimg.jpg)
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fcfpa3B%2FbtrNWrphaK3%2FoWceKsM4OnLpkozCCdEnb0%2Fimg.jpg)
 
 ## 지속적인 서비스 제공과 배포
 
@@ -184,7 +184,7 @@ Full HCL
 
 빠른 개발 주기를 유지하면서 운영 환경에 코드 변경 사항을 신속하고 안전하게 적용해 주는 역할을 한다.
 
-[](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fclkee4%2FbtrNT8qsFGq%2FTMqgygdzoxwmCo78SKrGCK%2Fimg.jpg)
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fclkee4%2FbtrNT8qsFGq%2FTMqgygdzoxwmCo78SKrGCK%2Fimg.jpg)
 
 -   코드 변경 사항을 bitbucket repository에 푸시한다.
 -   자동 배포 과정이 시작된다.
@@ -520,9 +520,9 @@ pipelines:
 -   통합 테스트 : 마이크로서비스를 모두 테스트
 -   E2E 테스트 : 마이크로서비스 그룹과 프론트엔드를 포함한 앱의 모두를 테스트한다.
 
-[](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FctuGwR%2FbtrNYevIdzQ%2FOz6FQnVJo2QopeDyacy3m1%2Fimg.jpg)
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FctuGwR%2FbtrNYevIdzQ%2FOz6FQnVJo2QopeDyacy3m1%2Fimg.jpg)
 
-[](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcrXPxe%2FbtrNYqQf0q4%2FrHmvBo2p13Ome8mtNWPPz1%2Fimg.jpg)
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcrXPxe%2FbtrNYqQf0q4%2FrHmvBo2p13Ome8mtNWPPz1%2Fimg.jpg)
 
 자동화된 테스트는 CD와 서로 연결되어 조기 경보 시스템 역할을 한다. 알람이 발생하면 운영 시스템으로 전송하는 것을 중지하고 고객이 문제를 만나는 것을 막을 수 있는 기회를 준다. 초기에 시작하는 것이 이미 구축된 시스템에 적용하는 것 보다 쉽다. 하지만 처음부터 시작한다면 시간과 비용이 많이 들 수 있으니 극초기엔 수동 테스트로 진행하는 것이 더 효율적일 수 있다.
 
