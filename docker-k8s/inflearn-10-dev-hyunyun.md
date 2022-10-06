@@ -61,7 +61,7 @@ spec:
 
 ## 초기 명령어 및 아규먼트 전달과 실행
 
-> Pod를 생성할 때 *spec.containers.command*와 *spec.contaioners.args*에 실행하기 원하는 인자를 전달하면 컨테이너가 부팅된 뒤 실행
+> Pod를 생성할 때 **spec.containers.command**와 **spec.contaioners.args**에 실행하기 원하는 인자를 전달하면 컨테이너가 부팅된 뒤 실행
 
 ![image](https://user-images.githubusercontent.com/106303141/194210669-992826a7-2bc2-4978-867f-cf050b5086d1.png)
 
@@ -122,7 +122,7 @@ spec.containers[].resources.limits.memory
 
 1. 레플리카셋은 무작위 노드에 포드를 지정하여 생성
 2. 데몬셋은 각 하나의 노드에 하나의 포드만을 구성
-3. kube-proxy가 데몬셋으로 만든 쿠버네티스에서 기본적으로 활동중인 포드
+3. **kube-proxy가 데몬셋으로 만든 쿠버네티스에서 기본적으로 활동중인 포드**
 
 ![image](https://user-images.githubusercontent.com/106303141/194222695-99d694af-e6a3-4433-8afd-9b16a22322db.png)
 
@@ -148,7 +148,31 @@ spec.containers[].resources.limits.memory
 1. NoSchedule
     > Taint가 있으면, 노드에 Pod를 스케줄하지 않는다.
 
-    > Taint가 없으나, PreferNoSchedule(안할 수 있으면 안하겠다...) 이펙트가 있는 Taint가 하나 이상 있으면, 노드에 Pod를 스케줄하지 않으려고 *시도*한다.
+    > Taint가 없으나, PreferNoSchedule(안할 수 있으면 안하겠다...) 이펙트가 있는 Taint가 하나 이상 있으면, 노드에 Pod를 스케줄하지 않으려고 **시도**한다.
 2. NoExecute
     > Taint가 있으면, 노드에서 Pod를 축출(이미 실행중인 경우)하고, 스케줄 되지 않는다.(아직 실행안된 경우)
+
+## 수동 스케줄링: 원하는 포드를 원하는 노드에
+
+1. 특수한 환경의 경우 특정 노드에서 실행하게끔 포드를 제한
+2. 일반적으로 스케줄러는 자동으로 합리적인 배치를 수행하므로 이러한 제한은 필요하지 않음
+3. 더 많은 제어가 필요할 수 있는 몇가지 케이스
+    * SSD가 있는 노드에서 포드가 실행하기 위한 경우 (파일 입출력이 빨라야 할 때)
+    * 블록체인이나 딥러닝 시스템을 위해 GPU서비스가 필요한 경우 (CPU가 아닌 GPU메모리를 사용해야 할 때)
+    * 서비스의 성능을 극대화하기 위해 하나의 노드에 필요한 포드를 모두 배치 (성능이 최적화 된 노드의 경우)
+
+> 즉, 노드에 종속적으로 POD를 배치해야 할 때 사용
+
+![image](https://user-images.githubusercontent.com/106303141/194227455-796d100c-aac0-4fe7-8e02-57dcfcf367de.png)
+
+> nodeName을 적으면 간단하게 구현된다.
+
+### 노드 셀렉터를 활용한 스케줄링
+
+* 특정 하드웨어를 가진 노드에서 포드를 실행하고자 하는 경우
+
+![image](https://user-images.githubusercontent.com/106303141/194227745-e87d2905-3933-43af-a7d3-cc0360f548bb.png)
+
+![image](https://user-images.githubusercontent.com/106303141/194227779-3a4117be-b6e0-487b-b15e-8aeefa5cc478.png)
+
 
