@@ -176,3 +176,51 @@ spec.containers[].resources.limits.memory
 ![image](https://user-images.githubusercontent.com/106303141/194227779-3a4117be-b6e0-487b-b15e-8aeefa5cc478.png)
 
 
+## 멀티플 스케줄러
+
+* 쿠버네티스에서 지원하는 기본 스케줄러(라운드로빈) 알고리즘 방식을 변경하기 위함
+
+1. 기본 스케줄러가 아닌 커스텀으로 적용하는 기능
+2. 기본 스케줄러 + 여러 스케줄러를 동시 실행 가능
+3. 포드에 각 스케줄러를 지정할 수 있음
+
+![image](https://user-images.githubusercontent.com/106303141/194230697-12093c11-835f-4799-a9ec-1d8f2f62bd00.png)
+
+> 스케쥴러를 추가하여 지정 후, clusterrole에 권한부여해야 적용됨
+```
+kubectl edit clusterrole system:kube-scheduler
+```
+
+```
+resourceNames:
+  - kube-scheduler
+  - my-scheduler
+```
+
+## 오토 스케일링
+
+> 자동으로 POD를 스케일링 하는 방법
+
+1. HPV: 포드 자체를 복제하여 처리할 수 있는 포드의 개수를 늘리는 방법
+2. VPA: 리소스를 증가시켜 포드의 사용 가능한 리소스를 늘리는 방법
+3. CA: 번외로 클러스터 자체를 늘리는 방법(노드 추가)
+
+### HPA(Horizontal Pod AutoScaler)
+1. 쿠버네티스에는 기본 오토스케일링 기능이 내장
+2. CPU 사용률을 모니터링하여 실행된 포드의 개수를 늘리거나 줄임
+
+![image](https://user-images.githubusercontent.com/106303141/194231308-2c20ab98-278c-4892-877d-525ccf07f98b.png)
+> VPA, CA는 기본적으로 쿠버네티스에서는 지원안하나, 클라우드 서비스에서는 지원하는 경우가 있음.
+
+#### HPA 설정방법
+
+> 명령어를 사용하여 오토 스케일 저장
+
+```
+kubectl autoscale deployment my-app --max 6 --min 4 --cpu-percent 50
+```
+
+> HPA yaml을 작성하여 타겟 포드 지정
+
+![image](https://user-images.githubusercontent.com/106303141/194231884-bd9a7191-37c6-45e9-9f81-0b2d9672d857.png)
+
