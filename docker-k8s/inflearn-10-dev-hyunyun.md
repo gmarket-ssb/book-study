@@ -118,4 +118,37 @@ spec.containers[].resources.limits.memory
 3. 적용방법
     * Apiserver 옵션에 --enable-admission-plugins=LimitRange를 설정
 
+## 데몬셋
+
+1. 레플리카셋은 무작위 노드에 포드를 지정하여 생성
+2. 데몬셋은 각 하나의 노드에 하나의 포드만을 구성
+3. kube-proxy가 데몬셋으로 만든 쿠버네티스에서 기본적으로 활동중인 포드
+
+![image](https://user-images.githubusercontent.com/106303141/194222695-99d694af-e6a3-4433-8afd-9b16a22322db.png)
+
+> 무조건적으로 노드마다 데몬셋에서 만든 파드가 할당되므로, 노드를 관리하기 위한 목적으로 활용할 수 있다.
+> ex) 노드파일 공유(hostpath), kube-proxy, 로그 수집 등
+
+### Taint와 Toleration의 원리
+
+> Taint: "오점을 남기다. 더럽히다."
+
+> Toleration: "용인하다 견디다"
+
+1. Taint는 노드에 설정하여, "어떤" 오점을 남김
+2. Toleration은 Taint에서 남긴 오점을 "용인"하는 역할
+
+![image](https://user-images.githubusercontent.com/106303141/194224002-212c49fa-9909-4161-80d4-f86d515fcd62.png)
+> ex) Master node에는 기본적으로 POD를 배치할수 없으나, 배치하고 싶은 경우
+
+#### Taint Effect
+
+![image](https://user-images.githubusercontent.com/106303141/194226148-33cddf52-5d54-4cc1-b4b7-343454dabfe8.png)
+
+1. NoSchedule
+    > Taint가 있으면, 노드에 Pod를 스케줄하지 않는다.
+
+    > Taint가 없으나, PreferNoSchedule(안할 수 있으면 안하겠다...) 이펙트가 있는 Taint가 하나 이상 있으면, 노드에 Pod를 스케줄하지 않으려고 *시도*한다.
+2. NoExecute
+    > Taint가 있으면, 노드에서 Pod를 축출(이미 실행중인 경우)하고, 스케줄 되지 않는다.(아직 실행안된 경우)
 
