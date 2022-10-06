@@ -104,3 +104,18 @@ spec.containers[].resources.limits.memory
 > > ex) 0.1 = 100m과 동일
 
 > 메모리는 바이트 단위: Ti, Gi, Mi, Ki, T, G, M, K...
+
+### limitRanges
+
+1. 네임 스페이스에서 포드 또는 컨테이너별로 리소스를 제한하는 정책
+    * 타입별 (Container, Pod, PersistentVolumeClaim)
+    * 네임 스페이스별 (ResourceQuota)
+2. 리미트 레인지의 기능
+    * 포드나 컨테이너당 최소 및 최대 사용량 제한
+    * PersistentVolumeClaim 당 최소 및 최대 스토리지 사용량 제한
+    * 리소스에 대한 요청과 제한 사이의 비율 적용
+    * 디폴트 requests/limit을 설정하고 런타임 중인 컨테이너에 자동으로 입력
+3. 적용방법
+    * Apiserver 옵션에 --enable-admission-plugins=LimitRange를 설정
+
+
