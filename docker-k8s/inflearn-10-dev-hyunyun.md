@@ -74,3 +74,26 @@ spec:
 1. 하나의 포드를 사용하는 경우 같은 네트워크 인터페이스와 IPC(Inter-Process Communication), 볼륨 등을 공유
 2. 데이터의 지역성을 보장, 여러 개의 응용프로그램이 결합된 형태로 POD 구성
 
+## init 컨테이너
+
+1. 포드 컨테이너 실행 전에 초기화 역할을 하는 컨테이너
+2. 완전히 초기화가 진행된 다음에야 주 컨테이너를 실행
+3. Init 컨테이너가 실패하면, 성공할때까지 포드를 반복해서 재시작
+4. restartPolicy에 Never를 하면 재시작하지 않음
+
+![image](https://user-images.githubusercontent.com/106303141/194214511-e031b255-bcf7-4f76-9163-8b4da159022a.png)
+
+![image](https://user-images.githubusercontent.com/106303141/194214936-3e261030-635d-4738-ac2b-6f8a9836b130.png)
+
+## 시스템 리소스 요구사항과 제한 설정
+
+### 리소스 요청 설정 방법
+```
+spec.containers[].resources.requests.cpu
+spec.containers[].resources.requests.memory
+```
+### 리소스 제한 설정 방법
+```
+spec.containers[].resources.limits.cpu
+spec.containers[].resources.limits.memory
+```
