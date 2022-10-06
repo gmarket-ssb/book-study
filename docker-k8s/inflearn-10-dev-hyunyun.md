@@ -97,3 +97,10 @@ spec.containers[].resources.requests.memory
 spec.containers[].resources.limits.cpu
 spec.containers[].resources.limits.memory
 ```
+
+![image](https://user-images.githubusercontent.com/106303141/194215757-96e04739-d4dc-4292-b1d1-7b35b34a0e3a.png)
+
+> CPU는 코어단위: m(millicpu)
+> > ex) 0.1 = 100m과 동일
+
+> 메모리는 바이트 단위: Ti, Gi, Mi, Ki, T, G, M, K...
