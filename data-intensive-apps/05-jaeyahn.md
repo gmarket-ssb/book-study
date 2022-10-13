@@ -665,13 +665,13 @@ ex. Oracle의 Databus, PostgresQL의 Bucardo
 (최종 쓰기 승리(LWW) 충돌해소 알고리즘)
 
 - 각 요청에 타임스탬프를 붙혀서 가장 마지막 일자의 쓰기 값만 허용하고 예전에 사용한 타임스탬프는 버린다.
-- 충돌 없는 복제 데이터타입(Confilict-free replicated datatype): Set, Map 등 데이터 타입을 활용한 방안 (Riak 에서 처리)
+- 충돌 없는 복제 데이터타입(Confilict-free replicated datatype, CRDT): Set, Map 등 데이터 타입을 활용한 방안 (Riak 에서 처리)
 - Version vector 를 이용한 방법 -> 각 복제본의 버전관리 로직
 
 ![image](https://user-images.githubusercontent.com/8626130/195472793-43b2ae1d-9df9-4ca2-ae9c-03dc41131ffa.png)
 ![image](https://user-images.githubusercontent.com/8626130/195472819-90074ebd-ade9-4a9c-bbea-e3fbf65551a3.png)
 
-각 요청의 처리는 버전과 타임스탬프기반으로 관리가 된다.
+각 요청의 처리는 버전과 타임스탬프기반으로 관리가 된다. 또한 CRDT를 활용하여 논리적으로 문제가 없는 경우 쓰기를 허용한다. (예 장바구니)
 
 혹, 버전이 같은경우라면 타임스탬프를 통해서 최근 값을 쓰고, 중복(탈락)된 데이터에는 별도의 표식을 남긴다. 
 
