@@ -9,6 +9,9 @@
   * 프로메테우스
   * EFK
 
+![image](https://user-images.githubusercontent.com/106303141/198036833-22d9ea6c-6e25-4479-9115-ef803d1a26fe.png)
+
+
 ## 리소스 모니터링 도구
 
 * **리소스** 메트릭 파이프라인
