@@ -2,7 +2,7 @@
 
 제스트는 페이스북에서 만든, 자바스크립트 코드를 테스트할 때 활용할 수 있다. 테스트 코드를 순서대로 로드하고, 테스트할 코드를 실행해서 예상대로 동작했는지 결과를 검증한다. 자바스크립트 테스트 프레임워크로 가장 인기있는 도구이며 빠른 병렬 테스트, 라이브 리로딩이 가능하다.
 
-[##_Image|kage@cLU1Os/btrPI8ACbaL/WHdZ0CDkxsKTb7n8aevGD0/img.jpg|CDM|1.3|{"originWidth":3475,"originHeight":1636,"style":"alignCenter","width":648,"height":305}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcLU1Os%2FbtrPI8ACbaL%2FWHdZ0CDkxsKTb7n8aevGD0%2Fimg.jpg)
 
 ```
 # 설치 : 운영환경에서 설치되지 않도록 --save-dev 사용
@@ -41,7 +41,7 @@ describe("square function", () => {
 
 테스트 실행 및 결과 출력 화면
 
-[##_Image|kage@TVsXt/btrOqjdMgSX/zZ0MerZTpKLQFsEWrmfIq0/img.png|CDM|1.3|{"originWidth":670,"originHeight":492,"style":"alignCenter","width":388,"height":285}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTVsXt%2FbtrOqjdMgSX%2FzZ0MerZTpKLQFsEWrmfIq0%2Fimg.png)
 
 `--watchAll`, `--watch` 명령어를 사용하면 테스트 파일이 변경되었을 때 자동으로 인식해 테스트를 진행하는 `라이브 리로딩 기능`이 활성화 된다. `--watchAll`은 하나의 파일이라도 변경이 있으면 전체 테스트를, `--watch`는 변경된 파일의 테스트만 진행한다.
 
@@ -108,7 +108,7 @@ async function loadDatabaseFixture(collectionName, records) {
 
 도커컴포즈를 사용하여 테스트 데이터를 가진 데이터베이스를 사용하고 Cypress라는 웹 페이지 테스트 도구를 사용한다.
 
-[##_Image|kage@bET98Z/btrPI8UWY0z/3520wn5lhHKhdWQIzK2QNk/img.jpg|CDM|1.3|{"originWidth":3601,"originHeight":2191,"style":"alignCenter","width":411,"height":250}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbET98Z%2FbtrPI8UWY0z%2F3520wn5lhHKhdWQIzK2QNk%2Fimg.jpg)
 
 E2E 테스트는 앱을 모두 먼저 시작하고 웹 브라우저로 테스트한다. 이렇게 진행하기 때문에 테스트 방식 중 가장 느리고 비용이 많이 들지만 고객 관점에서 앱의 앞단부터 검사해 나아가며 중요한 의미를 가진다.
 
@@ -129,7 +129,7 @@ E2E 테스트는 앱을 모두 먼저 시작하고 웹 브라우저로 테스트
 $ npm install --save-dev cypress
 ```
 
-[##_Image|kage@bqy8lW/btrPIhd3EdZ/EAopZa9oQN9YeOdhrsKMN0/img.png|CDM|1.3|{"originWidth":3482,"originHeight":2679,"style":"alignCenter","width":495,"height":381}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbqy8lW%2FbtrPIhd3EdZ%2FEAopZa9oQN9YeOdhrsKMN0%2Fimg.png)
 
 -   싸이프러스는 브라우저상에서 실행되기 때문이 이전처럼 데이터 로딩을 위한 로직직을 별도로 실행시킬 수 없으므로 외부 API를 구성하고 Cypress에서 호출하도록 구성한다.
 -   싸이프러스는 실행되면 초기 데이터 세팅을 위해 위 과정에서 생성한 API를 호출하고, 테스트 대상 웹을 실행한다.
@@ -182,11 +182,11 @@ pipelines:
 
 \[그림 9.5\]
 
-[##_Image|kage@ebveEv/btrPIhE91xB/ll4xKkMYhnrUbsUT3rrBg1/img.png|CDM|1.3|{"originWidth":3764,"originHeight":2620,"style":"alignCenter"}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FebveEv%2FbtrPIhE91xB%2Fll4xKkMYhnrUbsUT3rrBg1%2Fimg.png)
 
 ### 게이트웨이
 
-[##_Image|kage@cetdjX/btrPJd9Ckcp/rwWdw3GaLnI3uo4D5lK5w0/img.png|CDM|1.3|{"originWidth":4032,"originHeight":3024,"style":"alignCenter"}_##]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcetdjX%2FbtrPJd9Ckcp%2FrwWdw3GaLnI3uo4D5lK5w0%2Fimg.png)
 
 클러스터 안으로 HTTP 요청을 전달하는 것. 더 나아가 API 라우팅 기능을 제공하는 게이트웨이도 있다.
 
