@@ -142,7 +142,7 @@ $ npm install --save-dev cypress
 
 개발자가 code repository에 변경 사항을 반영하면, 자동으로 코드의 품질을 검사하기 위한 테스트 세트를 실행하도록 구성한다. 테스트를 통과한 경우 코드는 운영으로 넘어가며 만약 실패하면 코드는 배포되지 않는다.
 
-\[그림 8.13\]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FDzA3D%2FbtrPI9zE4rD%2F99j5Fzn1vrJyMW2W9hzewk%2Fimg.jpg)
 
 위에서 정의한 `npm test`만 파이프라인에 끼워넣으면 테스트 성공/실패 여부에 따라 배포 여부가 결정되는 빌드 파이프라인을 구성할 수 있다.
 
@@ -174,13 +174,14 @@ pipelines:
 
 [예제 프로젝트](https://github.com/bootstrapping-microservices/chapter-9) 구조
 
-\[그림 9.4\]
+![20221027_163555](https://user-images.githubusercontent.com/13152061/198220334-e45f841f-45ce-4486-807e-c4749f6e7086.jpg)
+
 
 예제는 단순하게 만들기 위해 단일 코드 레포를 사용했다. 하지만 운영 환경의 마이크로서비스는 단일 코드 레포를 가지면 안된다. 독립적으로 배포할 수 있다는 마이크로서비스의 제일 큰 장점을 포기하는 것이기 때문이다. 실제 마이크로서비스는 대부분 서비스마다 구분된 레포를 가진다.
 
 ## 개발 환경에서 플릭스튜브 실행하기
 
-\[그림 9.5\]
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F33UC0%2FbtrPJnYJGUO%2FZ11eV5KfWfhyxlUYS42MaK%2Fimg.jpg)
 
 ![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FebveEv%2FbtrPIhE91xB%2Fll4xKkMYhnrUbsUT3rrBg1%2Fimg.png)
 
