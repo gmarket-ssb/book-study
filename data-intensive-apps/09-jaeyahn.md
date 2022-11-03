@@ -97,6 +97,7 @@
 
 # 2) 인과적 의존성 담기
 - 각 데이터베이스에 이전 결과에 관한 이력을 담고 들고다닌다.
+
 ![image](https://user-images.githubusercontent.com/8626130/199663771-d8e463e2-f8ec-448f-82f7-f34a298806fd.png)
 
 https://en.wikipedia.org/wiki/Version_vector
@@ -117,7 +118,16 @@ https://martinfowler.com/articles/patterns-of-distributed-systems/version-vector
 - 타임스탬프 순서화는 모든 연산이 처리되고 그 연산을 모은 후에 순서가 드러나기 때문에 유일성 제약 조건과 같은 구현에서 사용할 수 없다.
 
 
-#3) 전체 순서 브로드캐스트
+#3) 전체 순서 브로드캐스트 (Total Order Broadcast)
+
+모든 노드가 같은 순서로 쓰기를 하게끔 하자.
+1. 단일 리더방식 -> 단일실패지점 -> 단일리더가 처리 할 수 있는 수준을 넘어설 때 어떻게 할것인가? 
+2. 로그를 기반으로 전체 노드의 쓰기가 compare-and-set이 동작하게끔 한다.
+
+<img width="919" alt="image" src="https://user-images.githubusercontent.com/8626130/199665362-0329eb19-4461-4836-bd26-f7b2376981e8.png">
+
+https://1ambda.github.io/cloud-computing/cloud-computing-6/
+
 
 - 전체 순서 브로드캐스트를 통해 유일성 제약 조건을 구현할 수 있다.
 - 전체 순서 브로드캐스트는 노드 사이에 메시지를 교환하는 프로토콜로 기술된다.
@@ -126,3 +136,16 @@ https://martinfowler.com/articles/patterns-of-distributed-systems/version-vector
 - 메시지의 순서는 해당 메시지가 전달되는 시점에 고정된다.
 - 주키퍼나 etcd같은 분산 코디네이션 서비스가 이를 구현한다.
 - 전체 순서 브로드캐스트는 신뢰성과 순서화 속성이 항상 보장되므로 데이터베이스 복제에 사용하기 적절하다.
+
+
+# 분산 트랜젝션에서의 합의 (Consensus)
+
+분산시스템에서의 트랜젝션은 일련의 합의 알고리즘을 통해서 진행한다.
+
+대부분의 경우에는 비잔틴 문제를 해결하는 것을 시작으로 다양한 이점의 견고한 합의 알고리즘 이용한다.
+
+Atomic Commit and Two-Phase Commit 이 대표적이나 그 결함이 있다. (책에서 소개)
+
+- Viewstamped Replication, Raft, Zab 등 이 대표적이다.
+
+
