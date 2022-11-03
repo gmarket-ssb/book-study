@@ -11,6 +11,7 @@
 # 선형성(Linearizability)
 
 비선형적
+
 <img width="646" alt="image" src="https://user-images.githubusercontent.com/8626130/199660561-9d801e71-7a5b-4802-91ff-ca4edf437014.png">
 
 -> 엘리스와 밥이 각자의 스마트폰으로 월드컵을 시청한다.
@@ -149,3 +150,16 @@ Atomic Commit and Two-Phase Commit 이 대표적이나 그 결함이 있다. (�
 - Viewstamped Replication, Raft, Zab 등 이 대표적이다.
 
 
+
+# CAP 정리
+- 흔히 CAP 정리는 일관성(Consistency), 가용성(Availability), 분단 내성(Partition tolerance) 중 두 개를 고를 수 있다고 표현되지만 이는 오해의 소지가 있다.
+- 네트워크 분단은 결함이므로 선택할 수 있는 것이 아니고 반드시 발생하기 때문에 분단 내성은 반드시 고려되어야 한다.
+
+즉 CAP 정리는 네트워크 분단(P)이 생겼을 때 일관성(C)과 가용성(A) 중 하나를 선택할 수 있다고 보는게 좋다.
+여기서 일관성은 선형성(Strong Consistency)로 보는 것이 옳다.
+
+- 만약 애플리케이션에서 선형성이 요구된다면 네트워크 분단 시 가용성을 보장할 수 없게 된다. 
+- 반대로 애플리케이션에서 선형성을 요구하지 않는다면 네트워크 분단 시 선형적이지 않지만 가용한 상태를 제공할 수 있다.
+- 선형성이 필요 없는 애플리케이션은 네트워크 문제에 더 강인하다.
+
+http://eincs.com/2013/07/misleading-and-truth-of-cap-theorem/
