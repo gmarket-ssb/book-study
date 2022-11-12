@@ -20,6 +20,8 @@ kube-apiserver가 죽어서 명령어를 못쓰게 될 경우 `docker log` 를 �
 
 ## 프로메테우스 + 그라파나를 통한 모니터링
 
+![모니터링_구조](https://user-images.githubusercontent.com/19777164/201478808-67d02088-ded1-498b-9326-e3b8385daa11.png)
+
 ### [프로메테우스](https://prometheus.io/) 
 
 - 모니터링 및 알람에 사용되는 오픈소스 애플리케이션
