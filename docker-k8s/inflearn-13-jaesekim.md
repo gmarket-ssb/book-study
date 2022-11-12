@@ -35,3 +35,9 @@ kube-apiserver가 죽어서 명령어를 못쓰게 될 경우 `docker log` 를 �
 ### helm을 사용하여 프로메테우스 + 그라파나 구축
 
 - [https://blog.naver.com/isc0304/222515904650](https://blog.naver.com/isc0304/222515904650)
+
+## [Istio](https://istio.io/latest/)
+
+Istio는 쿠버네티스 환경의 네트워크 메시 이슈를 보다 간편하게 해결하기 위해 지원하는 환경(서비스 메시)
+
+마이크로서비스 간의 모든 네트워크 통신을 관찰하는 특수 사이드카 프록시(envoy)를 배치
