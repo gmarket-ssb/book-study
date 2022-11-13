@@ -67,7 +67,10 @@ Istio는 쿠버네티스 환경의 네트워크 메시 이슈를 보다 간편�
 
 ## [Jaeger(예거)](https://www.jaegertracing.io/)
 
-- 분산 서비스 간 트랜잭션을 추적하는 오픈소스 소프트웨어 (e.g. Zipkin)
-- Distributed tracing을 지원하기 위한 기술들이 벤더에 종속되지 않는 표준 방식인 Open Tracing을 따름
-- CNCF 프로젝트
-- 헬름 차트나 istio 등을 활용해 편리하게 설치 가능
+분산 서비스 간 트랜잭션을 추적하는 오픈소스 소프트웨어 (e.g. Zipkin)
+
+Distributed tracing을 지원하기 위한 기술들이 벤더에 종속되지 않는 표준 방식인 Open Tracing을 따름
+
+CNCF 프로젝트
+
+헬름 차트나 istio 등을 활용해 편리하게 설치 가능
