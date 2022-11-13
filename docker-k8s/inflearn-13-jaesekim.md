@@ -43,3 +43,24 @@ kube-apiserver가 죽어서 명령어를 못쓰게 될 경우 `docker log` 를 �
 Istio는 쿠버네티스 환경의 네트워크 메시 이슈를 보다 간편하게 해결하기 위해 지원하는 환경(서비스 메시)
 
 마이크로서비스 간의 모든 네트워크 통신을 관찰하는 특수 사이드카 프록시(envoy)를 배치
+
+## EFK
+
+![스크린샷 2022-11-13 오후 3 29 47](https://user-images.githubusercontent.com/19777164/201509265-1b457a24-19a3-48b5-a18a-ccf995b4df8d.png)
+
+일반적으로 엘라스틱스택을 사용하여 통합된 로그시스템을 구성
+
+쿠버네티스에서는 CNCF 프로젝트인 FluentD를 사용하는 것이 유행
+
+- Elasticsearch: 데이터베이스 & 검색엔진
+    - index = database
+        - 날짜가 suffix로 붙음 (`logstash-2022.11.13`)
+    - field = column
+        - `@timestamp` 는 수집기가 찍어준 시간을 의미
+- Logstash: 데이터 수집기, 파이프라인 (F: FluentD)
+- Kibana: 대시보드
+
+구성예제
+
+- [https://blog.naver.com/isc0304/221860255105](https://blog.naver.com/isc0304/221860255105)
+- [https://blog.naver.com/isc0304/221879552183](https://blog.naver.com/isc0304/221879552183)
