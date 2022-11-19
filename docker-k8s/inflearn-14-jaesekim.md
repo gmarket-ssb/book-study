@@ -139,8 +139,6 @@ v{MAJOR}.{MINOR}.{PATCH}
 
 `kubectl get all` 명령어를 통해 yaml 파일을 백업하고 그 외 정보(configmap, secret, pvc 등)은 etcd db의 스냅샷을 통해 백업한다.
 
-- etcd cofig flag: [https://etcd.io/docs/v3.5/op-guide/configuration/](https://etcd.io/docs/v3.5/op-guide/configuration/)
-
 pv 등은 일반적인 방법으로 백업
 
 ### 예제
