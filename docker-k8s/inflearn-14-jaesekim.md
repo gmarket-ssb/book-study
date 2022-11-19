@@ -134,3 +134,80 @@ v{MAJOR}.{MINOR}.{PATCH}
 예제
 
 - [https://blog.naver.com/isc0304/222506604980](https://blog.naver.com/isc0304/222506604980) (vm에 구성된 cluster를 통해 진행)
+
+## 백업과 복원
+
+`kubectl get all` 명령어를 통해 yaml 파일을 백업하고 그 외 정보(configmap, secret, pvc 등)은 etcd db의 스냅샷을 통해 백업한다.
+
+- etcd cofig flag: [https://etcd.io/docs/v3.5/op-guide/configuration/](https://etcd.io/docs/v3.5/op-guide/configuration/)
+
+pv 등은 일반적인 방법으로 백업
+
+### 예제
+
+```bash
+# 파드의 정보파일 yaml 추출
+root@master0:~# kubectl get all --all-namespaces -o yaml > all-deploy-services.yaml
+
+# etcd 옵션 확인
+root@master0:/home/user01/etcd-v3.4.22-linux-amd64# ETCDCTL_API=3 ./etcdctl --help
+
+# 기본적으로 tls 통신하기 때문에 인증서와 키를 옵션으로 줘야함, 쿠버네티스 etcd 정보는 /etc/kubernetes/pki/etcd/ 에 저장되어 있음
+root@master0:/home/user01/etcd-v3.4.22-linux-amd64# sudo ETCDCTL_API=3 ./etcdctl --endpoints 127.0.0.1:2379 --cacert /etc/kubernetes/pki/etcd/ca.crt --cert /etc/kubernetes/pki/etcd/server.crt --key /etc/kubernetes/pki/etcd/server.key snapshot save snapshotdb
+{"level":"info","ts":1668867684.9010208,"caller":"snapshot/v3_snapshot.go:119","msg":"created temporary db file","path":"snapshotdb.part"}
+{"level":"info","ts":"2022-11-19T14:21:24.914Z","caller":"clientv3/maintenance.go:200","msg":"opened snapshot stream; downloading"}
+{"level":"info","ts":1668867684.914573,"caller":"snapshot/v3_snapshot.go:127","msg":"fetching snapshot","endpoint":"127.0.0.1:2379"}
+{"level":"info","ts":"2022-11-19T14:21:25.205Z","caller":"clientv3/maintenance.go:208","msg":"completed snapshot read; closing"}
+{"level":"info","ts":1668867685.2091548,"caller":"snapshot/v3_snapshot.go:142","msg":"fetched snapshot","endpoint":"127.0.0.1:2379","size":"4.5 MB","took":0.307965633}
+{"level":"info","ts":1668867685.2092974,"caller":"snapshot/v3_snapshot.go:152","msg":"saved","path":"snapshotdb"}
+Snapshot saved at snapshotdb
+
+# 스냅샷 상태 정보 확인
+root@master0:/home/user01/etcd-v3.4.22-linux-amd64# ETCDCTL_API=3 ./etcdctl --endpoints 127.0.0.1:2379 --cacert /etc/kubernetes/pki/etcd/ca.crt --cert /etc/kubernetes/pki/etcd/server.crt --key /etc/kubernetes/pki/etcd/server.key snapshot status snapshotdb
+1d7ebb1, 47669, 1005, 4.5 MB
+
+# 스냅샷 상태 정보 테이블 형태로 출력
+root@master0:/home/user01/etcd-v3.4.22-linux-amd64# ETCDCTL_API=3 ./etcdctl --endpoints 127.0.0.1:2379 --cacert /etc/kubernetes/pki/etcd/ca.crt --cert /etc/kubernetes/pki/etcd/server.crt --key /etc/kubernetes/pki/etcd/server.key snapshot status snapshotdb --write-out=table
++---------+----------+------------+------------+
+|  HASH   | REVISION | TOTAL KEYS | TOTAL SIZE |
++---------+----------+------------+------------+
+| 1d7ebb1 |    47669 |       1005 |     4.5 MB |
++---------+----------+------------+------------+
+
+# snapshotdb 생성 확인
+root@master0:/home/user01/etcd-v3.4.22-linux-amd64# ls
+Documentation  etcd  etcdctl  README-etcdctl.md  README.md  READMEv2-etcdctl.md  snapshotdb
+
+# etcd 백업 파일 복원 명령
+root@master0:~# sudo ETCDCTL_API=3 /home/user01/etcd-v3.4.22-linux-amd64/etcdctl --endpoints=127.0.0.1:2379 \
+> --cacert /etc/kubernetes/pki/etcd/ca.crt \
+> --cert /etc/kubernetes/pki/etcd/server.crt \
+> --key /etc/kubernetes/pki/etcd/server.key \
+> --data-dir /var/lib/etcd-restore \
+> --initial-cluster='master0=https://127.0.0.1:2380' \
+> --name=master0 \
+> --initial-cluster-token this-is-token \
+> --initial-advertise-peer-urls https://127.0.0.1:2380 \
+> snapshot restore ~/snapshotdb 
+{"level":"info","ts":1668868553.5857525,"caller":"snapshot/v3_snapshot.go:296","msg":"restoring snapshot","path":"/root/snapshotdb","wal-dir":"/var/lib/etcd-restore/member/wal","data-dir":"/var/lib/etcd-restore","snap-dir":"/var/lib/etcd-restore/member/snap"}
+{"level":"info","ts":1668868553.6189327,"caller":"mvcc/kvstore.go:388","msg":"restored last compact revision","meta-bucket-name":"meta","meta-bucket-name-key":"finishedCompactRev","restored-compact-revision":46985}
+{"level":"info","ts":1668868553.6368642,"caller":"membership/cluster.go:392","msg":"added member","cluster-id":"63018d27b801e4a4","local-member-id":"0","added-peer-id":"90cab5eb03ee2ff3","added-peer-peer-urls":["https://127.0.0.1:2380"]}
+{"level":"info","ts":1668868553.6488965,"caller":"snapshot/v3_snapshot.go:309","msg":"restored snapshot","path":"/root/snapshotdb","wal-dir":"/var/lib/etcd-restore/member/wal","data-dir":"/var/lib/etcd-restore","snap-dir":"/var/lib/etcd-restore/member/snap"}
+
+# member 디렉토리 있는지 확인
+root@master0:~# cd /var/lib/etcd-restore/
+root@master0:/var/lib/etcd-restore# ls
+member
+
+# etcd.yaml 스태틱파드 수정
+# 디렉토리 모두 변경: /var/lib/etcd-->/var/lib/etcd-restore
+# 옵션 추가: --initial-cluster-token=this-is-token
+root@master0:~# sudo vim/etc/kubernetes/manifests/etcd.yaml
+
+# etcd가 부팅되고 1분 정도 기다린 후 kubectl 동작 확인
+root@master0:/var/lib/etcd-restore# kubectl get pod
+^C
+
+# yaml로 추출한 deployment, service 등 정보들도 자동으로 복구되어 있다. 확인차 kubectl create -f 를 통해 남은 파일을 복구한다.
+
+```
