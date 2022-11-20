@@ -31,6 +31,8 @@ root@user01:~# netplan apply
 ```
 
 ### 마스터 노드, 워커 노드 공통사항 설치
+- 스왑 제거: https://stackoverflow.com/questions/43794169/docker-change-cgroup-driver-to-systemd
+- 도커 cgroup driver 변경: https://stackoverflow.com/questions/43794169/docker-change-cgroup-driver-to-systemd
 
 ```bash
 # 도커와 kubeadm 설치
@@ -109,6 +111,7 @@ root@master0:~#
 ### node0, node1도 고정 IP로 변경 및 호스트네임 설정 (+ 스왑 기능 제거도 한번 더 수행)
 
 ### 마스터노드에 kubeadm 설치하기
+- https://kubernetes.io/ko/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
 
 ```bash
@@ -219,7 +222,9 @@ node0     NotReady   <none>          2m37s   v1.25.0
 node1     NotReady   <none>          104s    v1.25.0
 ```
 
-### weavenet 설치
+### Pod Network(weavenet) 설치
+- https://kubernetes.io/docs/concepts/cluster-administration/addons/ (kubeadm init 후 안내문구에 출력됨)
+  - https://www.weave.works/docs/net/latest/kubernetes/kube-addon/
 
 ```bash
 # weavenet 설치
