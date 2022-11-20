@@ -1,4 +1,8 @@
 ## VM 환경에 Cluster 구성하기(우분투 20.04)
+보통과 달리 kubectl 마스터 노드에 있음
+
+<img width="1107" alt="aaaa" src="https://user-images.githubusercontent.com/19777164/202892886-bcc48666-7a20-42e1-9c7d-55d330d0cc16.png">
+
 
 ### 고정 IP 변경
 
@@ -102,13 +106,10 @@ user01@user01:~$ sudo -i
 root@master0:~#
 ```
 
-### node0, node1도 고정 IP로 변경 및 호스트네임 설정
+### node0, node1도 고정 IP로 변경 및 호스트네임 설정 (+ 스왑 기능 제거도 한번 더 수행)
 
 ### 마스터노드에 kubeadm 설치하기
 
-설정을 리셋(kubeadm reset)해야할 경우에는 $HOME/.kube/config를 삭제한 후 진행해야 한다. 그렇지 않으면 인증서 관련 에러가 발생한다.
-
-워커노드에서 에러나서 kubeadm reset할 경우는 그냥 해도 되는것같음
 
 ```bash
 # master 노드에서 kubeadm init
@@ -232,3 +233,21 @@ node0     Ready    <none>          4m41s   v1.25.0
 node1     Ready    <none>          3m48s   v1.25.0
 
 ```
+
+### 재구성
+
+init이나 join을 잘못한 경우 등 설정을 리셋(kubeadm reset)해야할 경우에는 $HOME/.kube/config를 삭제한 후 진행해야 한다. 그렇지 않으면 인증서 관련 에러가 발생한다.
+
+워커노드에서 에러나서 kubeadm reset할 경우는 그냥 해도 되는것같음
+
+- `/.kube/config` 삭제
+- `kubeadm reset`
+
+클러스터에 join 하기 위한 kubeadm token 재발급 (24시간)
+
+- `kubeadm token create -h`
+- `kubeadm token create --print-join-command`
+
+kubeadm token 확인
+
+- `kubeadm token list`
