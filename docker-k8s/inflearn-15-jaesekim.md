@@ -1,6 +1,9 @@
-## 인증
+## [인증](https://kubernetes.io/docs/reference/access-authn-authz/authentication/)
 
-[https://kubernetes.io/docs/reference/access-authn-authz/authentication/](https://kubernetes.io/docs/reference/access-authn-authz/authentication/)
+쿠버네티스의 account에는 두가지 타입이 있다.
+
+- user: 개발자 및 데브옵스 팀 등 쿠버네티스를 사용하는 사용자들이 인증을 위해 사용
+- service account: 포드 외 애플리케이션들이 인증을 위해 사용
 
 ### static file token
 
@@ -35,7 +38,7 @@ root@master0:/etc# crictl logs d5c05e3004bbf
 # kube-apiserver 잘뜨는지 확인
 root@master0:/etc/kubernetes/manifests# watch "sudo crictl ps | grep api"
 
-# user 설정하기
+# user 설정하기 (kubectl에 등록하고 사용하는 방법)
 # 아이디/비밀번호를 입력...
 root@master0:/etc/kubernetes/manifests# kubectl config set-credentials user1 --token=password1
 User "user1" set.
@@ -49,6 +52,8 @@ root@master0:/etc/kubernetes/manifests# kubectl config use-context user1-context
 Switched to context "user1-context".
 
 # 인가 에러
+root@master0:/etc/kubernetes/manifests# kubectl get pod --user user1
+# or
 root@master0:/etc/kubernetes/manifests# kubectl get pod
 Error from server (Forbidden): pods is forbidden: User "user1" cannot list resource "pods" in API group "" in the namespace "frontend"
 
