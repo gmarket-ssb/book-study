@@ -3,7 +3,7 @@
 쿠버네티스의 account에는 두가지 타입이 있다.
 
 - user: 개발자 및 데브옵스 팀 등 쿠버네티스를 사용하는 사용자들이 인증을 위해 사용
-- service account: 포드 외 애플리케이션들이 인증을 위해 사용
+- service account: 애플리케이션(파드 등)이 인증을 위해 사용
 
 ### static file token
 
