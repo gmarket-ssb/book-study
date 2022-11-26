@@ -155,3 +155,67 @@ curl -X GET https://$KUBERNETES_SERVICE_HOST/api/v1/namespaces/default/pods --he
 - pod sa: [https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/)
 - curl sa: [https://kubernetes.io/ko/docs/tasks/administer-cluster/access-cluster-api/](https://kubernetes.io/ko/docs/tasks/administer-cluster/access-cluster-api/)
 - api reference: [https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/)
+
+### [TLS](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/)
+
+쿠버네티스는 기본적으로 TLS 통신을 제공
+
+kube-apiserver도 tls 통신이기 떄문에 인증 문제가 생길 시 docker 명령어로 확인해야 함
+
+인증서 위치
+
+![스크린샷 2022-11-26 오전 12 05 34](https://user-images.githubusercontent.com/19777164/204073007-69586b98-4f04-479f-8bbd-803edb5f8046.png)
+
+- etcd는 서버로 동작하기 때문에 자체적으로 인증를 가짐
+- 클라이언트용(client), 서버용, ca용 인증서가 존재
+- Kubelet의 위치는 조금 다름
+    - /var/lib/kubelet/pki
+    - /var/lib/kubelet/config.yaml
+- conf 파일은 인증서를 포함하고 있음
+
+```bash
+# 인증서 전달방법도 당연히 hostpath를 통해
+user01@master0:~$ cd /etc/kubernetes/pki
+
+# openssl을 통해 인증서 정보 확인
+# issuer: ca, subject: 인증 받은 곳, validity: 인증서 유효기간, 인증서 내에 공개키는 포함되어 있음
+user01@master0:/etc/kubernetes/pki$ openssl x509 -in apiserver-etcd-client.crt -text
+
+# 인증서 만료기간 확인
+# 쿠버네티스의 ca는 10년, 인증서는 1년
+root@master0:~# kubeadm certs check-expiration
+
+# 모든 인증서 갱신하기
+# 쿠버네티스를 업데이트하면 자동으로 인증서가 갱신됨
+root@master0:~# kubeadm certs renew all
+```
+
+인증서를 통한 유저 생성하기
+
+```bash
+# 개인키 생성
+user01@master0:~$ openssl genrsa -out john.key 2048
+
+# 개인키를 통해 인증서 서명 요청(csr) 만들기 (ca에 인증서 만들어 달라고 요청하기 위해)
+user01@master0:~$ openssl req -new -key john.key -out john.csr -subj "/CN=john/O=org"
+
+# csr에는 ca가 사인을 안했기 떄문에 ca(issuer)가 없음
+user01@master0:~$ openssl req -in john.csr -text
+
+# Kubernetes 클러스터 인증 기관(CA)이 요청을 승인해야 함
+# 쿠버네티스가 자체적으로 관리하는 ca.key와 ca.crt를 사용하여 승인 가능
+user01@master0:~$ sudo openssl x509 -req -in john.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out john.crt -days 365
+
+# csr은 이제 필요없기 떄문에 삭제
+user01@master0:~$ rm -rf john.csr
+
+user01@master0:~$ sudo -i
+root@master0:~# kubectl config set-credentials john --client-certificate=/home/user01/john.crt --client-key=/home/user01/john.key
+# 어느 서비스에 사용할때 이 유저를 사용할 건지
+root@master0:~# kubectl config set-context john@kubernetes --cluster=kubernetes --user=john --namespace=dev
+
+root@master0:~# kubectl config get-contexts
+
+root@master0:~# kubectl get pod --context=john@kubernetes
+Error from server (Forbidden): pods is forbidden: User "john" cannot list resource "pods" in API group "" in the namespace "dev1"
+```
