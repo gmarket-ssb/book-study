@@ -219,3 +219,58 @@ root@master0:~# kubectl config get-contexts
 root@master0:~# kubectl get pod --context=john@kubernetes
 Error from server (Forbidden): pods is forbidden: User "john" cannot list resource "pods" in API group "" in the namespace "dev1"
 ```
+
+### kube config 구성
+
+clusters, contexts, users 3부분으로 구성된다.
+
+```bash
+root@master0:~# kubectl config view
+apiVersion: v1
+clusters: # 쿠버네티스 클러스터의 정보들
+- cluster: 
+    certificate-authority-data: DATA+OMITTED
+    server: https://192.168.138.128:6443
+  name: kubernetes
+contexts: # cluster와 user를 함께 입력하여 권한 할당
+- context:
+    cluster: kubernetes
+    namespace: dev1
+    user: john
+  name: john@kubernetes
+- context:
+    cluster: kubernetes
+    user: kubernetes-admin
+  name: kubernetes-admin@kubernetes # user명@클러스터명 짓는게 좋다
+- context:
+    cluster: kubernetes
+    namespace: frontend
+    user: user1
+  name: user1-context
+current-context: kubernetes-admin@kubernetes # 현재 kubectl이 사용중인 쿠버네티스 계정
+kind: Config
+preferences: {}
+users: # 사용할 권한을 가진 사용자
+- name: john
+  user:
+    client-certificate: /home/user01/john.crt
+    client-key: /home/user01/john.key
+- name: kubernetes-admin
+  user:
+    client-certificate-data: REDACTED
+    client-key-data: REDACTED
+- name: user1
+  user:
+    token: REDACTED
+
+# config 원본 파일 위치
+root@master0:~# cat ~/.kube/config
+
+# user나 context를 선택해서 사용 가능
+root@master0:~# kubectl get pod --context john@kubernetes
+Error from server (Forbidden): pods is forbidden: User "john" cannot list resource "pods" in API group "" in the namespace "dev1"
+root@master0:~# kubectl get pod --user john
+Error from server (Forbidden): pods is forbidden: User "john" cannot list resource "pods" in API group "" in the namespace "default"
+root@master0:~# kubectl get pod --as john
+Error from server (Forbidden): pods is forbidden: User "john" cannot list resource "pods" in API group "" in the namespace "default"
+```
