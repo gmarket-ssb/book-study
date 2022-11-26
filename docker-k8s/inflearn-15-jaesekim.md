@@ -274,3 +274,51 @@ Error from server (Forbidden): pods is forbidden: User "john" cannot list resour
 root@master0:~# kubectl get pod --as john
 Error from server (Forbidden): pods is forbidden: User "john" cannot list resource "pods" in API group "" in the namespace "default"
 ```
+
+## 인가
+
+### [RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
+
+Role을 기반으로 권한을 줄 수 있다. 
+
+모든 유저를 최소 권한만 주고 관리하기 어려워서 (아마 네임스페이스 별로..) 관리자 역할로 주는 경우도 많다. 
+
+RBAC를 사용하여 룰을 정의하려면 apiserver에 --authorization-mode=RBAC (default)
+
+Role/RoleBinding
+
+- Role: 어떤 권한을 가지는지 정의
+- RoleBinding: Role과 Account를 바인딩
+- Role, RoleBinding: 네임스페이스 내에서 사용가능, 개발자에게 부여
+- ClusterRole, ClusterRoleBinding: 클러스터 전체에서 사용 가능, 관리자에게 부여
+
+```yaml
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: dev1
+  name: deployment-manager
+rules:
+# kubectl 명령어 실행 시 권한 에러 메시지 찾을 수 있고 api ref docs에서도 어느정도 확인할 수 있다.
+- apiGroups: ["", "apps"] # "" indicates the core API group
+  resources: ["pods", "replicasets", "deployments"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: manage-deployment
+  namespace: dev1
+subjects:
+# You can specify more than one "subject"
+- kind: User
+  name: john # "name" is case sensitive
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  # "roleRef" specifies the binding to a Role / ClusterRole
+  kind: Role #this must be Role or ClusterRole
+  name: deployment-manager # this must match the name of the Role or ClusterRole you wish to bind to
+  apiGroup: rbac.authorization.k8s.io
+```
