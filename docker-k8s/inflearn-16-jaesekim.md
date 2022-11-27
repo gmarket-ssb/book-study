@@ -71,6 +71,12 @@ spec:
 
 kubeapiserver에서 별도로 활성화를 시켜줘야 한다.
 
-### 참고
+참고: [https://blog.naver.com/isc0304/222509921722](https://blog.naver.com/isc0304/222509921722)
 
-[https://blog.naver.com/isc0304/222509921722](https://blog.naver.com/isc0304/222509921722)
+## [Trivy](https://aquasecurity.github.io/trivy/v0.34/)
+
+취약점을 간단히 스캔할 수 있는 도구
+
+CVE(Common Vulnerabilities and Exposure)는 공개적으로 알려진 소프트웨어의 보안취약점을 가리키는 고유 표기
+
+참고: [https://blog.naver.com/isc0304/222510710171](https://blog.naver.com/isc0304/222510710171)
