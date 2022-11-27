@@ -64,3 +64,13 @@ spec:
           port: 5978
 ```
 예제: [https://cloud.google.com/kubernetes-engine/docs/tutorials/network-policy](https://cloud.google.com/kubernetes-engine/docs/tutorials/network-policy)
+
+## [Audit](https://kubernetes.io/docs/tasks/debug/debug-cluster/audit/)
+
+어떤 유저가 어떤 작업을 했는지 확인할 수 있는 기능
+
+kubeapiserver에서 별도로 활성화를 시켜줘야 한다.
+
+### 참고
+
+[https://blog.naver.com/isc0304/222509921722](https://blog.naver.com/isc0304/222509921722)
