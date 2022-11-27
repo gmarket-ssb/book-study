@@ -63,3 +63,4 @@ spec:
         - protocol: TCP
           port: 5978
 ```
+예제: [https://cloud.google.com/kubernetes-engine/docs/tutorials/network-policy](https://cloud.google.com/kubernetes-engine/docs/tutorials/network-policy)
