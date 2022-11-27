@@ -41,7 +41,7 @@ spec:
     - Ingress
     - Egress
   ingress: # 들어오는 트래픽에 대한 정책 설정
-    - from: # 3가지 규칙은 OR 조건으로 적용된다.
+    - from: # ipBlock, namespaceSelector, podSelector를 통해 규칙을 설정할 수 있고 3가지 규칙은 OR 조건으로 적용된다.
         - ipBlock: # 허용하고자 하는 ip 대역 설정 가능
             cidr: 172.17.0.0/16
             except: # 예외 항목 설정 가능
