@@ -77,6 +77,15 @@ kubeapiserver에서 별도로 활성화를 시켜줘야 한다.
 
 취약점을 간단히 스캔할 수 있는 도구
 
-CVE(Common Vulnerabilities and Exposure)는 공개적으로 알려진 소프트웨어의 보안취약점을 가리키는 고유 표기
+CVE(Common Vulnerabilities and Exposure): 공개적으로 알려진 소프트웨어의 보안취약점을 가리키는 고유 표기
 
 참고: [https://blog.naver.com/isc0304/222510710171](https://blog.naver.com/isc0304/222510710171)
+
+## [kube-bench](https://github.com/aquasecurity/kube-bench)
+
+[CIS Kubernetes Benchmark](https://www.cisecurity.org/benchmark/kubernetes)를 쉽게 체크할 수 있는 도구
+
+CIS에서는 클라우드에서 준수해야하는 다양한 보안 점검 리스트를 benchmark로 제공한다.
+
+참고: [https://blog.naver.com/isc0304/222491245388](https://blog.naver.com/isc0304/222491245388)
+
