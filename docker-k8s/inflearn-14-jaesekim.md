@@ -136,6 +136,7 @@ v{MAJOR}.{MINOR}.{PATCH}
 - [https://blog.naver.com/isc0304/222506604980](https://blog.naver.com/isc0304/222506604980) (vm에 구성된 cluster를 통해 진행)
 
 ## 백업과 복원
+https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/
 
 `kubectl get all` 명령어를 통해 yaml 파일을 백업하고 그 외 정보(configmap, secret, pvc 등)은 etcd db의 스냅샷을 통해 백업한다.
 
