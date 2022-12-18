@@ -191,6 +191,7 @@ root@master0:~# kubeadm certs renew all
 ```
 
 인증서를 통한 유저 생성하기
+- csr 생성(권장): https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/#create-certificatesigningrequest
 
 ```bash
 # 개인키 생성
