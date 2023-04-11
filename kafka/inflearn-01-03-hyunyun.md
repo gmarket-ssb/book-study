@@ -81,14 +81,28 @@ DB, file, memeory 또한 마찬가지
 ## Key값을 가지지 않는 메세지 전송
 
 - Partitioner가 어떤 Partion에 전송되어야 할 지 미리 결정
-- 라운드 로빈, 스티키 파티션 등의 파티션 정략등이 선택됨
+- 라운드 로빈(kafka 2.4 이하 기본), 스티키 파티션(kafka 2.4 이상 기본) 등의 파티션 정략등이 선택됨
 - **전송 순서가 보장되지 않은 채**로 Consumer에서 읽혀질 수 있음
 > 전송 순서가 보장되어야 한다면, Partition을 1개로 사용하는 수 밖에 없다.
 
 ### Key값을 가지는 메세지 전송
 
 - 특정 Key값을 가지는 메세지는 **특정 파티션으로 고정**되어 전송됨
+
 ![image](https://user-images.githubusercontent.com/106303141/231240791-038bf3c8-e9ae-42d4-9f1d-eff84cfa4b0c.png)
 
 
+## Consumer Group과 Consumer
+
+![image](https://user-images.githubusercontent.com/106303141/231245869-f7664311-3cb5-4b73-8281-d4252ee02e96.png)
+
+- 모든 Consumer는 단 하나의 Consumer Group에 소속된다.
+- Partition의 레코드들은 하나의 Consumer에만 할당한다.
+- 보통 Partition 수 만큼의 Consumer를 만들어 할당 (분산처리 성능 향상)
+- Consumer Group 내에 Consumer 변화(추가 혹은 삭제)가 있으면 **Rebalancing**(조합 변경)이 발생
+
+
+![image](https://user-images.githubusercontent.com/106303141/231246276-4ddabc2d-9c14-4e86-9f2f-02c0edfc97cf.png)
+
+- 서로 다른 Consumer Group의 Consumer들은 **분리되어 독립적으로 동작**
 
