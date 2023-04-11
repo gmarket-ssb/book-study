@@ -51,5 +51,24 @@ topic 생성
 - 복제(replication) 영역을 만들어 대비한다.
 
 
+## kafka-topics 명령어를 이용하여 Topic 생성 및 정보 확인하기 실습
+
+<img width="963" alt="image" src="https://user-images.githubusercontent.com/106303141/231134411-0facab40-3374-4bdd-8161-692d5955641e.png">
+
+> topic명으로 '_'나 '.'을 동시에 사용하지 말라고 권장한다. 
+> 지마켓에서는 '_'를 사용하여 구분한다.
+
+## kafka-console-producer와 kafka-console-consumer를 이용한 실습
+
+<img width="953" alt="image" src="https://user-images.githubusercontent.com/106303141/231138107-de6120ad-7538-45b2-a0d3-6b3212b2b339.png">
+
+### Producer와 Consumer간의 Serialized Message 전송
+
+<img width="1133" alt="image" src="https://user-images.githubusercontent.com/106303141/231138666-e9a00989-168c-4f31-8fc7-d220614c5e58.png">
+
+실제로(물리적으로) Partition에는 Byte Array가 저장되어진다고 함.
+DB, file, memeory 또한 마찬가지
+
+앞으로 자바코드 Client 실습에서 Serialized를 많이 다루므로 미리 알려주신 듯
 
 
