@@ -1,9 +1,11 @@
 # 카프카란?
 > 실시간, 대용량, 분산처리, 고성능, 오픈소스인 **Event Streams Platform**의 대표 솔루션
 
+
 ### 카프카를 배우는 이유 
 - 데이터 파이프라인 구축부터 마이크로서비스까지 다양한 용도로 활용
 - 담당 업무 중, 빅스마일데이 랭킹시스템 유지보수에 사용되고 있음 (카프카 처음 봄)
+
 
 ### 실습환경 세팅
 - VM머신 설치 후 Linux 이미지 설치
@@ -27,6 +29,7 @@ topic 생성
 
 <img width="757" alt="image" src="https://user-images.githubusercontent.com/106303141/231117837-7294ece5-0e5c-4a82-b860-c561633ce087.png">
 
+
 ### 토픽(Topic) 개요
 
 <img width="1149" alt="image" src="https://user-images.githubusercontent.com/106303141/231128615-86819296-c6b1-4242-a5ec-f0698885cd55.png">
@@ -38,6 +41,7 @@ topic 생성
 - 병렬 성능과 가용성
 - 개별 파티션은 immutable 성질의 레코드로 구성된 메세지
 - 개별 파티션은 다른 파티션과 독립적이다.
+
 
 ### 병렬 분산 처리(클러스터)
 
@@ -58,9 +62,11 @@ topic 생성
 > topic명으로 '_'나 '.'을 동시에 사용하지 말라고 권장한다. 
 > 지마켓에서는 '_'를 사용하여 구분한다.
 
+
 ## kafka-console-producer와 kafka-console-consumer를 이용한 실습
 
 <img width="953" alt="image" src="https://user-images.githubusercontent.com/106303141/231138107-de6120ad-7538-45b2-a0d3-6b3212b2b339.png">
+
 
 ### Producer와 Consumer간의 Serialized Message 전송
 
@@ -70,5 +76,19 @@ topic 생성
 DB, file, memeory 또한 마찬가지
 
 앞으로 자바코드 Client 실습에서 Serialized를 많이 다루므로 미리 알려주신 듯
+
+
+## Key값을 가지지 않는 메세지 전송
+
+- Partitioner가 어떤 Partion에 전송되어야 할 지 미리 결정
+- 라운드 로빈, 스티키 파티션 등의 파티션 정략등이 선택됨
+- **전송 순서가 보장되지 않은 채**로 Consumer에서 읽혀질 수 있음
+> 전송 순서가 보장되어야 한다면, Partition을 1개로 사용하는 수 밖에 없다.
+
+### Key값을 가지는 메세지 전송
+
+- 특정 Key값을 가지는 메세지는 **특정 파티션으로 고정**되어 전송됨
+![image](https://user-images.githubusercontent.com/106303141/231240791-038bf3c8-e9ae-42d4-9f1d-eff84cfa4b0c.png)
+
 
 
