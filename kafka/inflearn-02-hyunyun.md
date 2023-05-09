@@ -124,7 +124,29 @@ for(int seq=0; seq < 20; seq++) {
 > 원본 + 복제를 포함하여 Replication factor라고 한다. 위 화면에서는 Rf = 3 이다.
 
 ##### acks = 0
+* ack 없이 계속 전송함
+* 메세지 손실우려가 가장 크나 가장 빠름
 ##### acks = 1
-리더 브로커에게만 
+* 리더 브로커에게만 ack를 받음
+* 메세지 손실우려가 있음 ex) 복제 중 다운 될 경우
 ##### acks all
+* replica에 모두 복제되어야 ack를 받음
+* 메세지 손실은 없으나 가장 느림
+
+### Producer의 메세지 배치 전송의 이해
+
+![image](https://github.com/gmarket-ssb/book-study/assets/106303141/4cf13553-6ac1-4955-ab8c-76dcedb1cd49)
+
+* ```send()```메서드는 바로 전송되지 않고 내부 메모리(Record Accumulator)에 저장
+* 토픽 파티션에 따라 Record Batch 단위로 묶인 뒤 전송
+* Batch들은 한번에 전송될 수 있음
+
+![image](https://github.com/gmarket-ssb/book-study/assets/106303141/74694037-9318-4079-ac0f-fd7777d42d3c)
+
+### linger.ms와 batch.size 파라미터 고찰
+
+* linger.ms는 0이 되어도 무방하다.
+* 전반적인 Producer와 Broker간의 전송이 느리다면, linger.ms를 높여서 메세지가 배치로 적용될 수 있는 확률을 높이는 시도를 해볼 만하다.
+* linger.ms 는 보통 20ms 이하로 설정 권장
+
 
