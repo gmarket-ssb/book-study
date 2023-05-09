@@ -114,3 +114,17 @@ for(int seq=0; seq < 20; seq++) {
     });
 }
 ```
+
+
+### Producer의 acks 설정에 따른 send 방식
+
+##### 멀티 브로커 환경
+![image](https://github.com/gmarket-ssb/book-study/assets/106303141/37730e9a-be1c-4fb9-b3c0-6ef2c605c92a)
+
+> 원본 + 복제를 포함하여 Replication factor라고 한다. 위 화면에서는 Rf = 3 이다.
+
+##### acks = 0
+##### acks = 1
+리더 브로커에게만 
+##### acks all
+
