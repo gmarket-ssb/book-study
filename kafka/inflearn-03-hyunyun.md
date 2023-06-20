@@ -105,3 +105,12 @@ public static void main(String[] args) {
   }
 ```
 
+## Consumer 스태틱 그룹 멤버쉽의 필요성
+
+* Coordinator에서 Consumer의 증감 변화에 따라 Rebalance를 수행하는데, 이에 따른 Lag이 길어짐을 방지하기 위함
+* Consumer Restart도 Rebalance를 초래함
+
+![image](https://github.com/gmarket-ssb/book-study/assets/106303141/269da949-eaf6-4a8a-9ec3-b2b727764f0f)
+
+> group.instance.id를 설정함으로서, Consumer가 shutdown되어도 session.timeout.ms내에 재 기동되면 rebalance가 수행되지 않고, 기존 파티션이 재 할당됨.
+
